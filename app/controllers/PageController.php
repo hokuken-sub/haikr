@@ -22,6 +22,25 @@ class PageController extends \BaseController {
 	public function create()
 	{
 		//
+		
+		if (Request::isMethod('post'))
+		{
+            $pagename = Input::get('pagename');
+
+
+            // editに飛ばす
+            return Redirect::to('haik-admin/edit/'.$pagename);
+
+		}
+		
+		$html = '';
+        $html .= '<form action="/haik-admin/create/" method="post">';
+        $html .= '<input type="text" name="pagename" value="" />';
+        $html .= '<button>Submit</button>';
+        $html .= '</form>';
+
+		return $html;
+		
 	}
 
 	/**
@@ -37,7 +56,15 @@ class PageController extends \BaseController {
 		    $pagename = Input::get('pagename');
 		    $page = Page::where('pagename', $pagename)->first();
 		    
-		    $page->contents = Input::get('contents');
+		    if ( ! $page)
+		    {
+    		    $page = new Page;
+    		    $page->pagename = $pagename;
+                $page->haik_site_id = 1;
+		    }
+    		$page->contents = Input::get('contents');
+    		$page->title = Input::get('title');
+		    
 		    
 		    if ($page->save())
 		    {
@@ -87,6 +114,8 @@ class PageController extends \BaseController {
 	    $html .= '<a href="/haik-admin/edit/'.$pagename.'">編集</a>';
 	    $html .= " ";
 	    $html .= '<a href="/haik-admin/destroy/' .$pagename.'">削除</a>';
+	    $html .= " ";
+	    $html .= '<a href="/haik-admin/create/">追加</a>';
 
 		return $html;
 	}
@@ -104,6 +133,9 @@ class PageController extends \BaseController {
 	    
 	    $page = Page::where('pagename', '=', $pagename)->first();
 	    
+	    $md = '';
+	    $title = $pagename;
+	    
 	    if ($page)
 	    {
 	        $title = $page->title;
@@ -112,12 +144,16 @@ class PageController extends \BaseController {
 	    else
 	    {
 	        //TODO: 404 error
+/*
     	    var_dump($page);
     	    exit;
+*/
 	    }
 	    
-	    $html  = '<h2>'. $title .'</h2>';
+	    $html = '';
 	    $html .= '<form action="/haik-admin/edit/" method="post">';
+	    $html .= '<input type="text" name="title" value="'.$title.'">';
+	    $html .= '<br>';
 	    $html .= '<input type="hidden" name="pagename" value="'.$pagename.'" />';
 	    $html .= '<textarea name="contents" rows="5" cols="50">' . $md . '</textarea>';
 	    $html .= '<button>Submit</button>';
