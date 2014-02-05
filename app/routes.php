@@ -14,9 +14,13 @@
 Route::get('/', 'PageController@show');
 
 
+// URL: /haik-admin/create/
+Route::get('/haik-admin/create', 'PageController@create');
+Route::post('/haik-admin/create', 'PageController@create');
+
+
 // URL: /haik-admin/edit/{pagename}
 // で edit: {pagename} を表示する
-
 Route::get('/haik-admin/edit/{pagename}', 'PageController@edit');
 Route::post('/haik-admin/edit', 'PageController@store');
 
