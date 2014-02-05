@@ -83,7 +83,7 @@ $(document).ready(function(){
 			$('#edit_form_main input:submit[name='+btnName+']').click();
 		});
 		
-		$('#edit_form_main .edit_buttons').hide();
+		
 		
 		//ボタンを作る
 		if (typeof ORGM.toolbuttons !== "undefined") {

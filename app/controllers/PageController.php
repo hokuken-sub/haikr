@@ -107,7 +107,7 @@ class PageController extends \BaseController {
             App::abort(404);
         }
         
-        $html = '<h1>' . $title . '</h1>';
+        $html = '<h1>' . e($title) . '</h1>';
         $html .= MarkdownExtra::defaultTransform($md);
         $html .= '<hr>';
         $html .= '<a href="/haik-admin/edit/'.$pagename.'">編集</a>';
@@ -116,6 +116,7 @@ class PageController extends \BaseController {
         $html .= " ";
         $html .= '<a href="/haik-admin/create/">追加</a>';
 
+        $this->layout = View::make('settings.layouts.editor');
         $this->layout->content = $html;
     }
 
@@ -161,7 +162,7 @@ class PageController extends \BaseController {
         
         $this->layout = View::make('settings.layouts.editor');
 /*         $this->layout = View::make('settings.edit'); */
-        $this->layout->content = View::make('settings.edit');
+        $this->layout->content = View::make('settings.edit')->with('title', $title)->with('md', $md)->with('pagename', $pagename);
 
 /*         $this->layout->nest = View::make('settings.edit'); */
         
