@@ -4,6 +4,8 @@ use Michelf\MarkdownExtra;
 
 class PageController extends \BaseController {
 
+    protected $layout = 'settings.layouts.editor';
+
     /**
      * Display a listing of the resource.
      *
@@ -33,14 +35,13 @@ class PageController extends \BaseController {
 
         }
         
-        $html = '';
+        $html  = '';
         $html .= '<form action="/haik-admin/create/" method="post">';
         $html .= '<input type="text" name="pagename" value="" />';
         $html .= '<button>Submit</button>';
         $html .= '</form>';
 
-        return $html;
-        
+        $this->layout->content = $html;
     }
 
     /**
@@ -117,7 +118,7 @@ class PageController extends \BaseController {
         $html .= " ";
         $html .= '<a href="/haik-admin/create/">追加</a>';
 
-        return $html;
+        $this->layout->content = $html;
     }
 
     /**
@@ -150,7 +151,7 @@ class PageController extends \BaseController {
 */
         }
         
-        $html = '';
+        $html  = '';
         $html .= '<form action="/haik-admin/edit/" method="post">';
         $html .= '<input type="text" name="title" value="'.$title.'">';
         $html .= '<br>';
@@ -159,7 +160,7 @@ class PageController extends \BaseController {
         $html .= '<button>Submit</button>';
         $html .= '</form>';
         
-        return $html;
+        $this->layout->content = $content;
     }
 
     /**
