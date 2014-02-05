@@ -4,8 +4,6 @@ use Michelf\MarkdownExtra;
 
 class PageController extends \BaseController {
 
-    protected $layout = 'settings.layouts.editor';
-
     /**
      * Display a listing of the resource.
      *
@@ -160,7 +158,14 @@ class PageController extends \BaseController {
         $html .= '<button>Submit</button>';
         $html .= '</form>';
         
-        $this->layout->content = $content;
+        
+        $this->layout = View::make('settings.layouts.editor');
+/*         $this->layout = View::make('settings.edit'); */
+        $this->layout->content = View::make('settings.edit');
+
+/*         $this->layout->nest = View::make('settings.edit'); */
+        
+/*         $this->layout->content = $content; */
     }
 
     /**

@@ -1,7 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('master')
 
-<head>
+@section('head')
 <!--     #{$meta_content_type} -->
 
     <title><!-- #{$page_title} --></title>
@@ -15,9 +14,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
 
-	<?php /* echo asset('css/settings.css'); */ ?>
+    <link rel="stylesheet" href="<?php echo asset('assets/css/settings.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/admin.css'); ?>">
 
     <meta name="author" content="">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="#{$rss_link}">
@@ -30,10 +31,9 @@
     #{$head_tag}
     #{$plugin_head}
 -->
-                            
-</head>
+@stop
 
-<body data-spy="scroll" data-target=".bs-docs-sidebar">
+@section('body')
 
 <!--
 #{$body_first}
@@ -45,8 +45,8 @@
 <div class="container" id="contents">
 <div class="content-wrapper editor-wrapper" role="main">
 <!-- 	#{$body} -->
-<?php //echo $html ?>
-<?php echo $content?>
+<!-- @yield('content') -->
+{{ $content }}
 </div>
 </div>
 
@@ -63,12 +63,17 @@
 </div>
 </footer>
 
+
+
 <!--
 #{$admin_nav}
 #{$body_last}
 -->
+<script src="//code.jquery.com/jquery.js"></script>
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="{{ asset('assets/js/jquery.exnote.js') }}"></script>
+<script src="{{ asset('assets/js/admin.js') }}"></script>
 
 <!-- Script
 ================================================== -->
@@ -81,6 +86,4 @@
 #{$plugin_script}
 -->
 <!-- <script type="text/javascript" src="#{$style_path}skin.js"></script> -->
-
-</body>
-</html>
+@stop
