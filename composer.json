@@ -1,14 +1,17 @@
 {
 	"name": "haik",
 	"description": "The haik Project.",
-	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
 		"way/generators": "dev-master",
-		"michelf/php-markdown": "1.4.0"
+		"michelf/php-markdown": "1.4.0",
+		"mockery/mockery": "dev-master"
 	},
 	"autoload": {
+		"psr-0": {
+    		"Toiee" : "app/lib"
+		},
 		"classmap": [
 			"app/commands",
 			"app/controllers",

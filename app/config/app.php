@@ -9,6 +9,9 @@ return array(
     */
     'haik' => array(
         'defaultPage' => 'FrontPage',
+        'plugin' => array(
+            'folder' => 'public/addons/plugins',
+        ),
     ),
 
 	/*
@@ -116,6 +119,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
+        'Toiee\haik\Providers\PluginServiceProvider',
 	),
 
 	/*
@@ -181,6 +185,7 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+		'Plugin'          => 'Toiee\haik\Providers\PluginFacade',
 
 	),
 
