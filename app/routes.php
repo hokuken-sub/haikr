@@ -35,3 +35,7 @@ Route::get('/haik-admin/destroy/{pagename}', 'PageController@destroy');
 // で {pagename} を表示する
 
 Route::get('/{pagename}', 'PageController@show');
+
+
+Route::get('haik-admin/site/settings', 'SiteController@settings');
+Route::post('haik-admin/site/settings', 'SiteController@store');
