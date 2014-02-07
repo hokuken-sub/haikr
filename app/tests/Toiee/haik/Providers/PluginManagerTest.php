@@ -3,15 +3,25 @@ use Toiee\haik\Providers\PluginManager;
 
 class PluginManagerTest extends TestCase {
     
-    public function testImATeapot()
-    {
-        $obj = new PluginManager;
-        $this->assertEquals($obj->imATeapot(), "I'm a teapot.");
-    }
-    
     public function testFacade()
     {
-        $this->assertEquals(Plugin::imATeapot(), "I'm a teapot.");
+        App::bind('PluginRepositoryInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock->shouldReceive('exists')
+                 ->once()
+                 ->andReturn(true);
+            $mock->shouldReceive('load')
+                 ->once()
+                 ->andReturn(App::make('PluginInterface'));
+            return $mock;
+        });
+        App::bind('PluginInterface', function()
+        {
+            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            return $mock;
+        });
+
+        $this->assertInstanceOf('Toiee\haik\Entities\PluginInterface', Plugin::get('deco'));
     }
     
     /**

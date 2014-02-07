@@ -5,11 +5,6 @@ use App;
 
 class PluginManager {
     
-    public function imATeapot()
-    {
-        return "I'm a teapot.";
-    }
-    
     /**
      * get a Plugin object
      * @params string $id plugin name
