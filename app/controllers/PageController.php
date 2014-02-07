@@ -23,6 +23,7 @@ class PageController extends \BaseController {
     {
         //
         
+        $pagename = '';
         if (Request::isMethod('post'))
         {
             $pagename = Input::get('pagename');
@@ -33,13 +34,11 @@ class PageController extends \BaseController {
 
         }
         
-        $html  = '';
-        $html .= '<form action="/haik-admin/create/" method="post">';
-        $html .= '<input type="text" name="pagename" value="" />';
-        $html .= '<button>Submit</button>';
-        $html .= '</form>';
-
-        $this->layout->content = $html;
+        $this->layout = View::make('settings.layouts.editor')->with(array(
+           'pagename' => $pagename,
+           'view' => 'settings.create',
+           'nav' => 'settings.includes.nav',
+        ));
     }
 
     /**
@@ -116,8 +115,16 @@ class PageController extends \BaseController {
         $html .= " ";
         $html .= '<a href="/haik-admin/create/">追加</a>';
 
-        $this->layout = View::make('settings.layouts.editor');
-        $this->layout->content = $html;
+        // デザインを指定
+        View::addLocation(public_path('addons/themes/kawaz'));
+        View::addNamespace('kawaz', public_path('addons/themes/kawaz'));
+        
+        $this->layout = View::make('kawaz::top')->with(array(
+          'page_title' => 'タイトル',
+          'content' => $html,
+        ));
+
+/*         $this->layout->content = $html; */
     }
 
     /**
@@ -150,23 +157,13 @@ class PageController extends \BaseController {
 */
         }
         
-        $html  = '';
-        $html .= '<form action="/haik-admin/edit/" method="post">';
-        $html .= '<input type="text" name="title" value="'.$title.'">';
-        $html .= '<br>';
-        $html .= '<input type="hidden" name="pagename" value="'.$pagename.'" />';
-        $html .= '<textarea name="contents" rows="5" cols="50">' . $md . '</textarea>';
-        $html .= '<button>Submit</button>';
-        $html .= '</form>';
-        
-        
-        $this->layout = View::make('settings.layouts.editor');
-/*         $this->layout = View::make('settings.edit'); */
-        $this->layout->content = View::make('settings.edit')->with('title', $title)->with('md', $md)->with('pagename', $pagename);
-
-/*         $this->layout->nest = View::make('settings.edit'); */
-        
-/*         $this->layout->content = $content; */
+        $this->layout = View::make('settings.layouts.editor')->with(array(
+           'title'    => $title,
+           'md'       => $md,
+           'pagename' => $pagename,
+           'view' => 'settings.edit',
+           'nav' => 'settings.includes.nav_edit',
+        ));
     }
 
     /**

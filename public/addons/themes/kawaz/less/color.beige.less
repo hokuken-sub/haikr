@@ -1,0 +1,76 @@
+
+@theme:        #a59564;
+@themeBackground: lighten(@theme, 30%);
+@themeBorder:     lighten(@theme, 25%);
+@themeText:       darken(@theme, 5%);
+
+@linkColor:       @gray;
+@linkColorHover:  @theme;
+
+
+@baseColor:    @theme; //brown
+@endColor:     lighten(@baseColor, 30%);
+@baseOpacity:  .3;
+
+@import "color.less";
+@import "skin.less";
+
+.btn-theme {
+	background-color: lighten(@theme, 15%);
+	border-color: lighten(@theme, 10%);
+}
+
+.alert-theme {
+  background-color: @themeBackground;
+  border-color: @themeBorder;
+  color: @themeText;
+}
+
+.alert-theme a{
+	color: @themeText;
+}
+
+.alert-theme h1,
+.alert-theme h1 a,
+.alert-theme h2,
+.alert-theme h2 a,
+.alert-theme h3,
+.alert-theme h3 a,
+.alert-theme h4,
+.alert-theme h4 a,
+.alert-theme .nav > li > a,
+.alert-theme .nav .nav > li > a {
+  color: @themeText;
+}
+
+.alert-theme h1 a:hover,
+.alert-theme h2 a:hover,
+.alert-theme h3 a:hover,
+.alert-theme h4 a:hover,
+.alert-theme .nav > li > a:hover,
+.alert-theme .nav .nav > li > a:hover {
+	color: darken(@themeText, 10%);
+	text-decoration: none;
+}
+
+#orgm_menu {
+	.nav > li.active > a,
+	.nav .nav > li.active > a {
+		color: @theme;
+		font-weight: bold;
+	}
+
+	.nav > li > a:hover {
+		background-color: transparent;
+	}
+
+	.alert-theme .nav > li > a,
+	.alert-theme .nav .nav > li > a {
+	  color: @themeText;
+	}
+
+	.alert-theme .nav > li > a:hover,
+	.alert-theme .nav .nav > li > a:hover {
+		color: darken(@themeText, 10%);
+	}
+}

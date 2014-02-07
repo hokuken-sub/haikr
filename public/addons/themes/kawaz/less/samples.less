@@ -1,0 +1,104 @@
+//
+// Mixins
+// --------
+
+#gradient {
+  .bicolor(@color1: #555, @color2: #fff) {
+    background-color: @color1;
+    background-image: -webkit-gradient(linear, right bottom, left top, from(@color1), color-stop(0.49, @color1), color-stop(0.5, @color2), to(@color2));
+    background-image: -moz-linear-gradient(135deg, @color1, @color1 49%, @color2 50%, @color2);
+    background-image: -o-linear-gradient(135deg, @color1, @color1 49%, @color2 50%, @color2);
+    background-image: linear-gradient(-45deg, @color1, @color1 49%, @color2 50%, @color2);
+  }
+  
+  .times(@color: rgba(0,0,0,.3)) {
+
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, right bottom, left top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, @color), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent)), -webkit-gradient(linear, left bottom, right top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, @color), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent));
+    background-image: -moz-linear-gradient(225deg, transparent, transparent 49%, @color 50%, transparent 51%, transparent), -moz-linear-gradient(135deg, transparent, transparent 49%, @color 50%, transparent 51%, transparent);
+    background-image: -o-linear-gradient(225deg, transparent, transparent 49%, @color 50%, transparent 51%, transparent), -o-linear-gradient(135deg, transparent, transparent 49%, rgba(0,0,0,.3) 50%, transparent 51%, transparent);
+    background-image: linear-gradient(45deg, transparent, transparent 49%, @color 50%, transparent 51%, transparent), linear-gradient(-45deg, transparent, transparent 49%, @color 50%, transparent 51%, transparent);
+
+  }
+}
+
+//
+// Colors
+// ---------
+
+@beige:         #a59564;
+@black:         #000;
+@gray:          #666;
+@hemp:          #ddd;
+@navy:          #0e3675;
+@sakura:        #f6bfbc;
+
+
+//
+// Textures
+// ---------
+@hemp-dark:          url("../img/hemp-cloth-01.jpg");
+@hemp-light:         url("../img/hemp-cloth-05.jpg");
+@square:             url("../img/square_bg.png");
+@wood:               url("../img/wood_pattern_rotate.png");
+@rainbow:            url("../img/rainbow_bg.jpg");
+
+
+.sample-style-name-kawaz {
+	
+	[class*=sample-style-color] {
+		background-color: #fff;
+		color: rgba(0,0,0,0);
+	}
+	.sample-style-color {
+		#gradient > .times();
+	}
+	
+	.sample-style-color-beige {
+		background-color: @beige;
+	}
+
+	.sample-style-color-hemp {
+		background-color: @hemp;
+	}
+	
+	.sample-style-color-black {
+		background-color: @black;
+	}
+
+	.sample-style-color-gray {
+		background-color: @gray;
+	}
+	.sample-style-color-navy {
+		background-color: @navy;
+	}
+	.sample-style-color-sakura {
+		background-color: @sakura;
+	}
+
+
+	[class*=sample-style-texture] {
+		background-image: transparent;
+		color: rgba(0,0,0,0);
+	}
+	.sample-style-texture {
+		#gradient > .times();
+	}
+	.sample-style-texture-hemp-dark {
+		background-image: @hemp-dark;
+	}
+	.sample-style-texture-hemp-light {
+		background-image: @hemp-light;
+	}
+	.sample-style-texture-square {
+		background-color: #fafafa;
+		background-image: @square;
+	}
+	.sample-style-texture-wood {
+		background-image: @wood;
+	}
+	.sample-style-texture-rainbow {
+		background-image: @rainbow;
+		background-size: cover;
+	}
+}

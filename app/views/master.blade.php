@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    @section('head')
-    @show
+    @yield('head')
   </head>
-  <body>
-    @section('body')
-    @show
+  <body data-spy="scroll">
+    @yield('body')
   </body>
 </html>

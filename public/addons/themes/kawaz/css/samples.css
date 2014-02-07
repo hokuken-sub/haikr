@@ -1,0 +1,57 @@
+.sample-style-name-kawaz [class*=sample-style-color] {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0);
+}
+.sample-style-name-kawaz .sample-style-color {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, right bottom, left top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, rgba(0, 0, 0, 0.3)), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent)), -webkit-gradient(linear, left bottom, right top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, rgba(0, 0, 0, 0.3)), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent));
+  background-image: -moz-linear-gradient(225deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), -moz-linear-gradient(135deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+  background-image: -o-linear-gradient(225deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), -o-linear-gradient(135deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+  background-image: linear-gradient(45deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), linear-gradient(-45deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+}
+.sample-style-name-kawaz .sample-style-color-beige {
+  background-color: #a59564;
+}
+.sample-style-name-kawaz .sample-style-color-hemp {
+  background-color: #dddddd;
+}
+.sample-style-name-kawaz .sample-style-color-black {
+  background-color: #000000;
+}
+.sample-style-name-kawaz .sample-style-color-gray {
+  background-color: #666666;
+}
+.sample-style-name-kawaz .sample-style-color-navy {
+  background-color: #0e3675;
+}
+.sample-style-name-kawaz .sample-style-color-sakura {
+  background-color: #f6bfbc;
+}
+.sample-style-name-kawaz [class*=sample-style-texture] {
+  background-image: transparent;
+  color: rgba(0, 0, 0, 0);
+}
+.sample-style-name-kawaz .sample-style-texture {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, right bottom, left top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, rgba(0, 0, 0, 0.3)), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent)), -webkit-gradient(linear, left bottom, right top, from(transparent), color-stop(0.46, transparent), color-stop(0.51, rgba(0, 0, 0, 0.3)), color-stop(0.51, transparent), color-stop(1, transparent), to(transparent));
+  background-image: -moz-linear-gradient(225deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), -moz-linear-gradient(135deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+  background-image: -o-linear-gradient(225deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), -o-linear-gradient(135deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+  background-image: linear-gradient(45deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent), linear-gradient(-45deg, transparent, transparent 49%, rgba(0, 0, 0, 0.3) 50%, transparent 51%, transparent);
+}
+.sample-style-name-kawaz .sample-style-texture-hemp-dark {
+  background-image: url("../img/hemp-cloth-01.jpg");
+}
+.sample-style-name-kawaz .sample-style-texture-hemp-light {
+  background-image: url("../img/hemp-cloth-05.jpg");
+}
+.sample-style-name-kawaz .sample-style-texture-square {
+  background-color: #fafafa;
+  background-image: url("../img/square_bg.png");
+}
+.sample-style-name-kawaz .sample-style-texture-wood {
+  background-image: url("../img/wood_pattern_rotate.png");
+}
+.sample-style-name-kawaz .sample-style-texture-rainbow {
+  background-image: url("../img/rainbow_bg.jpg");
+  background-size: cover;
+}
