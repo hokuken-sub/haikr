@@ -2,7 +2,7 @@
 
 class PagesTableSeeder extends Seeder {
 
-public function run()
+    public function run()
     {
         DB::table('pages')->truncate();
 
