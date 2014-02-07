@@ -1,0 +1,30 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+#orgm_eyecatch .eyecatch {
+  background-color: #000;
+}
+#orgm_eyecatch .eyecatch:after {
+  background: url("../img/rainbow_bg.jpg") repeat center center;
+  background-size: cover;
+  opacity: 1;
+}
+#orgm_eyecatch .eyecatch .carousel-caption {
+  z-index: 100;
+}

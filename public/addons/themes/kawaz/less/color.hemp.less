@@ -1,0 +1,26 @@
+
+@theme:        #999;
+@themeBackground: lighten(@theme, 30%);
+@themeBorder:     lighten(@theme, 25%);
+@themeText:       darken(@theme, 5%);
+
+@linkColor:       @themeText;
+@linkColorHover:  lighten(@linkColor, 10%);
+
+@baseColor:    @theme; //hemp
+@endColor:     lighten(@baseColor, 70%);
+@baseOpacity:  .9;
+
+@import "skin.less";
+@import "color.less";
+
+#orgm_menu {
+	.nav > li.active > a,
+	.nav .nav > li.active > a {
+		font-weight: bold;
+	}
+
+	.nav > li > a:hover {
+		background-color: transparent;
+	}
+}
