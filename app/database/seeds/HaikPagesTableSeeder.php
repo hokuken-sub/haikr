@@ -1,10 +1,10 @@
 <?php
 
-class PagesTableSeeder extends Seeder {
+class HaikPagesTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('pages')->truncate();
+        DB::table('haik_pages')->truncate();
 
         Page::create(array(
                 'haik_site_id' => 1,
