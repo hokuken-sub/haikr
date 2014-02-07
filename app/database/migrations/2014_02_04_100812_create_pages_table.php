@@ -10,30 +10,31 @@ class CreatePagesTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		//
-
-        Schema::create('pages', function($table)
-        {
-             $table->increments('id')->unsigned();
-             $table->integer('haik_site_id')->unsigned();
-             $table->string('pagename');
-             $table->string('title')->nullable();
-             $table->text('contents');
-             $table->timestamps();
-        });
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-		Schema::drop('pages');
-	}
+    public function up()
+    {
+    	//
+    
+          Schema::create('haik_pages', function($table)
+          {
+               $table->increments('id')->unsigned();
+               $table->integer('haik_site_id')->unsigned();
+               $table->string('pagename');
+               $table->string('title')->nullable();
+               $table->text('contents');
+               $table->timestamps();
+          });
+    
+    }
+    
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+    	//
+    	  Schema::drop('haik_pages');
+    }
 
 }

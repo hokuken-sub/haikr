@@ -118,8 +118,9 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider',
-        'Toiee\haik\Providers\PluginServiceProvider',
+    'Way\Generators\GeneratorsServiceProvider',
+    'Toiee\haik\Providers\PluginServiceProvider',
+    'Toiee\haik\Providers\HaikServiceProvider',
 	),
 
 	/*
@@ -186,6 +187,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Plugin'          => 'Toiee\haik\Providers\PluginFacade',
+		'Haik'            => 'Toiee\haik\Providers\HaikFacade',
 
 	),
 
