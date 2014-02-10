@@ -91,12 +91,12 @@ class PageController extends \BaseController {
             $pagename = Config::get('app.haik.defaultPage');
         }
 
-        $page = Page::where('pagename', '=', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         
         if ($page)
         {
             $title = $page->title;
-            $md = $page->contents;
+            $md = $page->body;
         }
         else
         {
