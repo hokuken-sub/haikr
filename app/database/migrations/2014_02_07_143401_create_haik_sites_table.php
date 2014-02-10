@@ -17,7 +17,6 @@ class CreateHaikSitesTable extends Migration {
         Schema::create('haik_sites', function($table)
         {
              $table->increments('id')->unsigned();
-             $table->integer('haik_user_id')->unsigned();
              $table->string('domain')->default('*');
              $table->string('directory')->nullable();
              $table->string('title')->default('');
