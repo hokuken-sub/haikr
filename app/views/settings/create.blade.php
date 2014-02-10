@@ -7,7 +7,7 @@
         <label>新規ページ名</label>
         <div class="row">
           <div class="col-sm-6">
-            {{ Form::text('pagename', '' ,array('placeholder'=>'ページ名', 'class'=>'form-control')) }}
+            {{ Form::text('name', '' ,array('placeholder'=>'ページ名', 'class'=>'form-control')) }}
           </div>
         </div>
       </div>

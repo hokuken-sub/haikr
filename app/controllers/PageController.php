@@ -31,7 +31,7 @@ class PageController extends \BaseController {
         }
 
         $this->layout = View::make('settings.layouts.editor')->with(array(
-           'pagename' => $pagename,
+           'name' => $pagename,
            'view' => 'settings.create',
            'nav' => 'settings.includes.nav',
         ));
@@ -47,7 +47,7 @@ class PageController extends \BaseController {
         //
         if (Request::isMethod('post'))
         {
-            $pagename = Input::get('pagename');
+            $pagename = Input::get('name');
             $page = Page::where('name', $pagename)->first();
             
             if ( ! $page)
@@ -56,7 +56,7 @@ class PageController extends \BaseController {
                 $page->name = $pagename;
                 $page->haik_site_id = 1;
             }
-            $page->body = Input::get('contents');
+            $page->body = Input::get('body');
             $page->title = Input::get('title');
             
             
@@ -154,7 +154,7 @@ class PageController extends \BaseController {
         $this->layout = View::make('settings.layouts.editor')->with(array(
            'title'    => $title,
            'md'       => $md,
-           'pagename' => $pagename,
+           'name' => $pagename,
            'view' => 'settings.edit',
            'nav' => 'settings.includes.nav_edit',
         ));
