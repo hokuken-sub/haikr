@@ -62,11 +62,11 @@ class SiteManager {
         
         if ($all)
         {
-            $page = \Page::lists('title', 'pagename');
+            $page = \Page::lists('title', 'name');
         }
         else
         {
-            $page = \Page::where('title', '!=', '')->lists('title', 'pagename');
+            $page = \Page::where('title', '!=', '')->lists('title', 'name');
         }
     
        return $page;
