@@ -88,9 +88,7 @@ class PageController extends \BaseController {
     {
         if ($pagename === '')
         {
-            // ! TODO: /app/config/app.php 内の設定が読めないんだが...
-            //var_dump(Config::get('haik.defaultPage'));
-            $pagename = Config::get('haik.defaultPage', 'FrontPage');
+            $pagename = Config::get('app.haik.defaultPage');
         }
 
         $page = Page::where('pagename', '=', $pagename)->first();
