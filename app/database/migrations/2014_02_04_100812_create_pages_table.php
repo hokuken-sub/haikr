@@ -18,9 +18,16 @@ class CreatePagesTable extends Migration {
           {
                $table->increments('id')->unsigned();
                $table->integer('haik_site_id')->unsigned();
-               $table->string('pagename');
+               $table->string('name');
                $table->string('title')->nullable();
-               $table->text('contents');
+               $table->text('body');
+               $table->text('description')->nullable();
+               $table->text('head')->nullable();
+               $table->text('script')->nullable();
+               $table->string('layout')->nullable();
+               $table->string('listing')->default('list');
+               $table->string('public')->default('public');
+               $table->integer('body_version')->unsigined()->default(0);
                $table->timestamps();
           });
     

@@ -8,17 +8,17 @@ class HaikPagesTableSeeder extends Seeder {
 
         Page::create(array(
                 'haik_site_id' => 1,
-                'pagename' => 'FrontPage',
+                'name' => 'FrontPage',
                 'title' => '',
-                'contents' => '# Test Test',
+                'body' => '# Test Test',
                 // :
         ));
         
         Page::create(array(
                 'haik_site_id' => 1,
-                'pagename' => 'Contact',
+                'name' => 'Contact',
                 'title' => 'お問い合わせ',
-                'contents' => '# Test Test',
+                'body' => '# Test Test',
                 // :
         ));
         
