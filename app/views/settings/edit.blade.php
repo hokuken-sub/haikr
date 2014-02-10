@@ -2,7 +2,7 @@
   <div class="edit_form col-sm-offset-1 col-sm-10 col-xs-12">
     {{ Form::open(array('url' => 'haik-admin/edit', 'id' => 'edit_form_main', 'class'=>'form')) }}
 
-      {{ Form::hidden('pagename', e($pagename)) }}
+      {{ Form::hidden('name', e($name)) }}
 
       <div class="form-group">
         {{ Form::text('title', e($title), array('placeholder'=>'ページタイトル', 'class'=>'form-control', 'tabindex'=>1)) }}
