@@ -21,19 +21,15 @@ class PageController extends \BaseController {
      */
     public function create()
     {
-        //
-        
         $pagename = '';
         if (Request::isMethod('post'))
         {
-            $pagename = Input::get('pagename');
-
+            $pagename = Input::get('name');
 
             // editに飛ばす
             return Redirect::to('haik-admin/edit/'.$pagename);
-
         }
-        
+
         $this->layout = View::make('settings.layouts.editor')->with(array(
            'pagename' => $pagename,
            'view' => 'settings.create',
@@ -52,15 +48,15 @@ class PageController extends \BaseController {
         if (Request::isMethod('post'))
         {
             $pagename = Input::get('pagename');
-            $page = Page::where('pagename', $pagename)->first();
+            $page = Page::where('name', $pagename)->first();
             
             if ( ! $page)
             {
                 $page = new Page;
-                $page->pagename = $pagename;
+                $page->name = $pagename;
                 $page->haik_site_id = 1;
             }
-            $page->contents = Input::get('contents');
+            $page->body = Input::get('contents');
             $page->title = Input::get('title');
             
             
@@ -136,7 +132,7 @@ class PageController extends \BaseController {
         // TODO: $id からページのソースをひっぱってきて
         // textarea に入れる
         
-        $page = Page::where('pagename', '=', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         
         $md = '';
         $title = $pagename;
@@ -144,7 +140,7 @@ class PageController extends \BaseController {
         if ($page)
         {
             $title = $page->title;
-            $md = $page->contents;
+            $md = $page->body;
         }
         else
         {
@@ -183,7 +179,7 @@ class PageController extends \BaseController {
      */
     public function destroy($pagename)
     {
-        $page = Page::where('pagename', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         $page->delete();
         
         return Redirect::to('FrontPage');
