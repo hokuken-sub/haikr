@@ -21,21 +21,17 @@ class PageController extends \BaseController {
      */
     public function create()
     {
-        //
-        
         $pagename = '';
         if (Request::isMethod('post'))
         {
-            $pagename = Input::get('pagename');
-
+            $pagename = Input::get('name');
 
             // editに飛ばす
             return Redirect::to('haik-admin/edit/'.$pagename);
-
         }
-        
+
         $this->layout = View::make('settings.layouts.editor')->with(array(
-           'pagename' => $pagename,
+           'name' => $pagename,
            'view' => 'settings.create',
            'nav' => 'settings.includes.nav',
         ));
@@ -51,16 +47,16 @@ class PageController extends \BaseController {
         //
         if (Request::isMethod('post'))
         {
-            $pagename = Input::get('pagename');
-            $page = Page::where('pagename', $pagename)->first();
+            $pagename = Input::get('name');
+            $page = Page::where('name', $pagename)->first();
             
             if ( ! $page)
             {
                 $page = new Page;
-                $page->pagename = $pagename;
+                $page->name = $pagename;
                 $page->haik_site_id = 1;
             }
-            $page->contents = Input::get('contents');
+            $page->body = Input::get('body');
             $page->title = Input::get('title');
             
             
@@ -88,17 +84,15 @@ class PageController extends \BaseController {
     {
         if ($pagename === '')
         {
-            // ! TODO: /app/config/app.php 内の設定が読めないんだが...
-            //var_dump(Config::get('haik.defaultPage'));
-            $pagename = Config::get('haik.defaultPage', 'FrontPage');
+            $pagename = Config::get('app.haik.defaultPage');
         }
 
-        $page = Page::where('pagename', '=', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         
         if ($page)
         {
             $title = $page->title;
-            $md = $page->contents;
+            $md = $page->body;
         }
         else
         {
@@ -138,7 +132,7 @@ class PageController extends \BaseController {
         // TODO: $id からページのソースをひっぱってきて
         // textarea に入れる
         
-        $page = Page::where('pagename', '=', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         
         $md = '';
         $title = $pagename;
@@ -146,7 +140,7 @@ class PageController extends \BaseController {
         if ($page)
         {
             $title = $page->title;
-            $md = $page->contents;
+            $md = $page->body;
         }
         else
         {
@@ -160,7 +154,7 @@ class PageController extends \BaseController {
         $this->layout = View::make('settings.layouts.editor')->with(array(
            'title'    => $title,
            'md'       => $md,
-           'pagename' => $pagename,
+           'name' => $pagename,
            'view' => 'settings.edit',
            'nav' => 'settings.includes.nav_edit',
         ));
@@ -185,7 +179,7 @@ class PageController extends \BaseController {
      */
     public function destroy($pagename)
     {
-        $page = Page::where('pagename', $pagename)->first();
+        $page = Page::where('name', $pagename)->first();
         $page->delete();
         
         return Redirect::to('FrontPage');
