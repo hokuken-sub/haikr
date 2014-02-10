@@ -56,7 +56,7 @@ class PageController extends \BaseController {
                 $page->name = $pagename;
                 $page->haik_site_id = 1;
             }
-            $page->body = Input::get('contents');
+            $page->body = Input::get('body');
             $page->title = Input::get('title');
             
             

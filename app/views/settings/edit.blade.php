@@ -9,7 +9,7 @@
       </div>
 
       <div class="form-group">
-        {{ Form::textarea('contents', e($md), array('placeholder'=>'クリックして文章を入力してください。', 'class'=>'', 'tabindex'=>2, 'data-exnote'=>'onready')) }}
+        {{ Form::textarea('body', e($md), array('placeholder'=>'クリックして文章を入力してください。', 'class'=>'', 'tabindex'=>2, 'data-exnote'=>'onready')) }}
       </div>
 
       <div class="form-group edit_buttons">
