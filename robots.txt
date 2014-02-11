@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://toiee.github.io/haikr/sitemap.xml 
