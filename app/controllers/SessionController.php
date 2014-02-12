@@ -1,19 +1,51 @@
 <?php
 
+use Illuminate\Support\MessageBag;
+
 class SessionController extends BaseController {
 
     public function login()
     {
+        $errors = new MessageBag();
+
+        if ($old = Input::old('errors'))
+        {
+            $errors = $old;
+        }
+
+        $data = array('errors' => $errors);
+
         if (Input::server('REQUEST_METHOD') == 'POST')
         {
-            // TODO: Validataion
-            if (Auth::attempt(Input::only('email', 'password')))
+            $validator = Validator::make(Input::all(), array(
+                'email'    => 'required',
+                'password' => 'required'
+            ));
+
+            if ($validator->passes())
             {
-                return Redirect::intended('/');
+                $credentials = array(
+                    'email'    => Input::get('email'),
+                    'password' => Input::get('password')
+                );
+
+                if (Auth::attempt($credentials))
+                {
+                    return Redirect::intended('/');
+                }
             }
-            return Redirect::back()->withInput();
+            else
+            {
+                $data['errors'] = new MessageBag(array(
+                    'password' => array('ユーザー/パスワードが無効です。')
+                ));
+
+                $data['email'] = Input::get('email');
+
+                return Redirect::route('/login')->withInput($data);
+            }
         }
-        return View::make('settings.login');
+        return View::make('settings.login', $data);
     }
     
     public function logout()
