@@ -35,27 +35,8 @@ Route::get('/haik-admin/destroy/{pagename}', 'PageController@destroy');
 Route::get('haik-admin/site/settings', 'SiteController@settings');
 Route::post('haik-admin/site/settings', 'SiteController@store');
 
-// TODO: Add SessionController
-Route::get('/login', function()
-{
-    return View::make('settings.login');
-});
-
-Route::post('/login', function()
-{
-    // TODO: Validation
-    if(Auth::attempt(Input::only('email', 'password')))
-    {
-        return Redirect::intended('/');
-    }
-    return Redirect::back()->withInput();
-});
-
-Route::get('/logout', function()
-{
-    Auth::logout();
-    return Redirect::to('/');
-});
+Route::any('/login', array('uses' => 'SessionController@login', 'as' => '/login'));
+Route::get('/logout', array('uses' => 'SessionController@logout', 'as' => '/logout'));
 
 // URL: /{pagename}
 // で {pagename} を表示する
