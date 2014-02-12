@@ -1,5 +1,5 @@
 <?php
-use Toiee\haik\Entities/HaikMarkdown.php
+use Toiee\haik\Entities/HaikMarkdown;
 
 class HaikMarkdownTest extends TestCase {
     
