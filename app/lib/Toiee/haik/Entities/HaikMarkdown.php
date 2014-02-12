@@ -7,6 +7,8 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
     
     public function __construct()
     {
+        $this->empty_element_suffix = '>';
+
 		$this->span_gamut += array(
 			"doInlinePlugins"    => 2,
 			"doHaikLinks"        => 1,
