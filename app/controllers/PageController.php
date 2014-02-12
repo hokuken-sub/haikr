@@ -101,8 +101,8 @@ class PageController extends \BaseController {
         }
         
         $html = '<h1>' . e($title) . '</h1>';
-//        $html .= MarkdownExtra::defaultTransform($md);
-        $html .= \Toiee\haik\Entities\HaikMarkdown::defaultTransform($md);
+        $html .= MarkdownExtra::defaultTransform($md);
+/*         $html .= \Toiee\haik\Entities\HaikMarkdown::defaultTransform($md); */
         $html .= '<hr>';
         $html .= '<a href="/haik-admin/edit/'.$pagename.'">編集</a>';
         $html .= " ";
