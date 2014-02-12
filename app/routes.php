@@ -13,6 +13,7 @@
 
 Route::get('/', 'PageController@show');
 
+Route::when('haik-admin*', 'auth');
 
 // URL: /haik-admin/create/
 Route::get('/haik-admin/create', 'PageController@create');
@@ -31,11 +32,32 @@ Route::post('/haik-admin/edit', 'PageController@store');
 Route::get('/haik-admin/destroy/{pagename}', 'PageController@destroy');
 
 
+Route::get('haik-admin/site/settings', 'SiteController@settings');
+Route::post('haik-admin/site/settings', 'SiteController@store');
+
+// TODO: Add SessionController
+Route::get('/login', function()
+{
+    return View::make('settings.login');
+});
+
+Route::post('/login', function()
+{
+    // TODO: Validation
+    if(Auth::attempt(Input::only('email', 'password')))
+    {
+        return Redirect::intended('/');
+    }
+    return Redirect::back()->withInput();
+});
+
+Route::get('/logout', function()
+{
+    Auth::logout();
+    return Redirect::to('/');
+});
+
 // URL: /{pagename}
 // で {pagename} を表示する
 
 Route::get('/{pagename}', 'PageController@show');
-
-
-Route::get('haik-admin/site/settings', 'SiteController@settings');
-Route::post('haik-admin/site/settings', 'SiteController@store');
