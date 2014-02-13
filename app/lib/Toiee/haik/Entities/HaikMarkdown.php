@@ -17,7 +17,7 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
 		
 		parent::__construct();
     }
-    
+
     protected function doHaikLinks($text)
     {
 	#
@@ -140,7 +140,7 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
 
         $result .= ">$link_text</a>";
 
-        return $this->hashPart($result);        
+        return $this->hashPart($result);
     }
 
     protected function doInlinePlugins($text)
@@ -169,8 +169,8 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
     protected function _doInlinePlugins_callback($matches)
     {
         $plugin_id = $matches[2];
-        $params = isset($matches[3]) ? $matches[3] : array();
-        $body = isset($matches[4]) ? $matches[4] : '';
+        $params = isset($matches[3]) && $matches[3] ? str_getcsv($matches[3], ',', '"', '\\') : array();
+        $body = isset($matches[4]) ? $this->unhash($this->runSpanGamut($matches[4])) : '';
 
         $result = \Plugin::get($plugin_id)->inline($params, $body);
         return $this->hashPart($result);        
