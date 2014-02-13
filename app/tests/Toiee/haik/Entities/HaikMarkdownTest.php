@@ -52,6 +52,14 @@ class HaikMarkdownTest extends TestCase {
                 'markdown' => '[[Alias>#hash]]',
                 'assert'   => '<p><a href="#hash" title="Alias">Alias</a></p>',
             ),
+            'url' => array(
+                'markdown' => '[[http://www.google.com]]',
+                'assert' => '<p><a href="http://www.google.com">http://www.google.com</a></p>',
+            ),
+            '>url' => array(
+                'markdown' => '[[Google>http://www.google.com]]',
+                'assert' => '<p><a href="http://www.google.com" title="Google">Google</a></p>',
+            ),
         );
         
         foreach ($tests as $key => $data)
