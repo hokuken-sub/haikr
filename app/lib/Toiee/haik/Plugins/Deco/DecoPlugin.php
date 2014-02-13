@@ -1,4 +1,6 @@
 <?php
+namespace Toiee\haik\Plugins\Deco;
+
 use Toiee\haik\Entities\Plugin;
 
 class DecoPlugin extends Plugin {
@@ -13,6 +15,5 @@ class DecoPlugin extends Plugin {
     function inline($params = array(), $body = '')
     {
         return '';
-    }
-    
+    }    
 }
