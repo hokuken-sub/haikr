@@ -9,9 +9,6 @@ return array(
     */
     'haik' => array(
         'defaultPage' => 'FrontPage',
-        'plugin' => array(
-            'folder' => 'public/addons/plugins',
-        ),
     ),
 
 	/*
