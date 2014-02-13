@@ -17,7 +17,7 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
 		
 		parent::__construct();
     }
-    
+
     protected function doHaikLinks($text)
     {
 	#
@@ -140,91 +140,40 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
 
         $result .= ">$link_text</a>";
 
-        return $this->hashPart($result);        
+        return $this->hashPart($result);
     }
 
     protected function doInlinePlugins($text)
     {
-        // first, plugin name only
-        // ex) &br;
-        
-		$text = preg_replace_callback('{
-			(					# wrap whole match in $1
-			  &([a-zA-Z0-9_-]+); # plugin name = $2
-			)
-			}xs',
-			array(&$this, '_doInlinePlugins_pluginname_only_callback'), $text);
-
-        // second, plugin name and params
-        // ex) &icon(user);
-		$text = preg_replace_callback('{
-			(					# wrap whole match in $1
-			  &([a-zA-Z0-9_-]+) # plugin name = $2
-			  \(([^\)]*?)\)      # params = $3
-			  ;
-			)
-			}xs',
-			array(&$this, '_doInlinePlugins_pluginname_and_params_callback'), $text);
-
-        // third, plugin name and body
-        // ex) &hoge{body};
-		$text = preg_replace_callback('{
-			(					# wrap whole match in $1
-			  &([a-zA-Z0-9_-]+) # plugin name = $2
-			  \{([^\}]*)\}      # body = $3
-			  ;
-			)
-			}xs',
-			array(&$this, '_doInlinePlugins_pluginname_and_body_callback'), $text);
-
-        // finally, plugin name and params and body
-        // ex) &deco(b,w){body};
-		$text = preg_replace_callback('{
-			(					# wrap whole match in $1
-			  &([a-zA-Z0-9_-]+) # plugin name = $2
-			  \(([^\)]*?)\)      # params = $3
-			  \{([^\}]*)\}      # body = $4
-			  ;
-			)
-			}xs',
-			array(&$this, '_doInlinePlugins_pluginname_and_params_and_body_callback'), $text);
+        $text = preg_replace_callback('/
+                &
+                (      # (1) plain
+                  (\w+) # (2) plugin name
+                  (?:
+                    \(
+                      ((?:(?!\)[;{]).)*) # (3) parameter
+                    \)
+                  )?
+                )
+                (?:
+                  \{
+                    ((?:(?R)|(?!};).)*) # (4) body
+                  \}
+                )?
+                ;
+			/xs', array(&$this, '_doInlinePlugins_callback'), $text);
 
         return $text;
     }
-    
-    protected function _doInlinePlugins_pluginname_only_callback($matches)
-    {
-        $plugin_id = $matches[2];
-        return $this->_doInlinePlugin($plugin_id);
-    }
-    
-    protected function _doInlinePlugins_pluginname_and_params_callback($matches)
-    {
-        $plugin_id = $matches[2];
-        $params = $matches[3];
-        return $this->_doInlinePlugin($plugin_id, $params);
-    }
 
-    protected function _doInlinePlugins_pluginname_and_body_callback($matches)
+    protected function _doInlinePlugins_callback($matches)
     {
         $plugin_id = $matches[2];
-        $body = $matches[3];
-        return $this->_doInlinePlugin($plugin_id, array(), $body);
-    }
-    
-    protected function _doInlinePlugins_pluginname_and_params_and_body_callback($matches)
-    {
-        $plugin_id = $matches[2];
-        $params = $matches[3];
-        $body = $matches[4];
-        return $this->_doInlinePlugin($plugin_id, $params, $body);
-    }
-    
-    protected function _doInlinePlugin($plugin_id, $params = array(), $body = '')
-    {
+        $params = isset($matches[3]) && $matches[3] ? str_getcsv($matches[3], ',', '"', '\\') : array();
+        $body = isset($matches[4]) ? $this->unhash($this->runSpanGamut($matches[4])) : '';
+
         $result = \Plugin::get($plugin_id)->inline($params, $body);
         return $this->hashPart($result);        
-        
     }
     
 }

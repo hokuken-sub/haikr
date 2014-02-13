@@ -5,28 +5,10 @@ use Toiee\haik\Repositories\PluginRepository;
 
 class PluginRepositoryTest extends TestCase {
 
-    /**
-     * @expectedException RuntimeException
-     */
-    public function testSetThrowsRuntimeExceptionIfPluginDirNotExists()
-    {
-        // set non-existent path for test
-        Config::set('app.haik.plugin.folder', 'kgakejkjafakdkfjklehkjjkl');
-        $repository = new PluginRepository;
-    }
-
-    public function testSetValidPathToPluginDir()
-    {
-        $repository = new PluginRepository;
-        
-        $this->assertEquals('public/addons/plugins/', $repository->getPath());
-    }
-    
     public function testExistsReturnsFalseWhenPluginNotExists()
     {
         $repository = new PluginRepository;
         $result = $repository->exists('abc');
-        
         $this->assertFalse($result);
     }
 
@@ -34,7 +16,6 @@ class PluginRepositoryTest extends TestCase {
     {
         $repository = new PluginRepository;
         $result = $repository->exists('deco');
-        
         $this->assertTrue($result);
     }
     
@@ -42,7 +23,7 @@ class PluginRepositoryTest extends TestCase {
     {
         $repository = new PluginRepository;
         $obj = $repository->load('deco');
-        $this->assertInstanceOf('DecoPlugin', $obj);
+        $this->assertInstanceOf('Toiee\haik\Plugins\Deco\DecoPlugin', $obj);
     }
     
     public function testLoadMultiply()
