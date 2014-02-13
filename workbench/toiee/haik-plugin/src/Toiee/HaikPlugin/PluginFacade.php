@@ -1,6 +1,6 @@
 <?php
 
-namespace Toiee\haik\Providers;
+namespace Toiee\HaikPlugin;
 
 use Illuminate\Support\Facades\Facade;
 
