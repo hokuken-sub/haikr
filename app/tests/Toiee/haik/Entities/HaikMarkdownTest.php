@@ -73,58 +73,42 @@ class HaikMarkdownTest extends TestCase {
     {
         App::bind('PluginRepositoryInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $plugin = App::make('PluginInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
             $mock->shouldReceive('load')
                  ->once()
-                 ->andReturn(App::make('PluginInterface'));
+                 ->andReturn($plugin);
             return $mock;
         });
 
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
-/*
             $mock->shouldReceive('inline')
-                 ->first()
-                 ->andReturn('<span>plugin name only</span>');
-*/
-            $mock->shouldReceive('inline')
-                 ->once()
-                 ->andReturn('<span>plugin name and params</span>');
-/*
-                 ->times(3)
-                 ->andReturn('<span>plugin name and body</span>')
-                 ->times(4)
-                 ->andReturn('<span>plugin name and params and body</span>');
-*/
+                 ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
     
         $parser = new HaikMarkdown;
         
-        //TODO: use Mockery
         $tests = array(
-/*
             'plugin_name_only' => array(
                 'markdown' => '&plugin;',
-                'assert'   => '<p><span>plugin name only</span></p>',
+                'assert'   => '<p><span>inline plugin</span></p>',
             ),
-*/
             'plugin_name_and_params' => array(
                 'markdown' => '&plugin(param1,param2);',
-                'assert'   => '<p><span>plugin name and params</span></p>',
+                'assert'   => '<p><span>inline plugin</span></p>',
             ),
-/*
             'plugin_name_and_body' => array(
                 'markdown' => '&plugin{body};',
-                'assert'   => '<p><span>plugin name and body</span></p>',
+                'assert'   => '<p><span>inline plugin</span></p>',
             ),
             'plugin_name_and_params_and_body' => array(
-                'markdown' => '&plugin(param1,param2){body}',
-                'assert'   => '<p><span>plugin name and params and body</span></p>',
+                'markdown' => '&plugin(param1,param2){body};',
+                'assert'   => '<p><span>inline plugin</span></p>',
             ),
-*/
         );
         
         foreach ($tests as $key => $data)
