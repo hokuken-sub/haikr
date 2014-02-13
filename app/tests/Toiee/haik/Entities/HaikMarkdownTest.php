@@ -71,26 +71,65 @@ class HaikMarkdownTest extends TestCase {
     
     public function testDoInlinePlugins()
     {
+        App::bind('PluginRepositoryInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock->shouldReceive('exists')
+                 ->once()
+                 ->andReturn(true);
+            $mock->shouldReceive('load')
+                 ->once()
+                 ->andReturn(App::make('PluginInterface'));
+            return $mock;
+        });
+
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+/*
+            $mock->shouldReceive('inline')
+                 ->first()
+                 ->andReturn('<span>plugin name only</span>');
+*/
+            $mock->shouldReceive('inline')
+                 ->once()
+                 ->andReturn('<span>plugin name and params</span>');
+/*
+                 ->times(3)
+                 ->andReturn('<span>plugin name and body</span>')
+                 ->times(4)
+                 ->andReturn('<span>plugin name and params and body</span>');
+*/
+            return $mock;
+        });
+    
         $parser = new HaikMarkdown;
         
+        //TODO: use Mockery
         $tests = array(
-            'normal_strong' => array(
-                'markdown' => '&deco(b){DECO};',
-                'assert'   => '<span class="haik-deco"><strong>DECO</strong></span>',
+/*
+            'plugin_name_only' => array(
+                'markdown' => '&plugin;',
+                'assert'   => '<p><span>plugin name only</span></p>',
             ),
-            'normal_strong_red' => array(
-                'markdown' => '&deco(b,red){DECO};',
-                'assert'   => '<span class="haik-deco" style="color:red"><strong>DECO</strong></span>',
+*/
+            'plugin_name_and_params' => array(
+                'markdown' => '&plugin(param1,param2);',
+                'assert'   => '<p><span>plugin name and params</span></p>',
             ),
-            'with_markdown_strong' => array(
-                'markdown' => '&deco(b){*Italic*};',
-                'assert'   => '<span class="haik-deco"><strong><em>Italic</em></strong></span>',
+/*
+            'plugin_name_and_body' => array(
+                'markdown' => '&plugin{body};',
+                'assert'   => '<p><span>plugin name and body</span></p>',
             ),
+            'plugin_name_and_params_and_body' => array(
+                'markdown' => '&plugin(param1,param2){body}',
+                'assert'   => '<p><span>plugin name and params and body</span></p>',
+            ),
+*/
         );
         
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], $parser->transform($data['markdown']));
+            $this->assertEquals($data['assert'], trim($parser->transform($data['markdown'])));
         }
     }
 }
