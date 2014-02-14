@@ -5,6 +5,12 @@ class PluginManagerTest extends TestCase {
     
     public function testFacade()
     {
+        App::bind('PluginInterface', function()
+        {
+            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            return $mock;
+        });
+
         App::bind('PluginRepositoryInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
@@ -13,11 +19,6 @@ class PluginManagerTest extends TestCase {
             $mock->shouldReceive('load')
                  ->once()
                  ->andReturn(App::make('PluginInterface'));
-            return $mock;
-        });
-        App::bind('PluginInterface', function()
-        {
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             return $mock;
         });
 
@@ -44,6 +45,12 @@ class PluginManagerTest extends TestCase {
     
     public function testGet()
     {
+        App::bind('PluginInterface', function()
+        {
+            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            return $mock;
+        });
+
         App::bind('PluginRepositoryInterface', function()
         {
             $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
@@ -53,12 +60,6 @@ class PluginManagerTest extends TestCase {
             $mock->shouldReceive('load')
                  ->once()
                  ->andReturn(App::make('PluginInterface'));
-            return $mock;
-        });
-        
-        App::bind('PluginInterface', function()
-        {
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             return $mock;
         });
         

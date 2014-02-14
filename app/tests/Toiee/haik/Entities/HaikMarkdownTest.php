@@ -7,13 +7,12 @@ class HaikMarkdownTest extends TestCase {
     {
         App::bind('PluginRepositoryInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
-            $plugin = App::make('PluginInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
             $mock->shouldReceive('load')
                  ->once()
-                 ->andReturn($plugin);
+                 ->andReturn(App::make('PluginInterface'));
             return $mock;
         });
     }
@@ -86,14 +85,14 @@ class HaikMarkdownTest extends TestCase {
     
     public function testCallInlinePluginsWithAllVariations()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
     
         $parser = new HaikMarkdown;
         
@@ -124,8 +123,6 @@ class HaikMarkdownTest extends TestCase {
 
     public function testCallInlinePluginWithParams()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
@@ -133,6 +130,8 @@ class HaikMarkdownTest extends TestCase {
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
 
         $parser = new HaikMarkdown;
 
@@ -144,8 +143,6 @@ class HaikMarkdownTest extends TestCase {
 
     public function testCallInlinePluginWithBody()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
@@ -153,6 +150,8 @@ class HaikMarkdownTest extends TestCase {
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
 
         $parser = new HaikMarkdown;
 
@@ -164,8 +163,6 @@ class HaikMarkdownTest extends TestCase {
 
     public function testCallInlinePluginWithParamsAndBody()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
@@ -173,6 +170,8 @@ class HaikMarkdownTest extends TestCase {
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
 
         $parser = new HaikMarkdown;
 
@@ -184,8 +183,6 @@ class HaikMarkdownTest extends TestCase {
 
     public function testCallInlinePluginWithParamsContainsDoubleQuotes()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
@@ -193,6 +190,8 @@ class HaikMarkdownTest extends TestCase {
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
 
         $parser = new HaikMarkdown;
 
@@ -204,8 +203,6 @@ class HaikMarkdownTest extends TestCase {
 
     public function testCallInlinePluginWithParamsContainsEscapedDoubleQuotes()
     {
-        $this->setupPluginRepositoryInterface();
-
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
             $mock->shouldReceive('inline')
@@ -213,6 +210,8 @@ class HaikMarkdownTest extends TestCase {
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
         });
+
+        $this->setupPluginRepositoryInterface();
 
         $parser = new HaikMarkdown;
 
