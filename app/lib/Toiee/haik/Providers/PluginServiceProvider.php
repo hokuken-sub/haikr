@@ -14,5 +14,9 @@ class PluginServiceProvider extends ServiceProvider {
         {
             return new PluginManager();
         });
+        $this->app->bind('PluginRepositoryInterface', function()
+        {
+            return new \Toiee\haik\Repositories\PluginRepository;
+        });
     }
 }
