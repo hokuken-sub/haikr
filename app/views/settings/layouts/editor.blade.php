@@ -17,7 +17,6 @@
 
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
 
-    {{ HTML::style(asset('assets/stylesheets/settings.css')) }}
     {{ HTML::style(asset('assets/stylesheets/haik-admin.css')) }}
 
 

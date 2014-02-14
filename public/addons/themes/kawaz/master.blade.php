@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
-    {{ HTML::style(asset('addons/themes/kawaz/css/doc.css')) }}
+    {{ HTML::style(asset('addons/themes/kawaz/css/docs.css')) }}
 
     <meta name="author" content="">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<!-- #{$rss_link} -->">
