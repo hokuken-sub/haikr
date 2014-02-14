@@ -232,7 +232,7 @@ class HaikMarkdownTest extends TestCase {
         $parser = new HaikMarkdown;
 
         $markdown = '&deco(b){&deco(red){body};};';
-        $assert   = '<p><span class="haik-plugin-deco" style=""><strong><span class="haik-plugin-deco" style="color:red;">body</span></strong></span></p>';
+        $assert   = '<p><span class="haik-plugin-deco"><strong><span class="haik-plugin-deco" style="color:red;">body</span></strong></span></p>';
 
         $this->assertEquals($assert, trim($parser->transform($markdown)));
     }

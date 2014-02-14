@@ -58,7 +58,8 @@ class DecoPlugin extends Plugin {
         if (isset($color[1]) && $color[1]!='') $style[] = "background-color:{$color[1]};";
         if (isset($underline)) $style[] = $underline;
         if (isset($italic)) $style[] = $italic;
-        $style = ' style="'.join('', $style).'"';
+        $style = join('', $style);
+        if ($style != '') $style = ' style="'.$style.'"';
         
         if ($strong)
         {
