@@ -35,15 +35,15 @@ class DecoPluginTest extends TestCase {
         $tests = array(
             'none' => array(
                 'deco' => array(),
-                'assert' => '<span class="haik-plugin-deco" style="">test</span>',
+                'assert' => '<span class="haik-plugin-deco">test</span>',
             ),
             'b' => array(
                 'deco' => array('b'),
-                'assert' => '<span class="haik-plugin-deco" style=""><strong>test</strong></span>',
+                'assert' => '<span class="haik-plugin-deco"><strong>test</strong></span>',
             ),
             'bold' => array(
                 'deco' => array('b'),
-                'assert' => '<span class="haik-plugin-deco" style=""><strong>test</strong></span>',
+                'assert' => '<span class="haik-plugin-deco"><strong>test</strong></span>',
             ),
             'u' => array(
                 'deco' => array('u'),
