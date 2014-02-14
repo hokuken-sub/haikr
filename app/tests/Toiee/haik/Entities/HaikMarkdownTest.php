@@ -227,26 +227,13 @@ class HaikMarkdownTest extends TestCase {
     }
 
     // !TODO: 具体クラス（例：DecoPlugin）でテストする
-/*
     public function testCallNestedInlinePlugins()
     {
-        $this->setupPluginRepositoryInterface();
-
-        App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
-            $mock->shouldReceive('inline')
-                 ->once()
-                 ->with(array(), '<span>inline plugin</span>')
-                 ->andReturn('<span>inline plugin</span>');
-            return $mock;
-        });
-
         $parser = new HaikMarkdown;
 
-        $markdown = '&plugin{&plugin{body};};';
-        $assert   = '<p><span>inline plugin</span></p>';
+        $markdown = '&deco(b){&deco(red){body};};';
+        $assert   = '<p><span class="haik-plugin-deco" style=""><strong><span class="haik-plugin-deco" style="color:red;">body</span></strong></span></p>';
 
         $this->assertEquals($assert, trim($parser->transform($markdown)));
     }
-*/
 }
