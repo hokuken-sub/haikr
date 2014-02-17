@@ -236,4 +236,25 @@ class HaikMarkdownTest extends TestCase {
 
         $this->assertEquals($assert, trim($parser->transform($markdown)));
     }
+    
+    public function testCallInlinePluginTwitceInAParagraph()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('inline')
+                 ->with(array('param'), '')
+                 ->andReturn('<span>inline plugin</span>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = '&plugin(param);foo&plugin(param);';
+        $assert   = '<p><span>inline plugin</span>foo<span>inline plugin</span></p>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+
+    }
 }
