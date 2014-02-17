@@ -1,5 +1,5 @@
 <?php
-namespace Toiee\haik\Repositories;
+namespace Toiee\haik\Plugins;
 
 use Config;
 

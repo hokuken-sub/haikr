@@ -1,7 +1,7 @@
 <?php
 namespace Toiee\haik\Plugins\Deco;
 
-use Toiee\haik\Entities\Plugin;
+use Toiee\haik\Plugins\Plugin;
 
 class DecoPlugin extends Plugin {
 

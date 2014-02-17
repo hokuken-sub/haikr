@@ -6,7 +6,7 @@ class HaikMarkdownTest extends TestCase {
     public function setupPluginRepositoryInterface()
     {
         App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
@@ -86,7 +86,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginsWithAllVariations()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->andReturn('<span>inline plugin</span>');
             return $mock;
@@ -124,7 +124,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginWithParams()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->with(array('param1','param2'), '')
                  ->andReturn('<span>inline plugin</span>');
@@ -144,7 +144,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginWithBody()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->with(array(), 'body')
                  ->andReturn('<span>inline plugin</span>');
@@ -164,7 +164,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginWithParamsAndBody()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->with(array('param1', 'param2'), 'body')
                  ->andReturn('<span>inline plugin</span>');
@@ -184,7 +184,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginWithParamsContainsDoubleQuotes()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->with(array('param,1', 'param2,'), '')
                  ->andReturn('<span>inline plugin</span>');
@@ -204,7 +204,7 @@ class HaikMarkdownTest extends TestCase {
     public function testCallInlinePluginWithParamsContainsEscapedDoubleQuotes()
     {
         App::bind('PluginInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             $mock->shouldReceive('inline')
                  ->with(array('param"1"', 'param2'), '')
                  ->andReturn('<span>inline plugin</span>');
