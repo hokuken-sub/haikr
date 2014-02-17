@@ -7,10 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="{{ asset('addons/themes/kawaz/css/doc.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/js/haik.css') }}">
+    {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
+    {{ HTML::style(asset('addons/themes/kawaz/css/docs.css')) }}
 
     <meta name="author" content="">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<!-- #{$rss_link} -->">
@@ -106,10 +104,9 @@
     #{$plugin_script}
     #{$user_script}
     -->
-    <script src="//code.jquery.com/jquery.js"></script>
-
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="{{ asset('assets/js/haik.js') }}"></script>
+    {{ HTML::script('//code.jquery.com/jquery.js') }}
+    {{ HTML::script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js') }}
+    {{ HTML::script(asset('assets/javascript/haik.js')) }}
 
   </body>
 

@@ -17,9 +17,7 @@
 
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
 
-    {{ HTML::style(asset('assets/js/haik.css')) }}
-    {{ HTML::style(asset('assets/css/settings.css')) }}
-    {{ HTML::style(asset('assets/css/admin.css')) }}
+    {{ HTML::style(asset('assets/stylesheets/haik-admin.css')) }}
 
 
     <meta name="author" content="">
@@ -79,9 +77,8 @@
 {{ HTML::script('//code.jquery.com/jquery.js') }}
 {{ HTML::script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js') }}
 
-{{ HTML::script(asset('assets/js/jquery.exnote.js')) }}
-{{ HTML::script(asset('assets/js/haik.js')) }}
-{{ HTML::script(asset('assets/js/admin.js')) }}
+{{ HTML::script(asset('assets/javascript/haik.js')) }}
+{{ HTML::script(asset('assets/javascript/haik-admin.js')) }}
 
 <!--
 #{$jquery_script}
