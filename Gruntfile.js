@@ -83,12 +83,9 @@ module.exports = function(grunt){
     }
   });
 
-　var taskName;
-  for (taskName in pkg.devDependencies) {
-    if (taskName.substring(0, 6) == 'grunt-') {
-      grunt.loadNpmTasks(taskName);
-    }
-  }
-  
+  //matchdepでpackage.jsonから"grunt-*"で始まる設定を読み込む
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('prod', ['less', 'concat', 'uglify']);
 };
