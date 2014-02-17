@@ -1,6 +1,6 @@
 <?php
 
-use Toiee\haik\Repositories\PluginRepository;
+use Toiee\haik\Plugins\PluginRepository;
 //use Config;
 
 class PluginRepositoryTest extends TestCase {

@@ -1,5 +1,5 @@
 <?php
-namespace Toiee\haik\Providers;
+namespace Toiee\haik\Plugins;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -9,7 +9,7 @@ class PluginServiceProvider extends ServiceProvider {
     {
         $this->app->bind('PluginRepositoryInterface', function()
         {
-            return new \Toiee\haik\Repositories\PluginRepository;
+            return new \Toiee\haik\Plugins\PluginRepository;
         });
     }
     

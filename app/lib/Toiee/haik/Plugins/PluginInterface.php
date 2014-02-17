@@ -1,5 +1,5 @@
 <?php
-namespace Toiee\haik\Entities;
+namespace Toiee\haik\Plugins;
 
 interface PluginInterface {
     

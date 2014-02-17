@@ -6,7 +6,7 @@ class DecoPluginTest extends TestCase {
     public function testInlineMethodExists()
     {
         App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
@@ -22,7 +22,7 @@ class DecoPluginTest extends TestCase {
     public function testParameter()
     {
         App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);

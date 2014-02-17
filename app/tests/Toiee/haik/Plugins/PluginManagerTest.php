@@ -1,5 +1,5 @@
 <?php
-use Toiee\haik\Providers\PluginManager;
+use Toiee\haik\Plugins\PluginManager;
 
 class PluginManagerTest extends TestCase {
     
@@ -7,12 +7,12 @@ class PluginManagerTest extends TestCase {
     {
         App::bind('PluginInterface', function()
         {
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             return $mock;
         });
 
         App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
@@ -22,7 +22,7 @@ class PluginManagerTest extends TestCase {
             return $mock;
         });
 
-        $this->assertInstanceOf('Toiee\haik\Entities\PluginInterface', Plugin::get('deco'));
+        $this->assertInstanceOf('Toiee\haik\Plugins\PluginInterface', Plugin::get('deco'));
     }
     
     /**
@@ -32,7 +32,7 @@ class PluginManagerTest extends TestCase {
     {
         // mock a repository
         App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(false);
@@ -47,13 +47,13 @@ class PluginManagerTest extends TestCase {
     {
         App::bind('PluginInterface', function()
         {
-            $mock = Mockery::mock('Toiee\haik\Entities\PluginInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
             return $mock;
         });
 
         App::bind('PluginRepositoryInterface', function()
         {
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('exists')
                  ->once()
                  ->andReturn(true);
@@ -64,14 +64,14 @@ class PluginManagerTest extends TestCase {
         });
         
         $plugin = Plugin::get('abc');
-        $this->assertInstanceOf('Toiee\haik\Entities\PluginInterface', $plugin);
+        $this->assertInstanceOf('Toiee\haik\Plugins\PluginInterface', $plugin);
     }
     
     public function testAllPluginsReturnsArray()
     {
         App::bind('PluginRepositoryInterface', function()
         {
-            $mock = Mockery::mock('Toiee\haik\Repositories\PluginRepositoryInterface');
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
             $mock->shouldReceive('getAll')
                  ->once()
                  ->andReturn(array());

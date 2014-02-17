@@ -1,5 +1,5 @@
 <?php
-namespace Toiee\haik\Providers;
+namespace Toiee\haik\Plugins;
 
 use App;
 
