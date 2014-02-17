@@ -1,18 +1,30 @@
 module.exports = function(grunt){
   var pkg = grunt.file.readJSON('package.json');
 
-  grunt.initConfig({
-    less: {
+  var lessConfig = {
       development: {
         options: {
           compress: true
         },
-        files: {
-            './public/assets/stylesheets/haik.css': './app/assets/stylesheets/haik.less',
-            './public/assets/stylesheets/haik-admin.css': './app/assets/stylesheets/haik-admin.less'
-        }
+        files: [
+          {
+            src: ['./app/assets/stylesheets/haik.less'],
+            dest: './public/assets/stylesheets/haik.css',
+          },
+          {
+            expand: true,
+            src: [
+              './app/assets/stylesheets/haik-admin.less',
+              './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/helper.less'
+            ],
+            dest: './public/assets/stylesheets/haik-admin.css',
+          }
+        ]
       }
-    },
+  };
+
+  grunt.initConfig({
+    less: lessConfig,
     concat: {
       options: {
         separator: ';'
@@ -54,14 +66,16 @@ module.exports = function(grunt){
       js_haik_admin: {
         files: [
           './app/assets/javascript/admin/*.js',
-          './app/lib/Toiee/haik/Plugins/**/helper/assets/javascript/*.js',
-          './app/assets/stylesheets/admin/*',
-          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/helper/assets/javascript/*.js'
         ],
         tasks: ['concat:js_haik_admin', 'uglify:haik_admin']
       },
       less: {
-        files: ['./app/assets/stylesheets/*.less'],
+        files: [
+          './app/assets/stylesheets/*.less',
+          './app/assets/stylesheets/admin/*',
+          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*'
+        ],
         tasks: ['less'],
         options: {
           liveoverload: true
