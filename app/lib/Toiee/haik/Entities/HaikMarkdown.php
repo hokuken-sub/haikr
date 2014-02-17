@@ -4,7 +4,7 @@ namespace Toiee\haik\Entities;
 use Michelf\_MarkdownExtra_TmpImpl;
 use Validator;
 
-class HaikMarkdown extends _MarkdownExtra_TmpImpl {
+class HaikMarkdown extends _MarkdownExtra_TmpImpl implements ParserInterface {
     
     public function __construct()
     {
@@ -20,6 +20,11 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
         );
 		
 		parent::__construct();
+    }
+    
+    public function parse($text)
+    {
+        return $this->transform($text);
     }
 
     protected function doHaikLinks($text)
