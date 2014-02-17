@@ -12,7 +12,6 @@ module.exports = function(grunt){
             dest: './public/assets/stylesheets/haik.css',
           },
           {
-            expand: true,
             src: [
               './app/assets/stylesheets/haik-admin.less',
               './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/helper.less'
