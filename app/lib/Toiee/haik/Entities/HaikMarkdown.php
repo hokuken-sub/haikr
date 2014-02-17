@@ -9,6 +9,10 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
     public function __construct()
     {
         $this->empty_element_suffix = '>';
+        
+        $this->document_gamut += array(
+            'doConvertPlugins'   => 10,
+        );
 
 		$this->span_gamut += array(
             "doInlinePlugins"    => 2,
@@ -174,6 +178,87 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl {
 
         $result = \Plugin::get($plugin_id)->inline($params, $body);
         return $this->hashPart($result);        
+    }
+    
+    protected function doConvertPlugins($text)
+    {
+        // single line
+		$text = preg_replace_callback('/
+				(?:\n|\A)
+				(?:
+				    \{\#
+				        (\w+)   # (1) plugin name
+				        (?:
+				            \(
+				            ([^\n]*) # (2) parameter
+				            \)
+				        )?
+				    \}
+				)
+				[ ]* (?= \n ) # Whitespace and newline following marker.
+			/xm',
+			array(&$this, '_doConvertPlugin_singleline_callback'), $text);
+       
+        // multi line
+		$text = preg_replace_callback('/
+				(?:\n|\A)
+				# (1) Opening marker
+				(
+					(?::{3,}) # 3 or more colons.
+				)
+				[ ]*
+				(?:
+				    \{\#
+				        (\w+)   # (2) plugin name
+				        (?:
+				            \(
+				            ((?:(?!\n).)*) # (3) parameter
+				            \)
+				        )?
+				    \}
+				)
+				[ :]* \n # Whitespace and newline following marker.
+				
+				# (4) Content
+				(
+					(?>
+						(?!\1 [ ]* \n)	# Not a closing marker.
+						.*\n+
+					)+
+				)
+				
+				# Closing marker.
+				\1 [ ]* (?= \n )
+			/xm',
+			array(&$this, '_doConvertPlugin_multiline_callback'), $text);
+
+		return $text;
+    }
+    
+    protected function _doConvertPlugin_singleline_callback($matches)
+    {
+        return $this->_doConvertPlugin(
+            $matches[1],
+            isset($matches[2]) ? $matches[2] : ''
+        );
+    }
+    
+    protected function _doConvertPlugin_multiline_callback($matches)
+    {
+        return $this->_doConvertPlugin(
+            $matches[2],
+            isset($matches[3]) ? $matches[3] : '',
+            isset($matches[4]) ? $matches[4] : ''
+        );
+    }
+    
+    protected function _doConvertPlugin($plugin_id, $params = '', $body = '')
+    {
+        $params = ($params !== '') ? str_getcsv($params, ',', '"', '\\') : array();
+        $body = ($body !== '') ? $this->unhash($this->runSpanGamut($body)) : '';
+
+        $result = \Plugin::get($plugin_id)->convert($params, $body);
+		return "\n\n".$this->hashBlock($result)."\n\n";
     }
     
 }

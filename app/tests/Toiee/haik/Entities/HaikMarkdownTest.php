@@ -83,6 +83,8 @@ class HaikMarkdownTest extends TestCase {
         
     }
     
+    // ! inline plugin
+    
     public function testCallInlinePluginsWithAllVariations()
     {
         App::bind('PluginInterface', function(){
@@ -226,7 +228,6 @@ class HaikMarkdownTest extends TestCase {
         $this->assertEquals($assert, trim($parser->transform($markdown)));
     }
 
-    // !TODO: 具体クラス（例：DecoPlugin）でテストする
     public function testCallNestedInlinePlugins()
     {
         $parser = new HaikMarkdown;
@@ -237,7 +238,7 @@ class HaikMarkdownTest extends TestCase {
         $this->assertEquals($assert, trim($parser->transform($markdown)));
     }
     
-    public function testCallInlinePluginTwitceInAParagraph()
+    public function testCallInlinePluginTwiceInAParagraph()
     {
         App::bind('PluginInterface', function(){
             $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
@@ -257,4 +258,174 @@ class HaikMarkdownTest extends TestCase {
         $this->assertEquals($assert, trim($parser->transform($markdown)));
 
     }
+    
+    // ! convert plugin
+    
+    public function testCallConvertPluginWithAllVariations()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->andReturn('<div>convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+    
+        $parser = new HaikMarkdown;
+        
+        $tests = array(
+            'plugin_name_only' => array(
+                'markdown' => '{#plugin}',
+                'assert'   => '<div>convert plugin</div>',
+            ),
+            'plugin_name_and_params' => array(
+                'markdown' => '{#plugin(param1,param2)}',
+                'assert'   => '<div>convert plugin</div>',
+            ),
+            'plugin_name_and_body' => array(
+                'markdown' => ":::{#plugin}\nbody\n:::",
+                'assert'   => '<div>convert plugin</div>',
+            ),
+            'plugin_name_and_params_and_body' => array(
+                'markdown' => ":::{#plugin(param1,param2)}\nbody\n:::",
+                'assert'   => '<div>convert plugin</div>',
+            ),
+        );
+        
+        foreach ($tests as $key => $data)
+        {
+            $this->assertEquals($data['assert'], trim($parser->transform($data['markdown'])));
+        }
+    }
+    
+    public function testCallConvertPluginWithParams()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array('param1','param2'), '')
+                 ->andReturn('<div>convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = '{#plugin(param1,param2)}';
+        $assert   = '<div>convert plugin</div>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));    }
+    
+    public function testCallConvertPluginWithBody()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array(), "body\n")
+                 ->andReturn('<div>convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = ":::{#plugin}\nbody\n:::";
+        $assert   = '<div>convert plugin</div>';
+        $this->assertEquals($assert, trim($parser->transform($markdown)));    }
+    
+    public function testCallConvertPluginWithParamsAndBody()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array('param1', 'param2'), "body\n")
+                 ->andReturn('<div>convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = ":::{#plugin(param1,param2)}\nbody\n:::";
+        $assert   = '<div>convert plugin</div>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+    }
+
+    public function testCallConvertPluginWithParamsContainsDoubleQuotes()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array('param,1', 'param2,'), '')
+                 ->andReturn('<div>Convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = '{#plugin("param,1","param2,")}';
+        $assert   = '<div>Convert plugin</div>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+    }
+
+    public function testCallConvertPluginWithParamsContainsEscapedDoubleQuotes()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array('param"1"', 'param2'), '')
+                 ->andReturn('<div>Convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = '{#plugin("param""1""","param2")}';
+        $assert   = '<div>Convert plugin</div>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+
+        $markdown = '{#plugin(param"1",param2)}';
+        $assert   = '<div>Convert plugin</div>';
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+    }
+    
+    public function testCallConvertPluginTwice()
+    {
+        App::bind('PluginInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginInterface');
+            $mock->shouldReceive('convert')
+                 ->with(array(), '')
+                 ->andReturn('<div>Convert plugin</div>');
+            return $mock;
+        });
+
+        $this->setupPluginRepositoryInterface();
+
+        $parser = new HaikMarkdown;
+
+        $markdown = "{#plugin}\n{#plugin}";
+        $assert   = "<div>Convert plugin</div>\n\n<div>Convert plugin</div>";
+
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+
+    }
+
+    // !TODO: 具体クラスでテストする
+    public function testCallNestedConvertPlugins()
+    {
+        
+    }
+    
 }
