@@ -60,14 +60,14 @@ module.exports = function(grunt){
           './app/assets/stylesheets/*',
           './app/lib/Toiee/haik/Plugins/**/public/stylesheets/*'
         ],
-        tasks: ['concat:js_haik', 'uglify:haik']
+        tasks: ['concat:js_haik']
       },
       js_haik_admin: {
         files: [
           './app/assets/javascript/admin/*.js',
           './app/lib/Toiee/haik/Plugins/**/helper/assets/javascript/*.js'
         ],
-        tasks: ['concat:js_haik_admin', 'uglify:haik_admin']
+        tasks: ['concat:js_haik_admin']
       },
       less: {
         files: [
