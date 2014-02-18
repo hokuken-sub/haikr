@@ -16,7 +16,7 @@ class PluginRepository implements PluginRepositoryInterface {
      */
     public function exists($id)
     {
-        $class_name = self::getClassName($id);
+        $class_name = PluginManager::getClassName($id);
         if (class_exists($class_name, true))
         {
             return true;
@@ -35,7 +35,7 @@ class PluginRepository implements PluginRepositoryInterface {
     {
         if ($this->exists($id))
         {
-            $class_name = self::getClassName($id);
+            $class_name = PluginManager::getClassName($id);
             return new $class_name;
         }
         
@@ -52,15 +52,5 @@ class PluginRepository implements PluginRepositoryInterface {
         return array();
     }
     
-    /**
-     * get class name by plugin id
-     * @params string $id plugin id
-     * @return string class name of plugin
-     */
-    public static function getClassName($id)
-    {
-        $class_name = studly_case($id);
-        return $class_name = 'Toiee\haik\Plugins\\'. $class_name.'\\' .$class_name . 'Plugin';
-    }
     
 }
