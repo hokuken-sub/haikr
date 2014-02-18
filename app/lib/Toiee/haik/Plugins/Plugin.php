@@ -14,7 +14,7 @@ abstract class Plugin implements PluginInterface {
     }
     
     /**
-     * inline call via HaikMarkdown &plugin-name(...){...};
+     * convert text to inline element
      * @params array $params
      * @params string $body when {...} was set
      * @return string converted HTML string
@@ -26,7 +26,7 @@ abstract class Plugin implements PluginInterface {
     }
     
     /**
-     * convert call via HaikMarkdown {#plugin-name} or ::: {#plugin-name}\n...\n:::
+     * convert text to block element
      * @params array $params
      * @params string $body when :::\n...\n::: was set
      * @return string converted HTML string
