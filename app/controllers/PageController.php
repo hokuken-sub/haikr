@@ -92,7 +92,7 @@ class PageController extends \BaseController {
         if ($page)
         {
             $title = $page->title;
-            $md = $page->body;
+            $text = $page->body;
         }
         else
         {
@@ -102,7 +102,7 @@ class PageController extends \BaseController {
         $this->page = $page;
         
         $html = '<h1>' . e($title) . '</h1>';
-        $html .= \Toiee\haik\Entities\HaikMarkdown::defaultTransform($md);
+        $html .= Parser::parse($text);
 
         $this->setView($html);
     }
