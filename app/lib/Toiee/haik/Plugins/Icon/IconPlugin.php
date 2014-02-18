@@ -14,6 +14,11 @@ class IconPlugin extends Plugin {
      */
     function inline($params = array(), $body = '')
     {
+        if (count($params) === 0)
+        {
+            // !TODO: paramsが無いとき、エラー処理する
+            return 'error';
+        }
         return '';
     }
 }
