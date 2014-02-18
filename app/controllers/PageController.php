@@ -99,9 +99,29 @@ class PageController extends \BaseController {
             //TODO: 404 error
             App::abort(404);
         }
+        $this->page = $page;
         
         $html = '<h1>' . e($title) . '</h1>';
         $html .= Parser::parse($text);
+
+        $this->setView($html);
+    }
+
+    public function pluginAct($pluginId = '')
+    {
+        try {
+            $html = Plugin::get($pluginId)->action();
+        }
+        catch (Exception $e) {
+            $html = $pluginId .' plugin not implemented';
+        }
+        $this->setView($html);
+    }
+
+    protected function setView($html = '')
+    {
+        $pagename = isset($this->page->name) ? $this->page->name : Config::get('app.haik.defaultPage');
+
         $html .= '<hr>';
         $html .= '<a href="/haik-admin/edit/'.$pagename.'">編集</a>';
         $html .= " ";

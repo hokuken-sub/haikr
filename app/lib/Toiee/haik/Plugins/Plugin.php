@@ -10,7 +10,7 @@ abstract class Plugin implements PluginInterface {
      */
     public function action()
     {
-        throw new RuntimeException('not implemented');
+        throw new \RuntimeException('not implemented');
     }
     
     /**
@@ -22,7 +22,7 @@ abstract class Plugin implements PluginInterface {
      */
     public function inline($params = array(), $body = '')
     {
-        throw new RuntimeException('not implemented');
+        throw new \RuntimeException('not implemented');
     }
     
     /**
@@ -34,7 +34,7 @@ abstract class Plugin implements PluginInterface {
      */
     public function convert($params = array(), $body = '')
     {
-        throw new RuntimeException('not implemented');
+        throw new \RuntimeException('not implemented');
     }
     
 }
