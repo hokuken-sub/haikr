@@ -38,6 +38,9 @@ Route::post('haik-admin/site/settings', 'SiteController@store');
 Route::any('/login', array('uses' => 'SessionController@login', 'as' => '/login'));
 Route::get('/logout', array('uses' => 'SessionController@logout', 'as' => '/logout'));
 
+Route::any('haik--{plugin}/', 'PageController@pluginAct')
+->where('plugin', '\w+');
+
 // URL: /{pagename}
 // で {pagename} を表示する
 
