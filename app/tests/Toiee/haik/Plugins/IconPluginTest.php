@@ -26,5 +26,6 @@ class IconPluginTest extends TestCase {
         {
             $this->assertEquals($data['assert'], with(new IconPlugin)->inline($data['icon']));
         }
+        $this->markTestIncomplete();
     }
 }
