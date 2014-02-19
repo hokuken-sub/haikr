@@ -20,6 +20,10 @@ class IconPluginTest extends TestCase {
                 'icon' => array('glyphicon', 'search'),
                 'assert' => '<i class="glyphicon glyphicon-search">',
             ),
+            'search_reverse' => array(
+                'icon' => array('search', 'glyphicon'),
+                'assert' => '<i class="glyphicon glyphicon-search">',
+            ),
         );
         
         foreach ($tests as $key => $data)
