@@ -5,41 +5,49 @@ use Toiee\haik\Link\Link;
 class LinkTest extends TestCase {
     
     public $link;
+    public $site;
     
     public function setUp()
     {
         parent::setUp();
         
+        App::bind('SiteManager', function(){
+            $mock = Mockery::mock('Toiee\haik\Providers\SiteManager');
+            $mock->shouldReceive('url')
+                ->andReturn(Config::get('app.url'));
+                
+            return $mock;
+        });
+        $this->site = App::make('SiteManager');
+             
         App::bind('LinkInterface',function(){
             return new Link;
         });
-
         $this->link = App::make('LinkInterface');
-                
     }
     
     public function testGetFrontPageURL()
     {
         $result = $this->link->url('FrontPage');
-        $this->assertEquals(Config::get('app.url'), $result);
+        $this->assertEquals($this->site->url(), $result);
     }
 
     public function testGetFrontPageURLWithHash()
     {
         $result = $this->link->url('FrontPage#test');
-        $this->assertEquals(Config::get('app.url').'/#test', $result);
+        $this->assertEquals($this->site->url().'/#test', $result);
     }
 
     public function testGetPageURL()
     {
         $result = $this->link->url('Contact');
-        $this->assertEquals(Config::get('app.url').'/Contact', $result);
+        $this->assertEquals($this->site->url().'/Contact', $result);
     }
 
     public function testGetPageURLWithHash()
     {
         $result = $this->link->url('Contact#test');
-        $this->assertEquals(Config::get('app.url').'/Contact#test', $result);
+        $this->assertEquals($this->site->url().'/Contact#test', $result);
     }
 
     public function testGetHash()
@@ -53,5 +61,13 @@ class LinkTest extends TestCase {
         $result = $this->link->url('http://google.com');
         $this->assertEquals('http://google.com', $result);
     }
+
+    public function testGetBarbaroi()
+    {
+        $result = $this->link->url('Barbaroi');
+        $this->assertEquals('Barbaroi', $result);
+    }
+    
+    
     
 }

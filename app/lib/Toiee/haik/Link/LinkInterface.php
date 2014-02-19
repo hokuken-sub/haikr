@@ -5,9 +5,9 @@ interface LinkInterface {
 
     /**
      * return url
-     * @params string $url page name or url or ...
+     * @params string $link page name or url or ...
      * @return string converted url
      */
-    public function url($url);
+    public function url($link);
 
 }
