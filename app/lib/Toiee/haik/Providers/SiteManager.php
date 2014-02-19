@@ -84,12 +84,29 @@ class SiteManager {
     }
 
     /**
-     * get site url
-     * @return string site url
+     * get page url
+     * @params string page name
+     * @return string page url
      */
-    public function url()
+    public function url($pagename = '')
     {
-       
+        $url = Config::get('app.url');
+        if ($pagename !== Config::get('app.haik.defaultPage'))
+        {
+            $url = $url . '/' . rawurlencode($pagename);
+        }
+        
+        return $url;
+    }
+
+    /**
+     * check page exists
+     * @params string page name
+     * @return boolean
+     */
+    public function pageExists($pagename)
+    {
+        return !! \Page::where('name', $pagename)->first();
     }
 
     /**
