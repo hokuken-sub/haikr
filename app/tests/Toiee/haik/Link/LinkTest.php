@@ -1,6 +1,7 @@
 <?php
 use Toiee\haik\Link\LinkInterface;
 use Toiee\haik\Link\Link;
+use Toiee\haik\Link\PageResolver;
 
 class LinkTest extends TestCase {
     
@@ -19,9 +20,13 @@ class LinkTest extends TestCase {
             return $mock;
         });
         $this->site = App::make('SiteManager');
-             
+        
         App::bind('LinkInterface',function(){
-            return new Link;
+            return new Link(
+                array(
+                    new PageResolver
+                )
+            );
         });
         $this->link = App::make('LinkInterface');
     }
