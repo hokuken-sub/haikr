@@ -1,5 +1,5 @@
 <?php
-use Toiee\haik\Link;
+use Toiee\haik\Link\LinkInterface;
 use Toiee\haik\Link\Link;
 
 class LinkTest extends TestCase {
