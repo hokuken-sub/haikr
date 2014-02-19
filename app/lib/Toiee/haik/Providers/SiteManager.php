@@ -90,8 +90,8 @@ class SiteManager {
      */
     public function url($pagename = '')
     {
-        $url = Config::get('app.url');
-        if ($pagename !== Config::get('app.haik.defaultPage'))
+        $url = \Config::get('app.url');
+        if ($pagename !== \Config::get('app.haik.defaultPage'))
         {
             $url = $url . '/' . rawurlencode($pagename);
         }

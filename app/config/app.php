@@ -119,6 +119,7 @@ return array(
         'Toiee\haik\Plugins\PluginServiceProvider',
         'Toiee\haik\Providers\HaikServiceProvider',
         'Toiee\haik\Providers\ParsingServiceProvider',
+        'Toiee\haik\Link\LinkServiceProvider',
 	),
 
 	/*

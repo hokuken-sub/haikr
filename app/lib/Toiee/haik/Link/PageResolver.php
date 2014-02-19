@@ -12,9 +12,9 @@ class PageResolver implements LinkResolverInterface
      */
     public function url($link)
     {
-        if (Haik::pageExists($link))
+        if (\Haik::pageExists($link))
         {
-            return Haik::url($link);
+            return \Haik::url($link);
         }
         
         throw new LinkNotResolveException;    
