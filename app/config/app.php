@@ -8,7 +8,8 @@ return array(
      |-------------
     */
     'haik' => array(
-        'defaultPage' => 'FrontPage',
+        'defaultPage'       => 'FrontPage',
+        'pageNameMaxLength' => 255, //byte
     ),
 
 	/*
