@@ -56,7 +56,7 @@ interface SiteManagerInterface {
     public function pageExists($pagename);
 
     /**
-     * get site path (i.e. haik-admin/site/xxx)
+     * get site path (i.e. haik--admin/site/xxx)
      * @return string site path
      */
     public function path();

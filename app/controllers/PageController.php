@@ -27,7 +27,7 @@ class PageController extends \BaseController {
             $pagename = Input::get('name');
 
             // editに飛ばす
-            return Redirect::to('haik-admin/edit/'.$pagename);
+            return Redirect::to('haik--admin/edit/'.$pagename);
         }
 
         $this->layout = View::make('settings.layouts.editor')->with(array(
@@ -123,11 +123,11 @@ class PageController extends \BaseController {
         $pagename = isset($this->page->name) ? $this->page->name : Config::get('app.haik.defaultPage');
 
         $html .= '<hr>';
-        $html .= '<a href="/haik-admin/edit/'.$pagename.'">編集</a>';
+        $html .= '<a href="/haik--admin/edit/'.$pagename.'">編集</a>';
         $html .= " ";
-        $html .= '<a href="/haik-admin/destroy/' .$pagename.'">削除</a>';
+        $html .= '<a href="/haik--admin/destroy/' .$pagename.'">削除</a>';
         $html .= " ";
-        $html .= '<a href="/haik-admin/create/">追加</a>';
+        $html .= '<a href="/haik--admin/create/">追加</a>';
 
         // デザインを指定
         View::addLocation(public_path('addons/themes/kawaz'));
