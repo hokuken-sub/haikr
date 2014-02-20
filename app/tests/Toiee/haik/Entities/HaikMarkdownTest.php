@@ -74,6 +74,10 @@ class HaikMarkdownTest extends TestCase {
                 'markdown' => '[[Google>http://www.google.com]]',
                 'assert' => '<p><a href="http://www.google.com" title="Google">Google</a></p>',
             ),
+            'alias_contain_markdown' => array(
+                'markdown' => '[[Touch **me**!>Contact]]',
+                'assert'   => '<p><a href="http://localhost:8000/Contact.html" title="Touch me!">Touch <strong>me</strong>!</a></p>',
+            ),
         );
         
         foreach ($tests as $key => $data)
