@@ -24,19 +24,7 @@ class ButtonPlugin extends Plugin {
         }
 
 		$href = array_shift($params);
-		
-		$validation = Validator::make(array('url_check'=> $href), array('url_check'=>'url'));
-		
-		$page = Page::where('name', $href)->first();
-        if ($page)
-        {
-			$href = url(rawurlencode($href));
-        }
-        else if ($validation->fails())
-        {
-            // URL以外で存在しないページ名の場合
-			$href = url('haik-admin/edit/'.rawurlencode($href));
-        }
+		$href = \Link::url($href);
 
 		$type = ' btn-default';
 		$size = '';
