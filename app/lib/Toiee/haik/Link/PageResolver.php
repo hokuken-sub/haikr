@@ -10,7 +10,7 @@ class PageResolver implements LinkResolverInterface
      * @return string converted url
      * @throws LinkNotResolveException when page is not found
      */
-    public function url($link)
+    public function resolve($link)
     {
         if (\Haik::pageExists($link))
         {

@@ -17,7 +17,7 @@ class Link implements LinkInterface {
         try {
             foreach ($this->resolvers as $resolver)
             {
-                return $resolver->url($link);
+                return $resolver->resolve($link);
             }
         }
         catch(\Exception $e)

@@ -9,6 +9,6 @@ interface LinkResolverInterface {
      * @return string converted url
      * @throws LinkNotResolveException when link is not found
      */
-    public function url($link);
+    public function resolve($link);
 
 }
