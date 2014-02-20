@@ -19,6 +19,10 @@ class AlertPluginTest extends TestCase {
                 'alert' => array('success'),
                 'assert' => '<div class="alert alert-success">'.\Parser::parse('test').'</div>',
             ),
+            'not_required' => array(
+                'alert' => array('hogehoge'),
+                'assert' => '<div class="alert alert-warning">'.\Parser::parse('test').'</div>',
+            ),
         );
 
         foreach ($tests as $key => $data)
