@@ -29,13 +29,13 @@ class LinkTest extends TestCase {
     public function testGetPageURL()
     {
         $result = \Link::url('Contact');
-        $this->assertEquals(Haik::url().'Contact', $result);
+        $this->assertEquals(Haik::url().'Contact.html', $result);
     }
 
     public function testGetPageURLWithHash()
     {
         $result = \Link::url('Contact#test');
-        $this->assertEquals(Haik::url().'Contact#test', $result);
+        $this->assertEquals(Haik::url().'Contact.html#test', $result);
     }
 
     public function testGetHash()
