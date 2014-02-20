@@ -44,4 +44,4 @@ Route::any('haik--{plugin}/', 'PageController@pluginAct')
 // URL: /{pagename}
 // で {pagename} を表示する
 
-Route::get('/{pagename}', 'PageController@show');
+Route::get('{pagename}.html', 'PageController@show');
