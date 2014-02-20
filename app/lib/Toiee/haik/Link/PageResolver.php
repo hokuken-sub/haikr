@@ -25,6 +25,14 @@ class PageResolver implements LinkResolverInterface
         {
             return $this->site_manager->pageUrl($link);
         }
+        else
+        {
+            // return edit link if $link is validate page name
+            if ($this->site_manager->validatePageName($link))
+            {
+                return $this->site_manager->pageUrl($link);
+            }
+        }
 
         throw new LinkNotResolveException;    
     }

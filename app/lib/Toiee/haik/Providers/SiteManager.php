@@ -116,6 +116,30 @@ class SiteManager implements SiteManagerInterface{
     }
 
     /**
+     * check page name
+     * @params string page name
+     * @return boolean
+     */
+    public function validatePageName($pagename)
+    {
+        // check is url
+        $validation = \Validator::make(array('url_check'=> $pagename), array('url_check'=>'url'));
+        if ( ! $validation->fails())
+        {
+            return false;
+        }
+        
+        // check page name length
+        if (strlen($pagename) > \Config::get('app.haik.pageNameMaxLength'))
+        {
+            return false;
+        }
+        
+        $pattern = '/\A(?!\s):?[^\r\n\t\f\[\]\/<>#&":]+:?(?<!\s)\z/';
+        return !! (preg_match($pattern, $pagename));
+    }
+
+    /**
      * get site path (i.e. haik--admin/site/xxx)
      * @return string site path
      */
