@@ -12,7 +12,7 @@ class IconPluginTest extends TestCase {
     {
         $tests = array(
             // !TODO: paramsが無いとき、エラー処理
-            'none' => array(
+            'no_params' => array(
                 'icon' => array(),
                 'assert' => 'error',
             ),
