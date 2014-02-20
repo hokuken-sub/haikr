@@ -3,7 +3,7 @@ namespace Toiee\haik\Providers;
 
 use App;
 
-class SiteManager {
+class SiteManager implements SiteManagerInterface{
     
     protected $id;
     
@@ -84,12 +84,35 @@ class SiteManager {
     }
 
     /**
-     * get site url
-     * @return string site url
+     * get site base url with trailing slash
+     * @return string site url with trailing slash
      */
     public function url()
     {
-       
+        return str_finish(\Config::get('app.url'), '/');
+    }
+
+    /**
+     * get page url
+     * @params string page name
+     * @return string page url
+     */
+    public function pageUrl($pagename)
+    {
+        $url = $this->url();
+        $pagename = ($pagename === \Config::get('app.haik.defaultPage')) ? '' : rawurlencode($pagename);
+
+        return str_finish($url, '/') . $pagename;
+    }
+
+    /**
+     * check page exists
+     * @params string page name
+     * @return boolean
+     */
+    public function pageExists($pagename)
+    {
+        return !! \Page::where('name', $pagename)->first();
     }
 
     /**

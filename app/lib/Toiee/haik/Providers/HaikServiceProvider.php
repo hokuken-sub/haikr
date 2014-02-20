@@ -5,6 +5,14 @@ use Illuminate\Support\ServiceProvider;
 
 class HaikServiceProvider extends ServiceProvider {
     
+    public function boot()
+    {
+        \App::singleton('SiteManagerInterface', function()
+        {
+            return new SiteManager;
+        });
+    }
+
     /**
      * register ServiceProvider
      */
@@ -12,7 +20,7 @@ class HaikServiceProvider extends ServiceProvider {
     {
         $this->app['haik'] = $this->app->share(function()
         {
-            return new SiteManager();
+            return \App::make('SiteManagerInterface');
         });
     }
 }
