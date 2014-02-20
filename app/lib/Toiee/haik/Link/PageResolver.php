@@ -1,8 +1,17 @@
 <?php
 namespace Toiee\haik\Link;
 
+use Toiee\haik\Providers\SiteManagerInterface;
+
 class PageResolver implements LinkResolverInterface
 {
+
+    protected $site_manager;
+
+    public function __construct(SiteManagerInterface $site_manager)
+    {
+        $this->site_manager = $site_manager;
+    }
 
     /**
      * return url
@@ -12,9 +21,9 @@ class PageResolver implements LinkResolverInterface
      */
     public function resolve($link)
     {
-        if (\Haik::pageExists($link))
+        if ($this->site_manager->pageExists($link))
         {
-            return \Haik::url($link);
+            return $this->site_manager->url($link);
         }
 
         throw new LinkNotResolveException;    

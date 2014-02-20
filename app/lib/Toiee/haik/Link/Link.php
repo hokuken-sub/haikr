@@ -7,6 +7,10 @@ class Link implements LinkInterface {
     
     protected $resolvers;
     
+    /**
+     * constructor
+     * @params array $resolvers array of LinkResolverInterface
+     */
     public function __construct($resolvers = array())
     {
         $this->resolvers = $resolvers;

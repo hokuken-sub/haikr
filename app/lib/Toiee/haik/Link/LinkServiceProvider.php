@@ -13,7 +13,7 @@ class LinkServiceProvider extends ServiceProvider {
         $this->app['link'] = $this->app->share(function(){
             return new Link(
                 array(
-                    new PageResolver
+                    new PageResolver(\App::make('SiteManagerInterface'))
                 )
             );
         });

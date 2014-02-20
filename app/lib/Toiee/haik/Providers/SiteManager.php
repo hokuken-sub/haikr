@@ -3,7 +3,7 @@ namespace Toiee\haik\Providers;
 
 use App;
 
-class SiteManager {
+class SiteManager implements SiteManagerInterface{
     
     protected $id;
     
