@@ -122,14 +122,21 @@ class SiteManager implements SiteManagerInterface{
      */
     public function validatePageName($pagename)
     {
-		$validation = \Validator::make(array('url_check'=> $pagename), array('url_check'=>'url'));
-		if ( ! $validation->fails())
-		{
-    		return false;
-		}
-
-        $pattern = '/(?!\s):?[^\r\n\t\f\[\]<>#&":]+:?(?<!\s)/';
-        return preg_match($pattern, $pagename);
+        // check is url
+        $validation = \Validator::make(array('url_check'=> $pagename), array('url_check'=>'url'));
+        if ( ! $validation->fails())
+        {
+            return false;
+        }
+        
+        // check page name length
+        if (strlen($pagename) > \Config::get('app.haik.pageNameMaxLength'))
+        {
+            return false;
+        }
+        
+        $pattern = '/\A(?!\s):?[^\r\n\t\f\[\]\/<>#&":]+:?(?<!\s)\z/';
+        return !! (preg_match($pattern, $pagename));
     }
 
     /**
