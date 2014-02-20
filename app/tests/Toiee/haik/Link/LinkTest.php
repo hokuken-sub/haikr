@@ -11,7 +11,7 @@ class LinkTest extends TestCase {
     public function testFacade()
     {
         $url = \Link::url('Contact');
-        $this->assertEquals(Haik::url() . 'Contact', $url);
+        $this->assertEquals(Haik::pageUrl('Contact'), $url);
     }
     
     public function testGetFrontPageURL()

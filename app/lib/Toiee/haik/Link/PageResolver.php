@@ -23,7 +23,7 @@ class PageResolver implements LinkResolverInterface
     {
         if ($this->site_manager->pageExists($link))
         {
-            return $this->site_manager->url($link);
+            return $this->site_manager->pageUrl($link);
         }
 
         throw new LinkNotResolveException;    

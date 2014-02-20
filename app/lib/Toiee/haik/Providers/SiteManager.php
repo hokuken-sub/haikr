@@ -84,13 +84,22 @@ class SiteManager implements SiteManagerInterface{
     }
 
     /**
+     * get site base url with trailing slash
+     * @return string site url with trailing slash
+     */
+    public function url()
+    {
+        return str_finish(\Config::get('app.url'), '/');
+    }
+
+    /**
      * get page url
      * @params string page name
      * @return string page url
      */
-    public function url($pagename = '')
+    public function pageUrl($pagename)
     {
-        $url = \Config::get('app.url');
+        $url = $this->url();
         $pagename = ($pagename === \Config::get('app.haik.defaultPage')) ? '' : rawurlencode($pagename);
 
         return str_finish($url, '/') . $pagename;

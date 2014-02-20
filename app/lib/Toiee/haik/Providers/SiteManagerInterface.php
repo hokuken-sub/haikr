@@ -36,11 +36,17 @@ interface SiteManagerInterface {
     public function recentPages($all = false, $limit = null);
 
     /**
+     * get site base url with trailing slash
+     * @return string site url with trailing slash
+     */
+    public function url();
+
+    /**
      * get page url
      * @params string page name
      * @return string page url
      */
-    public function url($pagename = '');
+    public function pageUrl($pagename);
 
     /**
      * check page exists
