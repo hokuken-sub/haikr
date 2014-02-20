@@ -13,8 +13,22 @@ class AlertPlugin extends Plugin {
         }
 
         $base_class = 'alert';
-        $prefix = $type = '';
+        $prefix = $base_class.'-';
+        $type = 'warning';
 
-        return '<div class="'.$base_class.$prefix.$type.'">'.\Parser::parse($body).'</div>';
+        foreach ($params as $param)
+        {
+            switch ($param)
+            {
+                case 'success':
+                case 'info'   :
+                case 'warning':
+                case 'danger' :
+                    $type = $param;
+                    break;
+            }
+        }
+
+        return '<div class="'.$base_class.' '.$prefix.$type.'">'.\Parser::parse($body).'</div>';
     }
 }
