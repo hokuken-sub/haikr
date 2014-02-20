@@ -17,6 +17,26 @@ class RouteTest extends TestCase {
 		$crawler = $this->client->request('GET', 'Contact');
     }
     
+    function testShowPageContainMultiByteString()
+    {
+        try {
+            $crawler = $this->client->request('GET', '日本語.html');
+            $this->assertTrue($this->client->getResponse()->isOk());
+            $this->assertViewHas('page_title', '日本語');
+        } catch (Exception $e) {}
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function testShowPageNonExistanceThrowsException()
+    {
+        $crawler = $this->client->request('GET', 'page_not_exists.html');
+    }
+
     function testCallActionPlugin()
     {
         App::bind('PluginInterface', function()
