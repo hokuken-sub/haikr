@@ -12,7 +12,8 @@ class AlertPlugin extends Plugin {
             return '<div class="alert alert-warning">'.$body.'</div>';
         }
 
-        $base_class = $prefix = $type = '';
+        $base_class = 'alert';
+        $prefix = $type = '';
 
         return '<div class="'.$base_class.$prefix.$type.'">'.$body.'</div>';
     }
