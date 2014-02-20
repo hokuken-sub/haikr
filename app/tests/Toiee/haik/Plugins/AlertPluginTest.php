@@ -23,6 +23,10 @@ class AlertPluginTest extends TestCase {
                 'alert' => array('hogehoge'),
                 'assert' => '<div class="alert alert-warning">'.\Parser::parse('test').'</div>',
             ),
+            'with_close' => array(
+                'alert' => array('info', 'close'),
+                'assert' => '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.\Parser::parse('test').'</div>',
+            ),
         );
 
         foreach ($tests as $key => $data)
