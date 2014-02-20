@@ -23,7 +23,7 @@ class AlertPluginTest extends TestCase {
 
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], with(new AlertPlugin)->convert($data['alert']));
+            $this->assertEquals($data['assert'], with(new AlertPlugin)->convert($data['alert'], 'test'));
         }
 
         $this->markTestIncomplete(
