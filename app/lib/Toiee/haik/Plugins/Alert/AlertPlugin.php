@@ -37,6 +37,6 @@ class AlertPlugin extends Plugin {
             }
         }
 
-        return '<div class="'.$base_class.' '.$prefix.$type.$close_class.$custom_class.'">'.$close.\Parser::parse($body).'</div>';
+        return '<div class="'.$base_class.' '.$prefix.$type.$close_class.e($custom_class).'">'.$close.\Parser::parse($body).'</div>';
     }
 }
