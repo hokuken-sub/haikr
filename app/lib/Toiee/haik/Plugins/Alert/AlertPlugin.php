@@ -9,7 +9,7 @@ class AlertPlugin extends Plugin {
     {
         if (count($params) === 0)
         {
-            return '<div class="alert alert-warning">'.\Parser::parse($body).'</div>';
+            return '<div class="haik-plugin-alert alert alert-warning">'.\Parser::parse($body).'</div>';
         }
 
         $base_class = 'alert';
@@ -37,6 +37,6 @@ class AlertPlugin extends Plugin {
             }
         }
 
-        return '<div class="'.$base_class.' '.$prefix.$type.$close_class.e($custom_class).'">'.$close.\Parser::parse($body).'</div>';
+        return '<div class="haik-plugin-alert '.$base_class.' '.$prefix.$type.$close_class.e($custom_class).'">'.$close.\Parser::parse($body).'</div>';
     }
 }
