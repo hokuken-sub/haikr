@@ -53,6 +53,6 @@ class LinkTest extends TestCase {
     public function testGetBarbaroi()
     {
         $result = \Link::url('Barbaroi');
-        $this->assertEquals('Barbaroi', $result);
+        $this->assertEquals(Haik::url().'Barbaroi.html', $result);
     }
 }

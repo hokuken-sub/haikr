@@ -116,6 +116,23 @@ class SiteManager implements SiteManagerInterface{
     }
 
     /**
+     * check page name
+     * @params string page name
+     * @return boolean
+     */
+    public function validatePageName($pagename)
+    {
+		$validation = \Validator::make(array('url_check'=> $pagename), array('url_check'=>'url'));
+		if ( ! $validation->fails())
+		{
+    		return false;
+		}
+
+        $pattern = '/(?!\s):?[^\r\n\t\f\[\]<>#&":]+:?(?<!\s)/';
+        return preg_match($pattern, $pagename);
+    }
+
+    /**
      * get site path (i.e. haik--admin/site/xxx)
      * @return string site path
      */
