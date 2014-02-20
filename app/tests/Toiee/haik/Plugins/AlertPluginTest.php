@@ -19,9 +19,9 @@ class AlertPluginTest extends TestCase {
                 'alert' => array('success'),
                 'assert' => '<div class="alert alert-success">'.\Parser::parse('test').'</div>',
             ),
-            'not_required' => array(
+            'custom_class' => array(
                 'alert' => array('hogehoge'),
-                'assert' => '<div class="alert alert-warning">'.\Parser::parse('test').'</div>',
+                'assert' => '<div class="alert alert-warning hogehoge">'.\Parser::parse('test').'</div>',
             ),
             'with_close' => array(
                 'alert' => array('info', 'close'),
