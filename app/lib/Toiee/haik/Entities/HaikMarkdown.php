@@ -91,8 +91,9 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl implements ParserInterface {
      */
     protected function _makeHaikLinks($pagename,  $alias = '', $hash = '')
     {
-        $link_text = $title = $alias;
-        
+        $link_text = $title = $alias ? $this->unhash($this->runSpanGamut($alias)) : $alias;
+        $title = $title ? strip_tags($title) : $title;
+
         //hash only
         if ($pagename === '' && $hash)
         {
