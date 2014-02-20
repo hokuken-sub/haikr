@@ -1,7 +1,7 @@
 <div class="page-header">新規ページ作成</div>
 <div class="row">
   <div class="col-sm-10 col-xs-12">
-    {{ Form::open(array('url' => 'haik-admin/create', 'class'=>'form')) }}
+    {{ Form::open(array('url' => 'haik--admin/create', 'class'=>'form')) }}
 
       <div class="form-group">
         <label>新規ページ名</label>

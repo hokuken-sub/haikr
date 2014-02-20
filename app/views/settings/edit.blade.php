@@ -1,6 +1,6 @@
 <div class="row">
   <div class="edit_form col-sm-offset-1 col-sm-10 col-xs-12">
-    {{ Form::open(array('url' => 'haik-admin/edit', 'id' => 'edit_form_main', 'class'=>'form')) }}
+    {{ Form::open(array('url' => 'haik--admin/edit', 'id' => 'edit_form_main', 'class'=>'form')) }}
 
       {{ Form::hidden('name', e($name)) }}
 

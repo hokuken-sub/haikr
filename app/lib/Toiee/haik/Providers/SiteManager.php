@@ -116,7 +116,7 @@ class SiteManager implements SiteManagerInterface{
     }
 
     /**
-     * get site path (i.e. haik-admin/site/xxx)
+     * get site path (i.e. haik--admin/site/xxx)
      * @return string site path
      */
     public function path()
