@@ -31,6 +31,12 @@ class LinkTest extends TestCase {
         $this->link = App::make('LinkInterface');
     }
     
+    public function testFacade()
+    {
+        $url = \Link::url('Contact');
+        $this->assertEquals($this->site->url() . 'Contact', $url);
+    }
+    
     public function testGetFrontPageURL()
     {
         $result = $this->link->url('FrontPage');

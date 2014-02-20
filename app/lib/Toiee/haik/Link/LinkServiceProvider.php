@@ -10,7 +10,7 @@ class LinkServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app->singleton('Link', function(){
+        $this->app['link'] = $this->app->share(function(){
             return new Link(
                 array(
                     new PageResolver

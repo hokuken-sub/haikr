@@ -188,6 +188,7 @@ return array(
 		'Plugin'          => 'Toiee\haik\Plugins\PluginFacade',
 		'Haik'            => 'Toiee\haik\Providers\HaikFacade',
         'Parser'          => 'Toiee\haik\Providers\ParserFacade',
+        'Link'            => 'Toiee\haik\Link\LinkFacade',
 	),
 
 );
