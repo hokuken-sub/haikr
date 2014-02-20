@@ -19,7 +19,7 @@ interface LayoutDataInterface {
     /**
      * get layout data
      * @params string $key key of data
-     * @return string data of $key
+     * @return string|false data of $key. if key is not set then return false
      */
     public function get($key);
 
