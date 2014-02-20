@@ -2,6 +2,21 @@
 
 class RouteTest extends TestCase {
     
+    function testShowPage()
+    {
+		$crawler = $this->client->request('GET', 'Contact.html');
+        $this->assertTrue($this->client->getResponse()->isOk());
+        $this->assertViewHas('content');
+    }
+    
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function testShowPageWithoutExtThrowsException()
+    {
+		$crawler = $this->client->request('GET', 'Contact');
+    }
+    
     function testCallActionPlugin()
     {
         App::bind('PluginInterface', function()

@@ -69,9 +69,9 @@ class PageController extends \BaseController {
                 
             }
             
-            return Redirect::to($pagename);
+            return Redirect::to(Haik::pageUrl($pagename));
         }
-        return Redirect::to($pagename);
+        return Redirect::to(Haik::pageUrl($pagename));
     }
 
     /**

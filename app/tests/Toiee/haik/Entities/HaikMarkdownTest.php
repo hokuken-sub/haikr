@@ -36,11 +36,11 @@ class HaikMarkdownTest extends TestCase {
         $tests = array(
             'toppage' => array(
                 'markdown' => '[[FrontPage]]',
-                'assert'   => '<p><a href="http://localhost:8000" title="FrontPage">FrontPage</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/" title="FrontPage">FrontPage</a></p>',
             ),
             'otherpage' => array(
                 'markdown' => '[[Contact]]',
-                'assert'   => '<p><a href="http://localhost:8000/Contact" title="Contact">Contact</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/Contact.html" title="Contact">Contact</a></p>',
             ),
             'toppage#hash' => array(
                 'markdown' => '[[FrontPage#hash]]',
@@ -48,15 +48,15 @@ class HaikMarkdownTest extends TestCase {
             ),
             'otherpage#hash' => array(
                 'markdown' => '[[Contact#hash]]',
-                'assert'   => '<p><a href="http://localhost:8000/Contact#hash" title="Contact">Contact</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/Contact.html#hash" title="Contact">Contact</a></p>',
             ),
             '>toppage' => array(
                 'markdown' => '[[Top>FrontPage]]',
-                'assert'   => '<p><a href="http://localhost:8000" title="Top">Top</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/" title="Top">Top</a></p>',
             ),
             '>otherpage' => array(
                 'markdown' => '[[Touch me!>Contact]]',
-                'assert'   => '<p><a href="http://localhost:8000/Contact" title="Touch me!">Touch me!</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/Contact.html" title="Touch me!">Touch me!</a></p>',
             ),
             '#hashonly' => array(
                 'markdown' => '[[#hash]]',

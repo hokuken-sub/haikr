@@ -91,54 +91,32 @@ class HaikMarkdown extends _MarkdownExtra_TmpImpl implements ParserInterface {
      */
     protected function _makeHaikLinks($pagename,  $alias = '', $hash = '')
     {
-        $validator = Validator::make(
-            array('url' => $pagename),
-            array('url' => 'required|url')
-        );
+        $link_text = $title = $alias;
         
-        if ($validator->passes())
-        {
-            $url = $pagename;
-            
-            $title = $alias ? $alias : '';
-            $link_text = $alias ? $alias : $url;
-        }
-        else if ($alias)
-        {
-            $link_text = $title = $alias;
-        }
-        else
-        {
-            $link_text = $title = $pagename;
-        }
-
+        //hash only
         if ($pagename === '' && $hash)
         {
-            $base_url = '';
+            $url = $hash;
             if ( ! $alias)
+            {
                 $link_text = ltrim($hash, '#');
+            }
         }
+        //page name provided
+        else if (\Haik::pageExists($pagename))
+        {
+            $url = \Link::url($pagename . $hash);
+            if ( ! $alias)
+            {
+                $link_text = $title = $pagename;
+            }
+        }
+        //other link token
         else
         {
-            // !TODO: Config::get(app.url) -> Haik::url() in future
-            $base_url = \Config::get('app.url');
+            $url = \Link::url($pagename);
+            $link_text = $alias ? $alias : $url;
         }
-        
-        if ($pagename === \Config::get('app.haik.defaultPage'))
-        {
-            $pagename = '';
-            $hash = $hash ? ('/' . $hash) : $hash;
-        }
-        
-        if (isset($url))
-        {
-            $url .= $hash;
-        }
-        else
-        {
-            $url = rtrim($base_url . '/'  .$pagename, '/') . $hash;
-        }
-        $url = $this->encodeAttribute($url);
 
         $result = "<a href=\"$url\"";
         if (isset($title) && strlen($title) > 0)
