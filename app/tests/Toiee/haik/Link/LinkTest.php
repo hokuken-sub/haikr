@@ -15,7 +15,7 @@ class LinkTest extends TestCase {
         App::bind('SiteManager', function(){
             $mock = Mockery::mock('Toiee\haik\Providers\SiteManager');
             $mock->shouldReceive('url')
-                ->andReturn(Config::get('app.url'));
+                ->andReturn(str_finish(Config::get('app.url'), '/'));
                 
             return $mock;
         });
@@ -40,19 +40,19 @@ class LinkTest extends TestCase {
     public function testGetFrontPageURLWithHash()
     {
         $result = $this->link->url('FrontPage#test');
-        $this->assertEquals($this->site->url().'/#test', $result);
+        $this->assertEquals($this->site->url().'#test', $result);
     }
 
     public function testGetPageURL()
     {
         $result = $this->link->url('Contact');
-        $this->assertEquals($this->site->url().'/Contact', $result);
+        $this->assertEquals($this->site->url().'Contact', $result);
     }
 
     public function testGetPageURLWithHash()
     {
         $result = $this->link->url('Contact#test');
-        $this->assertEquals($this->site->url().'/Contact#test', $result);
+        $this->assertEquals($this->site->url().'Contact#test', $result);
     }
 
     public function testGetHash()

@@ -16,7 +16,7 @@ class PageResolver implements LinkResolverInterface
         {
             return \Haik::url($link);
         }
-        
+
         throw new LinkNotResolveException;    
     }
 }

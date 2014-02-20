@@ -91,22 +91,9 @@ class SiteManager {
     public function url($pagename = '')
     {
         $url = \Config::get('app.url');
-        
-        // defaultPageの削除
-        $pagename = preg_replace('/^'.\Config::get('app.haik.defaultPage').'/', '', $pagename);
-        
-        // defaultPageの場合は、URLを返す
-        if ($pagename === '') return $url;
-        
-        // Hashタグがある場合
-        $hash = '';
-        if (strpos($pagename, '#') !== FALSE)
-        {
-            list($pagename, $hash) = explode('#', $pagename, 2);
-            $hash = '#' . rawurlencode($hash);
-        }
+        $pagename = ($pagename === \Config::get('app.haik.defaultPage')) ? '' : rawurlencode($pagename);
 
-        return $url . '/' . rawurlencode($pagename) . $hash;
+        return str_finish($url, '/') . $pagename;
     }
 
     /**
@@ -116,11 +103,6 @@ class SiteManager {
      */
     public function pageExists($pagename)
     {
-        if (strpos($pagename, '#') !== FALSE)
-        {
-            list($pagename, $tmp) = explode('#', $pagename, 2);
-        }
-
         return !! \Page::where('name', $pagename)->first();
     }
 

@@ -14,10 +14,14 @@ class Link implements LinkInterface {
         
     public function url($link)
     {
+        // split hash because of hash is not need resolve 
+        list($link_token, $hash) = array_pad(explode('#', $link, 2), 2, '');
+        $hash = ($hash === "") ? "" : "#{$hash}";
+
         try {
             foreach ($this->resolvers as $resolver)
             {
-                return $resolver->resolve($link);
+                return $resolver->resolve($link_token) . $hash;
             }
         }
         catch(\Exception $e)
