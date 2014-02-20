@@ -20,7 +20,7 @@ class LayoutDataTest extends TestCase {
     {
         Theme::delete('key_not_exists');
         $result = Theme::has('key_not_exists');
-        $this->assertFalse($result)
+        $this->assertFalse($result);
     }
     
     public function testGet()
@@ -98,7 +98,7 @@ class LayoutDataTest extends TestCase {
         $this->assertEquals('append_value:second_value', $result);
     }
     
-    public function testAppendToTheKeyNotExists()
+    public function testPrependToTheKeyNotExists()
     {
         Theme::delete('key_for_prepend');
         Theme::append('key_for_prepend', 'prepend_value');
