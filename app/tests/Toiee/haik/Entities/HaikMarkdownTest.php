@@ -36,7 +36,7 @@ class HaikMarkdownTest extends TestCase {
         $tests = array(
             'toppage' => array(
                 'markdown' => '[[FrontPage]]',
-                'assert'   => '<p><a href="http://localhost:8000" title="FrontPage">FrontPage</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/" title="FrontPage">FrontPage</a></p>',
             ),
             'otherpage' => array(
                 'markdown' => '[[Contact]]',
@@ -52,7 +52,7 @@ class HaikMarkdownTest extends TestCase {
             ),
             '>toppage' => array(
                 'markdown' => '[[Top>FrontPage]]',
-                'assert'   => '<p><a href="http://localhost:8000" title="Top">Top</a></p>',
+                'assert'   => '<p><a href="http://localhost:8000/" title="Top">Top</a></p>',
             ),
             '>otherpage' => array(
                 'markdown' => '[[Touch me!>Contact]]',
