@@ -66,4 +66,10 @@ interface LayoutDataInterface {
      */
     public function prepend_once($set_key, $key, $value);
     
+    /**
+     * Delete data
+     * @params string $key key of data
+     */
+    public function delete($key);
+    
 }
