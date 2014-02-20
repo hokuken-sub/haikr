@@ -12,7 +12,7 @@ class LayoutDataTest extends TestCase {
     public function testHasKeyExists()
     {
         Theme::set('key_exists', 'value');
-        $result = LayoutData::has('key_exists');
+        $result = Theme::has('key_exists');
         $this->assertTrue($result);
     }
     
@@ -53,8 +53,8 @@ class LayoutDataTest extends TestCase {
         Theme::set('key_second', 'value_second');
         
         $result = Theme::getAll();
-        $this->assetEquals('value_first', $result['key_first']);
-        $this->assetEquals('value_second', $result['key_second']);
+        $this->assertEquals('value_first', $result['key_first']);
+        $this->assertEquals('value_second', $result['key_second']);
     }
     
     public function testSetAll()
@@ -67,7 +67,7 @@ class LayoutDataTest extends TestCase {
 
         $result = Theme::getAll();
         
-        $this->assetEquals($data, $result);
+        $this->assertEquals($data, $result);
     }
     
     public function testAppend()
@@ -75,7 +75,7 @@ class LayoutDataTest extends TestCase {
         Theme::set('key', 'default_value');
         Theme::append('key', ':append_value');
         $result = Theme::get('key');
-        $this->assertEquals('default_value:append_value');
+        $this->assertEquals('default_value:append_value', $result);
     }
     
     public function testPrepend()
@@ -83,7 +83,7 @@ class LayoutDataTest extends TestCase {
         Theme::set('key', 'default_value');
         Theme::prepend('key', 'prepend_value:');
         $result = Theme::get('key');
-        $this->assertEquals('prepend_value:default_value');
+        $this->assertEquals('prepend_value:default_value', $result);
     }
     
     public function testAppendToTheKeyNotExists()
@@ -105,7 +105,7 @@ class LayoutDataTest extends TestCase {
         $result = Theme::get('key_for_prepend');
         $this->assertEquals('prepend_value', $result);
 
-        Theme::append('key_for_prepend', 'second_value:');
+        Theme::prepend('key_for_prepend', 'second_value:');
         $result = Theme::get('key_for_prepend');
         $this->assertEquals('second_value:prepend_value', $result);
     }
@@ -127,7 +127,7 @@ class LayoutDataTest extends TestCase {
         Theme::appendOnce('append_at_once', 'key', 'value_second');
         $result = Theme::get('key');
         $this->assertEquals('append_value', $result);
-        
+
         Theme::appendOnce('append_another_context', 'key', ':value_third');
         $result = Theme::get('key');
         $this->assertEquals('append_value:value_third', $result);
@@ -136,13 +136,13 @@ class LayoutDataTest extends TestCase {
     public function testPrependOnce()
     {
         Theme::delete('key');
-        Theme::appendOnce('prepend_at_once', 'key', 'prepend_value');
+        Theme::prependOnce('prepend_at_once', 'key', 'prepend_value');
         $result = Theme::get('key');
-        Theme::appendOnce('prepend_at_once', 'key', 'value_second');
+        Theme::prependOnce('prepend_at_once', 'key', 'value_second');
         $result = Theme::get('key');
         $this->assertEquals('prepend_value', $result);
-        
-        Theme::appendOnce('prepend_another_context', 'key', 'value_third:');
+
+        Theme::prependOnce('prepend_another_context', 'key', 'value_third:');
         $result = Theme::get('key');
         $this->assertEquals('value_third:prepend_value', $result);
     }
