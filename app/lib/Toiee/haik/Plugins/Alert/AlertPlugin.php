@@ -9,12 +9,12 @@ class AlertPlugin extends Plugin {
     {
         if (count($params) === 0)
         {
-            return '<div class="alert alert-warning">'.$body.'</div>';
+            return '<div class="alert alert-warning">'.\Parser::parse($body).'</div>';
         }
 
         $base_class = 'alert';
         $prefix = $type = '';
 
-        return '<div class="'.$base_class.$prefix.$type.'">'.$body.'</div>';
+        return '<div class="'.$base_class.$prefix.$type.'">'.\Parser::parse($body).'</div>';
     }
 }
