@@ -16,6 +16,7 @@ class AlertPlugin extends Plugin {
         $prefix = $base_class.'-';
         $type = 'warning';
         $close = $close_class = '';
+        $custom_class = '';
 
         foreach ($params as $param)
         {
@@ -27,15 +28,15 @@ class AlertPlugin extends Plugin {
                 case 'danger' :
                     $type = $param;
                     break;
-            }
-
-            if ($param === 'close')
-            {
-                $close = '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
-                $close_class = ' alert-dismissable';
+                case 'close':
+                    $close = '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+                    $close_class = ' alert-dismissable';
+                    break;
+                default:
+                    $custom_class = ' '.$param;
             }
         }
 
-        return '<div class="'.$base_class.' '.$prefix.$type.$close_class.'">'.$close.\Parser::parse($body).'</div>';
+        return '<div class="'.$base_class.' '.$prefix.$type.$close_class.$custom_class.'">'.$close.\Parser::parse($body).'</div>';
     }
 }
