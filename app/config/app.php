@@ -121,6 +121,7 @@ return array(
         'Toiee\haik\Providers\HaikServiceProvider',
         'Toiee\haik\Providers\ParsingServiceProvider',
         'Toiee\haik\Link\LinkServiceProvider',
+        'Toiee\haik\Themes\ThemeServiceProvider',
 	),
 
 	/*
@@ -190,6 +191,7 @@ return array(
 		'Haik'            => 'Toiee\haik\Providers\HaikFacade',
         'Parser'          => 'Toiee\haik\Providers\ParserFacade',
         'Link'            => 'Toiee\haik\Link\LinkFacade',
+        'Theme'           => 'Toiee\haik\Themes\ThemeFacade',
 	),
 
 );
