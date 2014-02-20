@@ -21,13 +21,14 @@ class IconPlugin extends Plugin {
         }
 
         $icon_type = $prefix = $value = '';
-        foreach($params as $param)
+        foreach ($params as $param)
         {
-            if($param == 'glyphicon')
+            if ($param == 'glyphicon')
             {
                 $icon_type = $param.' ';
                 $prefix = $param.'-';
-            } else
+            }
+            else
             {
                 $value = $param;
             }
