@@ -13,11 +13,11 @@ class AlertPluginTest extends TestCase {
         $tests = array(
             'no_params' => array(
                 'alert' => array(),
-                'assert' => '<div class="alert alert-warning">test</div>',
+                'assert' => '<div class="alert alert-warning">'.\Parser::parse('test').'</div>',
             ),
             'success' => array(
                 'alert' => array('success'),
-                'assert' => '<div class="alert alert-success">test</div>',
+                'assert' => '<div class="alert alert-success">'.\Parser::parse('test').'</div>',
             ),
         );
 
