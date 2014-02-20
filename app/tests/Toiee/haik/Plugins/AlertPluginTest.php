@@ -33,10 +33,6 @@ class AlertPluginTest extends TestCase {
         {
             $this->assertEquals($data['assert'], with(new AlertPlugin)->convert($data['alert'], 'test'));
         }
-
-        $this->markTestIncomplete(
-            'This test is Incomplete.'
-        );
     }
 
 }
