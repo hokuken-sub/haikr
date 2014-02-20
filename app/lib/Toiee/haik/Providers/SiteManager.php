@@ -100,9 +100,9 @@ class SiteManager implements SiteManagerInterface{
     public function pageUrl($pagename)
     {
         $url = $this->url();
-        $pagename = ($pagename === \Config::get('app.haik.defaultPage')) ? '' : rawurlencode($pagename);
+        $filename = ($pagename === \Config::get('app.haik.defaultPage')) ? '' : (rawurlencode($pagename).'.html');
 
-        return str_finish($url, '/') . $pagename;
+        return str_finish($url, '/') . $filename;
     }
 
     /**
