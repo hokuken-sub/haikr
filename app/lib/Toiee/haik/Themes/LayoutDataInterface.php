@@ -70,7 +70,7 @@ interface LayoutDataInterface {
      * @params string $key key of data
      * @params string $value append data
      */
-    public function prependOnce($set_key, $key, $value);
+    public function prependOnce($context, $key, $value);
     
     /**
      * Delete data
