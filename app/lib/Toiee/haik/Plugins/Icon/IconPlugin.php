@@ -20,24 +20,19 @@ class IconPlugin extends Plugin {
             return 'error';
         }
 
-
-        // 28: check 'glyphicon' exists in $params
-        // 30: check key of 'glyphicon'
-        // 31: alias to $icon_type because $params[key] will delete
-        // 33: delete 'glyphicon'
-        // 35: convert to string
-        if (in_array('glyphicon', $params))
+        $icon_type = $prefix = $value = '';
+        foreach($params as $param)
         {
-          $key = array_search('glyphicon', $params);
-          $icon_type = $params[$key];
-
-          unset($params[$key]);
-
-          $icon_value = implode('', $params);
-          return '<i class="'.$icon_type.' '.$icon_type.'-'.$icon_value.'">';
-
+            if($param == 'glyphicon')
+            {
+                $icon_type = $param.' ';
+                $prefix = $param.'-';
+            } else
+            {
+                $value = $param;
+            }
         }
+        return '<i class="'.$icon_type.$prefix.$value.'"></i>';
 
-        return '';
     }
 }
