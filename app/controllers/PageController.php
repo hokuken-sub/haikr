@@ -94,6 +94,10 @@ class PageController extends \BaseController {
             $title = $page->title;
             $text = $page->body;
         }
+        else if (Auth::check())
+        {
+            return $this->edit($pagename);
+        }
         else
         {
             //TODO: 404 error
