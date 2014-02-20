@@ -17,14 +17,12 @@ class ButtonPlugin extends Plugin {
      */
     function inline($params = array(), $body = '')
     {
-        if (count($params) == 0)
+        $href = '#';
+        if (count($params) > 0)
         {
-            // TODO: エラー処理
-            return '';
+    		$href = array_shift($params);
+    		$href = \Link::url($href);
         }
-
-		$href = array_shift($params);
-		$href = \Link::url($href);
 
 		$type = ' btn-default';
 		$size = '';

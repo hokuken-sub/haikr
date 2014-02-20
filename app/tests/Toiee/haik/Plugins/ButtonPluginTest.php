@@ -5,34 +5,16 @@ class ButtonPluginTest extends TestCase {
 
     public function testInlineMethodExists()
     {
-        App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
-            $mock->shouldReceive('exists')
-                 ->once()
-                 ->andReturn(true);
-            $mock->shouldReceive('load')
-                  ->once()
-                  ->andReturn(new ButtonPlugin);
-            return $mock;
-        });
-        
-        $this->assertInternalType('string', Plugin::get('button')->inline());
+        $this->assertInternalType('string', with(new ButtonPlugin)->inline());
     }
     
     public function testParameter()
     {
-        App::bind('PluginRepositoryInterface', function(){
-            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
-            $mock->shouldReceive('exists')
-                 ->once()
-                 ->andReturn(true);
-            $mock->shouldReceive('load')
-                  ->once()
-                  ->andReturn(new ButtonPlugin);
-            return $mock;
-        });
-
         $tests = array(
+            'none' => array(
+                'button' => array(),
+                'assert' => '<a class="haik-plugin-button btn btn-default" href="#">test</a>',
+            ),
             'url' => array(
                 'button' => array('http://hokuken.com'),
                 'assert' => '<a class="haik-plugin-button btn btn-default" href="http://hokuken.com">test</a>',
@@ -73,7 +55,7 @@ class ButtonPluginTest extends TestCase {
         
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], Plugin::get('button')->inline($data['button'],'test'));
+            $this->assertEquals($data['assert'], with(new ButtonPlugin)->inline($data['button'],'test'));
         }
     }
 }
