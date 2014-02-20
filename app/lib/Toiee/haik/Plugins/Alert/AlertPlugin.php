@@ -7,6 +7,13 @@ class AlertPlugin extends Plugin {
 
     public function convert($params = array(), $body = '')
     {
-        return '';
+        if (count($params) === 0)
+        {
+            return '<div class="alert alert-warning">'.$body.'</div>';
+        }
+
+        $base_class = $prefix = $type = '';
+
+        return '<div class="'.$base_class.$prefix.$type.'">'.$body.'</div>';
     }
 }
