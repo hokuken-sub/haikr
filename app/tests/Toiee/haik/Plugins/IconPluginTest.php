@@ -18,11 +18,15 @@ class IconPluginTest extends TestCase {
             ),
             'search' => array(
                 'icon' => array('glyphicon', 'search'),
-                'assert' => '<i class="glyphicon glyphicon-search">',
+                'assert' => '<i class="glyphicon glyphicon-search"></i>',
             ),
             'search_reverse' => array(
                 'icon' => array('search', 'glyphicon'),
-                'assert' => '<i class="glyphicon glyphicon-search">',
+                'assert' => '<i class="glyphicon glyphicon-search"></i>',
+            ),
+            'no_icon_type' => array(
+                'icon' => array('search'),
+                'assert' => '<i class="search"></i>',
             ),
         );
         
