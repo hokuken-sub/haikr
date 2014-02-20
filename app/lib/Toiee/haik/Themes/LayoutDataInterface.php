@@ -14,7 +14,13 @@ interface LayoutDataInterface {
      * @params string $context context of data if context is already exist then data is not set
      * @params string $key key of data
      */
-    public function set_once($context, $key, $value);
+    public function setOnce($context, $key, $value);
+
+    /**
+     * set data of array
+     * @param assoc $data
+     */
+    public function setAll($data);
 
     /**
      * get layout data
@@ -49,7 +55,7 @@ interface LayoutDataInterface {
      * @params string $key key of data
      * @params string $value append data
      */
-    public function append_once($context, $key, $value);
+    public function appendOnce($context, $key, $value);
 
     /**
      * prepend layout data
@@ -64,7 +70,7 @@ interface LayoutDataInterface {
      * @params string $key key of data
      * @params string $value append data
      */
-    public function prepend_once($set_key, $key, $value);
+    public function prependOnce($set_key, $key, $value);
     
     /**
      * Delete data
