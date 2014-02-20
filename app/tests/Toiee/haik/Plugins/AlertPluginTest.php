@@ -15,6 +15,10 @@ class AlertPluginTest extends TestCase {
                 'alert' => array(),
                 'assert' => '<div class="alert alert-warning">test</div>',
             ),
+            'success' => array(
+                'alert' => array('success'),
+                'assert' => '<div class="alert alert-success">test</div>',
+            ),
         );
 
         foreach ($tests as $key => $data)
