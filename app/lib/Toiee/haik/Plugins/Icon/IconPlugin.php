@@ -16,8 +16,11 @@ class IconPlugin extends Plugin {
     {
         if (count($params) === 0)
         {
-            // !TODO: threw error when no params
-            return 'error';
+            if ( ! \Auth::check())
+            {
+                return '';
+            }
+            return '<p class="text-danger">You need to put parameter! ( Usage: &icon(search); )</p>';
         }
 
         $base_class = 'glyphicon';
