@@ -1,10 +1,14 @@
 <?php
 namespace Toiee\haik\Themes;
 
-class ThemeManager implements LayoutDataInterface {
+class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
 
     protected $layout_data;
     protected $layout_data_context;
+    protected $theme;
+    protected $layout;
+    protected $color;
+    protected $texture;
 
     public function __construct()
     {
@@ -137,5 +141,98 @@ class ThemeManager implements LayoutDataInterface {
     {
         if ($this->has($key)) unset($this->layout_data[$key]);
     }
+    
+    /**
+     * set theme if theme is exist
+     * @params string $theme theme name
+     */
+    public function themeSet($theme)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
+     * get theme name
+     * @return string|false theme. if theme is not set then return false
+     */
+    public function themeGet()
+    {
+        if ($this->theme)
+        {
+            return $this->theme;
+        }
+        
+        return false;
+    }
+
+    /**
+     * set layout if layout is exist
+     * @params string $layout layout name
+     */
+    public function layoutSet($layout)
+    {
+        $this->layout = $layout;
+    }
+
+    /**
+     * get layout name
+     * @return string|false layout. if layout is not set then return false
+     */
+    public function layoutGet()
+    {
+        if ($this->layout)
+        {
+            return $this->layout;
+        }
+        
+        return false;
+    }
+
+    /**
+     * set color if color is exist
+     * @params string $color
+     */
+    public function colorSet($color)
+    {
+        $this->color = $color;
+    }
+
+    /**
+     * get color
+     * @return string|false color. if color is not set then return false
+     */
+    public function colorGet()
+    {
+        if ($this->color)
+        {
+            return $this->color;
+        }
+        
+        return false;
+    }
+
+    /**
+     * set texture if texture is exist
+     * @params string $texture
+     */
+    public function textureSet($texture)
+    {
+        $this->texture = $texture;
+    }
+
+    /**
+     * get texture
+     * @return string|false texture. if texture is not set then return false
+     */
+    public function textureGet()
+    {
+        if ($this->texture)
+        {
+            return $this->texture;
+        }
+        
+        return false;
+    }
+    
 
 }
