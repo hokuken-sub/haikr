@@ -1,10 +1,10 @@
 <?php
 namespace Toiee\haik\Entities;
 
-use Michelf\_MarkdownExtra_TmpImpl;
+use Michelf\MarkdownExtra;
 use Validator;
 
-class HaikMarkdown extends _MarkdownExtra_TmpImpl implements ParserInterface {
+class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     
     public function __construct()
     {
