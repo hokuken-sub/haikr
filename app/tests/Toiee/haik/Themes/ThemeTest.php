@@ -1,0 +1,141 @@
+<?php
+use Toiee\haik\Themes\Theme;
+
+class ThemeTest extends TestCase {
+    
+    public function setUp()
+    {
+        \App::bind('ThemeConfigLoaderInterface', function()
+        {
+            $dummyOptions = array(
+                'name' => 'kawaz',
+                'layouts' => array(
+                    'content', 'top'
+                ),
+                'default_layout' => 'top',
+                'colors' => array('blue', 'green', 'red'),
+                'textures' => array('dot', 'hemp'),
+            );
+            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
+            $mock->shouldReceive('load')->andReturn($dummyOptions);
+            return $mock;
+        });
+        
+        App::bind('HaikTheme', function()
+        {
+            return new Theme(
+                App::make('ThemeConfigLoaderInterface')
+            );
+        });
+    }
+    
+    public function testHasConfig()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertTrue($theme->has('name'));
+    }
+    
+    public function testGetConfig()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertEquals('kawaz', $theme->get('name'));
+    }
+    
+    public function testDefaultLayoutGet()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertTrue('top', $theme->layoutGet());
+    }
+    
+    public function testLayoutSetAndGet()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->layoutSet('content');
+        $this->assertTrue('content', $theme->layoutGet());
+    }
+    
+    public function testDefaultColorGet()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertFalse($theme->colorGet());
+    }
+    
+    public function testColorSetAndGet()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->colorSet('blue');
+        $this->assertEquals('blue', $theme->colorGet());
+    }
+    
+    public function testInvalidColorSetAndIgnore()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->colorSet('invalid_color');
+        $theme->assertFalse($theme->colorGet());
+    }
+    
+    public function testDefaultTextureGet()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertFalse($theme->textureGet());
+    }
+
+    public function testTextureSetAndGet()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->textureSet('hemp');
+        $this->assertEquals('hemp', $theme->textureGet());
+    }
+    
+    public function testInvalidTexureSetAndIgnore()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->textureSet('invalid_texture');
+        $theme->assertFalse($theme->textureGet());
+    }
+    
+    public function testMake()
+    {
+        $theme = App::make('HaikTheme');
+        $this->assertInstanceOf('View', $theme->make());
+    }
+    
+    public function testTakeOverTheme()
+    {
+        $theme = App::make('HaikTheme');
+        $theme->colorSet('blue');
+        $theme->textureSet('hemp');
+
+        App::bind('ThemeConfigLoaderInterface', function()
+        {
+            $dummyOptions = array(
+                'name' => 'semi',
+                'layouts' => array(
+                    'content',
+                ),
+                'default_layout' => 'content',
+                'colors' => array('blue'),
+                'textures' => array(),
+            );
+            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
+            $mock->shouldReceive('load')->andReturn($dummyOptions);
+            return $mock;
+        });
+        
+        // take over below status
+        // layout: content
+        // color: blue
+        // texture: false
+        
+        $new_theme = new Theme(
+            App::make('ThemeConfigLoaderInterface'),
+            $theme
+        );
+
+        $this->assertEquals('content', $new_theme->layoutGet());
+        $this->assertEquals('blue', $new_theme->colorGet());
+        $this->assertFalse($new_theme->textureGet());
+        
+    }
+    
+}
