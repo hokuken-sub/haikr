@@ -1,7 +1,7 @@
 <?php
 namespace Toiee\haik\Themes;
 
-interface LayoutDataInterface {
+interface ThemeDataInterface {
 
     /**
      * set layout data

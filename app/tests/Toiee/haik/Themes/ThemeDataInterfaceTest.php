@@ -1,7 +1,7 @@
 <?php
-use Toiee\haik\Themes\LayoutDataInterface;
+use Toiee\haik\Themes\ThemeDataInterface;
 
-class LayoutDataTest extends TestCase {
+class ThemeDataTest extends TestCase {
     
     public function testFacade()
     {

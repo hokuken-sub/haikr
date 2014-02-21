@@ -1,7 +1,7 @@
 <?php
 namespace Toiee\haik\Themes;
 
-class ThemeManager implements LayoutDataInterface {
+class ThemeManager implements ThemeDataInterface {
 
     protected $layout_data;
     protected $layout_data_context;
