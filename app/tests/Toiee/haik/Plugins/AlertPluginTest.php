@@ -27,6 +27,10 @@ class AlertPluginTest extends TestCase {
                 'alert' => array('info', 'close'),
                 'assert' => '<div class="haik-plugin-alert alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.\Parser::parse('test').'</div>',
             ),
+            'escape_html_char' => array(
+                'alert' => array('<strong>'),
+                'assert' => '<div class="alert alert-warning &lt;strong&gt;">'.\Parser::parse('test').'</div>',
+            ),
         );
 
         foreach ($tests as $key => $data)
