@@ -60,5 +60,4 @@ class ThemeRepositoryTest extends TestCase {
         $result = $repository->exists('kawaz');
         $this->assertFalse($result);
     }
-
 }
