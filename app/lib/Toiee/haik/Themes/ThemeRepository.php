@@ -38,7 +38,7 @@ class ThemeRepository implements ThemeRepositoryInterface {
             return App::make($theme_class);
         }
         
-        throw new \InvalidArgumentException("A plugin with id=$id was not exist");
+        throw new \InvalidArgumentException("This {$name} theme was not exist");
     }
 
     /**
