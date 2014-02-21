@@ -41,27 +41,21 @@ class IconPluginTest extends TestCase {
     {
         $user = User::where('email', 'touch@toiee.jp')->first();
         $this->be($user);
-        if (Auth::check())
-        {
-            $no_params = array(
-                'icon' => array(),
-                'assert' => '<p class="text-danger">You need to put parameter! ( Usage: &icon(search); )</p>',
-            );
+        $no_params = array(
+            'icon' => array(),
+            'assert' => '<p class="text-danger">You need to put parameter! ( Usage: &icon(search); )</p>',
+        );
             
-            $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
-        }
+        $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
     }
 
     public function testOutputBlankIfUserNotAuthenticatedWithNoParams()
     {
-        if ( ! Auth::check())
-        {
-            $no_params = array(
-                'icon' => array(),
-                'assert' => '',
-            );
+        $no_params = array(
+            'icon' => array(),
+            'assert' => '',
+        );
 
-            $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
-        }
+        $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
     }
 }
