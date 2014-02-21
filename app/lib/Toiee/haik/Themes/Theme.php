@@ -1,14 +1,24 @@
 <?php
 namespace Toiee\haik\Themes;
 
+use App;
+
 class Theme implements ThemeInterface {
     
     protected $config;
+    
+    protected $layout;
+    protected $color;
+    protected $texture;
     
     public function __construct(ThemeConfigLoaderInterface $loader, ThemeInterface $theme_taked_over = null)
     {
         $this->loader = $loader;
         $this->config = $this->loader->load($this);
+        
+        $this->initLayouts();
+        $this->initColors();
+        $this->initTextures();
         
         if ( ! is_null($theme_taked_over))
         {
@@ -18,12 +28,64 @@ class Theme implements ThemeInterface {
         $this->createFilter();
     }
     
+    /**
+     * Set array of layouts parse config
+     * layouts: [foo, bar] => {foo: {default}, bar: {default}}
+     *
+     * @return void
+     * @throws ThemeNotHasLayoutsException when layouts options are not set
+     */
+    protected function initLayouts()
+    {
+        $layouts = $this->get('layouts', false);
+        if ($layouts === false)
+        {
+            throw new ThemeNotHasLayoutsException;
+        }
+        $this->layout = $layouts;
+        //TODO: enable simple layouts option
+        
+        $this->initDefaultLayout();
+    }
+    
+    /**
+     * Set default layout name use config[default_layout]
+     * if default_layout not set then use first layout name in layouts
+     *
+     * @return void
+     */
+    protected function initDefaultLayout()
+    {
+        $default_layout = $this->get('default_layout', false);
+        if ($default_layout === false)
+        {
+            foreach ($this->get('layouts', array()) as $layout => $data)
+            {
+                $this->layout = $layout;
+                return;
+            }
+        }
+        $this->layout = $default_layout;
+    }
+    
+    protected function initColors()
+    {
+        //TODO: enable simple colors option
+        $this->color = false;
+    }
+    
+    protected function initTextures()
+    {
+        //TODO: enable textures option
+        $this->texture = false;
+    }
+    
     protected function createFilter()
     {
         foreach (array('layout', 'color', 'texture') as $variation)
         {
             $method = camel_case("{$variation}_create_fiter");
-            if (metod_exists($this, $method))
+            if (method_exists($this, $method))
             {
                 $this->$method();
             }
@@ -97,7 +159,7 @@ class Theme implements ThemeInterface {
      */
     public function colorSet($color)
     {
-        if (in_array($color, $this->colors()))
+        if (in_array($color, $this->get('colors')))
         {
             $this->color = $color;
         }
@@ -140,7 +202,7 @@ class Theme implements ThemeInterface {
      */
     public function textureSet($texture)
     {
-        if (in_array($texture, $this->textures))
+        if (in_array($texture, $this->get('textures')))
         {
             $this->texture = $texture;
         }
@@ -164,22 +226,8 @@ class Theme implements ThemeInterface {
      */
     public function make()
     {
-        return App::meke('View');
+        return App::make('View');
     }
-
-    /**
-     * Set layout
-     *
-     * @param string $layout layout name
-     */
-    public function layoutSet($layout);
-    
-    /**
-     * Get current layout
-     *
-     * @return string layout name
-     */
-    public function layoutGet();
 
     /**
      * Take over other theme's layout|color|texture status
@@ -187,7 +235,7 @@ class Theme implements ThemeInterface {
      * @param ThemeInterface $theme_taked_over
      * @return void
      */
-    protected function takeOver(ThemeInterface $theme_taked_over)
+    public function takeOver(ThemeInterface $theme_taked_over)
     {
         $this->layoutSet($theme_taked_over->layoutGet());
         $this->colorSet($theme_taked_over->colorGet());
