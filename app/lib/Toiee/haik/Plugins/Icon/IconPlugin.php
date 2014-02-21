@@ -20,20 +20,20 @@ class IconPlugin extends Plugin {
             return 'error';
         }
 
-        $icon_type = $prefix = $value = '';
+        $base_class = $prefix = $type = '';
         foreach ($params as $param)
         {
             if ($param == 'glyphicon')
             {
-                $icon_type = $param.' ';
+                $base_class = $param.' ';
                 $prefix = $param.'-';
             }
             else
             {
-                $value = $param;
+                $type = $param;
             }
         }
-        return '<i class="'.$icon_type.$prefix.$value.'"></i>';
+        return '<i class="'.$base_class.$prefix.$type.'"></i>';
 
     }
 }
