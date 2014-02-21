@@ -140,4 +140,26 @@ class ThemeTest extends TestCase {
         
     }
     
+    /**
+     * @expectedException Toiee\haik\Themes\ThemeNotHasLayoutsException
+     */
+    public function testSetNoLayoutsConfigThrowsException()
+    {
+        App::bind('ThemeConfigLoaderInterface', function()
+        {
+            $dummyOptions = array(
+                'name' => 'semi',
+                'layouts' => array(),
+                'default_layout' => 'content',
+                'colors' => array('blue'),
+                'textures' => array(),
+            );
+            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
+            $mock->shouldReceive('load')->andReturn($dummyOptions);
+            return $mock;
+        });
+
+        $theme = App::make('HaikTheme');
+    }
+    
 }
