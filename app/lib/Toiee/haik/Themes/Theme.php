@@ -41,7 +41,7 @@ class Theme implements ThemeInterface {
     protected function initLayouts()
     {
         $layouts = $this->get('layouts', false);
-        if ($layouts === false)
+        if ( ! $layouts)
         {
             throw new ThemeNotHasLayoutsException;
         }
