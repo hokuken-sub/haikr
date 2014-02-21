@@ -18,16 +18,21 @@ class IconPluginTest extends TestCase {
             ),
             'default' => array(
                 'icon' => array('search'),
-                'assert' => '<i class="glyphicon glyphicon-search"></i>',
+                'assert' => '<i class="haik-plugin-icon glyphicon glyphicon-search"></i>',
             ),
             'search' => array(
                 'icon' => array('glyphicon', 'search'),
-                'assert' => '<i class="glyphicon glyphicon-search"></i>',
+                'assert' => '<i class="haik-plugin-icon glyphicon glyphicon-search"></i>',
             ),
             'search_reverse' => array(
                 'icon' => array('search', 'glyphicon'),
-                'assert' => '<i class="glyphicon glyphicon-search"></i>',
+                'assert' => '<i class="haik-plugin-icon glyphicon glyphicon-search"></i>',
             ),
+            'escape_html_char' => array(
+                'icon' => array('<h1>'),
+                'assert' => '<i class="haik-plugin-icon glyphicon glyphicon-&lt;h1&gt;"></i>',
+            ),
+
         );
         
         foreach ($tests as $key => $data)
