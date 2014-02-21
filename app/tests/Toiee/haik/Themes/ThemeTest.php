@@ -24,6 +24,7 @@ class ThemeTest extends TestCase {
         App::bind('HaikTheme', function()
         {
             return new Theme(
+                App::make('ThemeManager'),
                 App::make('ThemeConfigLoaderInterface')
             );
         });
@@ -128,6 +129,7 @@ class ThemeTest extends TestCase {
         // texture: false
         
         $new_theme = new Theme(
+            App::make('ThemeManager'),
             App::make('ThemeConfigLoaderInterface'),
             $theme
         );

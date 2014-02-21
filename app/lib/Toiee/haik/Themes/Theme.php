@@ -5,14 +5,17 @@ use App;
 
 class Theme implements ThemeInterface {
     
+    protected $theme_data;
+
     protected $config;
-    
+
     protected $layout;
     protected $color;
     protected $texture;
     
-    public function __construct(ThemeConfigLoaderInterface $loader, ThemeInterface $theme_taked_over = null)
+    public function __construct(ThemeDataInterface $theme_data, ThemeConfigLoaderInterface $loader, ThemeInterface $theme_taked_over = null)
     {
+        $this->theme_data = $theme_data;
         $this->loader = $loader;
         $this->config = $this->loader->load($this);
         
@@ -92,6 +95,12 @@ class Theme implements ThemeInterface {
         }
     }
     
+    protected function layoutCreateFilter(){}
+
+    protected function colorCreateFilter(){}
+
+    protected function textureCreateFilter(){}
+
     /**
      * Determine if the given configuration value exists.
      *
@@ -226,8 +235,24 @@ class Theme implements ThemeInterface {
      */
     public function make()
     {
+        foreach (array('layout', 'color', 'texture') as $variation)
+        {
+            $method = camel_case("{$variation}_after_fiter");
+            if (method_exists($this, $method))
+            {
+                $this->$method();
+            }
+        }
+
+        //TODO: make view using ThemeData
         return App::make('View');
     }
+
+    protected function layoutAfterFilter(){}
+
+    protected function colorAfterFilter(){}
+
+    protected function textureAfterFilter(){}
 
     /**
      * Take over other theme's layout|color|texture status
