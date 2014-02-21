@@ -11,11 +11,6 @@ class IconPluginTest extends TestCase {
     public function testParameter()
     {
         $tests = array(
-            // !TODO: paramsが無いとき、エラー処理
-            'no_params' => array(
-                'icon' => array(),
-                'assert' => 'error',
-            ),
             'default' => array(
                 'icon' => array('search'),
                 'assert' => '<i class="haik-plugin-icon glyphicon glyphicon-search"></i>',
@@ -40,9 +35,33 @@ class IconPluginTest extends TestCase {
             $this->assertEquals($data['assert'], with(new IconPlugin)->inline($data['icon']));
         }
 
-        $this->markTestIncomplete(
-            'This test is Incomplete.'
-        );
+    }
+    
+    public function testOutputErrorIfUserAuthenticatedWithNoParams()
+    {
+        $user = User::where('email', 'touch@toiee.jp')->first();
+        $this->be($user);
+        if (Auth::check())
+        {
+            $no_params = array(
+                'icon' => array(),
+                'assert' => '<p class="text-danger">You need to put parameter! ( Usage: &icon(search); )</p>',
+            );
+            
+            $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
+        }
+    }
 
+    public function testOutputBlankIfUserNotAuthenticatedWithNoParams()
+    {
+        if ( ! Auth::check())
+        {
+            $no_params = array(
+                'icon' => array(),
+                'assert' => '',
+            );
+
+            $this->assertEquals($no_params['assert'], with(new IconPlugin)->inline($no_params['icon']));
+        }
     }
 }
