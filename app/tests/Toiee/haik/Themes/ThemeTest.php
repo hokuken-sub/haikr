@@ -71,7 +71,7 @@ class ThemeTest extends TestCase {
     {
         $theme = App::make('HaikTheme');
         $theme->colorSet('invalid_color');
-        $theme->assertFalse($theme->colorGet());
+        $this->assertFalse($theme->colorGet());
     }
     
     public function testDefaultTextureGet()
@@ -91,7 +91,7 @@ class ThemeTest extends TestCase {
     {
         $theme = App::make('HaikTheme');
         $theme->textureSet('invalid_texture');
-        $theme->assertFalse($theme->textureGet());
+        $this->assertFalse($theme->textureGet());
     }
     
     public function testMake()
