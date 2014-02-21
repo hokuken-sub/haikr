@@ -40,7 +40,7 @@ class IconPlugin extends Plugin {
 
             }
         }
-        return '<i class="'.$base_class.' '.$prefix.$type.'"></i>';
+        return '<i class="haik-plugin-icon '.$base_class.' '.$prefix.$type.'"></i>';
 
     }
 }
