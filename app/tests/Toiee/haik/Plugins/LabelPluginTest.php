@@ -32,7 +32,7 @@ class LabelPluginTest extends TestCase {
         
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], with(new LabelPlugin)->inline($data['icon']));
+            $this->assertEquals($data['assert'], with(new LabelPlugin)->inline($data['label'], 'test'));
         }
 
     }
