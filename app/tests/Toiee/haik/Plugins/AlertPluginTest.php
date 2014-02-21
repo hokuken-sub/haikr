@@ -29,7 +29,7 @@ class AlertPluginTest extends TestCase {
             ),
             'escape_html_char' => array(
                 'alert' => array('<strong>'),
-                'assert' => '<div class="alert alert-warning &lt;strong&gt;">'.\Parser::parse('test').'</div>',
+                'assert' => '<div class="haik-plugin-alert alert alert-warning &lt;strong&gt;">'.\Parser::parse('test').'</div>',
             ),
         );
 
