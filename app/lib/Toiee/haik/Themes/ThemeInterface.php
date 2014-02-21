@@ -1,5 +1,5 @@
 <?php
-namespace Toiee\haik\Themes\ThemeInterface.php
+namespace Toiee\haik\Themes;
 
 interface ThemeInterface {
 
@@ -96,5 +96,5 @@ interface ThemeInterface {
      * @param ThemeInterface $theme_taked_over
      * @return void
      */
-    protected function takeOver(ThemeInterface $theme_taked_over);
+    public function takeOver(ThemeInterface $theme_taked_over);
 }
