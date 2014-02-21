@@ -16,6 +16,10 @@ class IconPluginTest extends TestCase {
                 'icon' => array(),
                 'assert' => 'error',
             ),
+            'default' => array(
+                'icon' => array('search'),
+                'assert' => '<i class="glyphicon glyphicon-search"></i>',
+            ),
             'search' => array(
                 'icon' => array('glyphicon', 'search'),
                 'assert' => '<i class="glyphicon glyphicon-search"></i>',
@@ -24,16 +28,16 @@ class IconPluginTest extends TestCase {
                 'icon' => array('search', 'glyphicon'),
                 'assert' => '<i class="glyphicon glyphicon-search"></i>',
             ),
-            'no_icon_type' => array(
-                'icon' => array('search'),
-                'assert' => '<i class="search"></i>',
-            ),
         );
         
         foreach ($tests as $key => $data)
         {
             $this->assertEquals($data['assert'], with(new IconPlugin)->inline($data['icon']));
         }
-        $this->markTestIncomplete();
+
+        $this->markTestIncomplete(
+            'This test is Incomplete.'
+        );
+
     }
 }
