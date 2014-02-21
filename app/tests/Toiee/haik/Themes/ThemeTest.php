@@ -44,14 +44,14 @@ class ThemeTest extends TestCase {
     public function testDefaultLayoutGet()
     {
         $theme = App::make('HaikTheme');
-        $this->assertTrue('top', $theme->layoutGet());
+        $this->assertEquals('top', $theme->layoutGet());
     }
     
     public function testLayoutSetAndGet()
     {
         $theme = App::make('HaikTheme');
         $theme->layoutSet('content');
-        $this->assertTrue('content', $theme->layoutGet());
+        $this->assertEquals('content', $theme->layoutGet());
     }
     
     public function testDefaultColorGet()
