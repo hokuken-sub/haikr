@@ -20,20 +20,27 @@ class IconPlugin extends Plugin {
             return 'error';
         }
 
-        $base_class = $prefix = $type = '';
+        $base_class = 'glyphicon';
+        $prefix = $base_class.'-';
+        $type = '';
         foreach ($params as $param)
         {
-            if ($param == 'glyphicon')
+            switch ($param)
             {
-                $base_class = $param.' ';
-                $prefix = $param.'-';
-            }
-            else
-            {
-                $type = $param;
+                case 'glyphicon':
+                // haik-icon will be added in the future
+                case 'haik-icon':
+                // font awesome icon will be added in the future
+                case 'fa':
+                    $base_class = $param;
+                    $prefix = $base_class.'-';
+                    break;
+                default:
+                    $type = $param;
+
             }
         }
-        return '<i class="'.$base_class.$prefix.$type.'"></i>';
+        return '<i class="'.$base_class.' '.$prefix.$type.'"></i>';
 
     }
 }
