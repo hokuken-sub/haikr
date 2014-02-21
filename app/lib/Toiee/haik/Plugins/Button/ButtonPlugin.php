@@ -62,12 +62,7 @@ class ButtonPlugin extends Plugin {
 			}
 		}
 
-        // !TODO naviに設置した場合の処理
-        $wrapper = '%s';
-        
-
-        $html = sprintf($wrapper, '<a class="haik-plugin-button btn'.$type.$size.$class.'" href="'.e($href).'">'.$body.'</a>');
+        $html = '<a class="haik-plugin-button btn'.$type.$size.e($class).'" href="'.e($href).'">'.$body.'</a>';
         return $html;
-
     }
 }
