@@ -113,8 +113,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($md_heading1['assert'],
                             with(new PanelPlugin)->convert($md_heading1['panel'], "# test title\n====\ntest"));
@@ -124,8 +124,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($md_heading6['assert'],
                             with(new PanelPlugin)->convert($md_heading6['panel'], "###### test title\n====\ntest"));
@@ -135,8 +135,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($html_heading1['assert'],
                             with(new PanelPlugin)->convert($html_heading1['panel'], "<h1>test title</h1>\n====\ntest"));
@@ -146,8 +146,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($html_heading6['assert'],
                             with(new PanelPlugin)->convert($html_heading6['panel'], "<h6>test title</h6>\n====\ntest"));
@@ -157,8 +157,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($directly_html_heading1['assert'], 
                             with(new PanelPlugin)->convert($directly_html_heading1['panel'],
@@ -169,8 +169,8 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6></div>'
-                      . '<div class="panel-body">test</div></div>',
+                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
         $this->assertEquals($directly_html_heading6['assert'], 
                             with(new PanelPlugin)->convert($directly_html_heading6['panel'],
