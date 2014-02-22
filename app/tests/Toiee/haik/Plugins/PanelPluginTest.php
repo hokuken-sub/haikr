@@ -124,7 +124,7 @@ class PanelPluginTest extends TestCase {
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h1></div>'
+                      . '<h6 class="panel-title">test title</h6></div>'
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($md_heading6['assert'],
