@@ -99,7 +99,7 @@ class PanelPluginTest extends TestCase {
 
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], with(new PanelPlugin)->convert($data['panel'], 'test title\n====\ntest'));
+            $this->assertEquals($data['assert'], with(new PanelPlugin)->convert($data['panel'], "test title\n====\ntest"));
         }
         $this->markTestIncomplete(
             'This test is Incomplete'
@@ -117,7 +117,7 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($md_heading1['assert'],
-                            with(new PanelPlugin)->convert($md_heading1['panel'], '# test title\n====\ntest'));
+                            with(new PanelPlugin)->convert($md_heading1['panel'], "# test title\n====\ntest"));
 
 
         $md_heading6 = array(
@@ -128,7 +128,7 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($md_heading6['assert'],
-                            with(new PanelPlugin)->convert($md_heading6['panel'], '###### test title\n====\ntest'));
+                            with(new PanelPlugin)->convert($md_heading6['panel'], "###### test title\n====\ntest"));
 
 
         $html_heading1 = array(
@@ -139,7 +139,7 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($html_heading1['assert'],
-                            with(new PanelPlugin)->convert($html_heading1['panel'], '<h1>test title</h1>\n====\ntest'));
+                            with(new PanelPlugin)->convert($html_heading1['panel'], "<h1>test title</h1>\n====\ntest"));
 
 
         $html_heading6 = array(
@@ -150,7 +150,7 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($html_heading6['assert'],
-                            with(new PanelPlugin)->convert($html_heading6['panel'], '<h6>test title</h6>\n====\ntest'));
+                            with(new PanelPlugin)->convert($html_heading6['panel'], "<h6>test title</h6>\n====\ntest"));
 
 
         $directly_html_heading1 = array(
@@ -162,7 +162,7 @@ class PanelPluginTest extends TestCase {
         );
         $this->assertEquals($directly_html_heading1['assert'], 
                             with(new PanelPlugin)->convert($directly_html_heading1['panel'],
-                                                           '<h1 class="panel-title">test title</h1>\n====\ntest'));
+                                                           "<h1 class=\"panel-title\">test title</h1>\n====\ntest"));
 
 
         $directly_html_heading6 = array(
@@ -174,7 +174,7 @@ class PanelPluginTest extends TestCase {
         );
         $this->assertEquals($directly_html_heading6['assert'], 
                             with(new PanelPlugin)->convert($directly_html_heading6['panel'],
-                                                           '<h6 class="panel-title">test title</h6>\n====\ntest'));
+                                                           "<h6 class=\"panel-title\">test title</h6>\n====\ntest"));
 
 
         $this->markTestIncomplete(
