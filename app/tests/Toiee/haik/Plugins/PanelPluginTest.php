@@ -49,9 +49,6 @@ class PanelPluginTest extends TestCase {
         {
             $this->assertEquals($data['assert'], with(new PanelPlugin)->convert($data['panel'], 'test'));
         }
-        $this->markTestIncomplete(
-            'This test is Incomplete'
-        );
     }
 
 
@@ -101,84 +98,109 @@ class PanelPluginTest extends TestCase {
         {
             $this->assertEquals($data['assert'], with(new PanelPlugin)->convert($data['panel'], "test title\n====\ntest"));
         }
-        $this->markTestIncomplete(
-            'This test is Incomplete'
-        );
     }
 
 
     public function testHeadingParse()
     {
-        $md_heading1 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($md_heading1['assert'],
-                            with(new PanelPlugin)->convert($md_heading1['panel'], "# test title\n====\ntest"));
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $md_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . '<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>'."\n".'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+            $this->assertEquals($md_heading['assert'],
+                                with(new PanelPlugin)->convert($md_heading['panel'], str_repeat('#', $i)." test title\n====\ntest"));
+        }
+
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . '<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>'."\n".'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+            $this->assertEquals($html_heading['assert'],
+                                with(new PanelPlugin)->convert($html_heading['panel'], "<h".strval($i).">test title</h".strval($i).">\n====\ntest"));
+        }
+
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $directly_html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . '<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>'."\n".'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+            $this->assertEquals($directly_html_heading['assert'],
+                                with(new PanelPlugin)->convert($directly_html_heading['panel'],
+                                                               "<h".strval($i)." class=\"panel-title\">test title</h".strval($i).">\n====\ntest"));
+        }
+    }
 
 
-        $md_heading6 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($md_heading6['assert'],
-                            with(new PanelPlugin)->convert($md_heading6['panel'], "###### test title\n====\ntest"));
+    public function testMultipleHeadingParse()
+    {
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $html = str_repeat('<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>', $i);
 
+            $md_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($html).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
 
-        $html_heading1 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($html_heading1['assert'],
-                            with(new PanelPlugin)->convert($html_heading1['panel'], "<h1>test title</h1>\n====\ntest"));
+            $body = str_repeat(str_repeat('#', $i)." test title\n", $i)."====\ntest";
+            $this->assertEquals($md_heading['assert'],
+                                with(new PanelPlugin)->convert($md_heading['panel'], $body));
+        }
 
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $html = str_repeat('<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>', $i);
 
-        $html_heading6 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($html_heading6['assert'],
-                            with(new PanelPlugin)->convert($html_heading6['panel'], "<h6>test title</h6>\n====\ntest"));
+            $html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($html).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
 
+            $body = str_repeat("<h".strval($i).">test title</h".strval($i).">\n", $i)."====\ntest";
+            $this->assertEquals($html_heading['assert'],
+                                with(new PanelPlugin)->convert($html_heading['panel'], $body));
+        }
 
-        $directly_html_heading1 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($directly_html_heading1['assert'], 
-                            with(new PanelPlugin)->convert($directly_html_heading1['panel'],
-                                                           "<h1 class=\"panel-title\">test title</h1>\n====\ntest"));
+        for ($i = 1; $i <= 6; $i++)
+        {
+            $html = str_repeat('<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>', $i);
 
+            $directly_html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($html).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
 
-        $directly_html_heading6 = array(
-            'panel' => array(),
-            'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                      . '<div class="panel-heading">'
-                      . '<h6 class="panel-title">test title</h6>'."\n".'</div>'
-                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-        );
-        $this->assertEquals($directly_html_heading6['assert'], 
-                            with(new PanelPlugin)->convert($directly_html_heading6['panel'],
-                                                           "<h6 class=\"panel-title\">test title</h6>\n====\ntest"));
+            $body = str_repeat("<h".strval($i)." class=\"panel-title\">test title</h".strval($i).">", $i)."\n====\ntest";
+            $this->assertEquals($directly_html_heading['assert'],
+                                with(new PanelPlugin)->convert($directly_html_heading['panel'], $body));
+        }
 
 
         $this->markTestIncomplete(
-            'This test is Incomplete'
+            'This test is Incomplete.'
         );
     }
 }
