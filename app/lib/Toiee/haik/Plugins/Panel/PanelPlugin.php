@@ -33,6 +33,16 @@ class PanelPlugin extends Plugin {
             }
         }
 
+        if (preg_match("/\n====\n/", $body))
+        {
+            $body = explode("\n====\n", $body);
+            list($title, $content) = $body;
+
+            return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
+                 . '<div class="panel-heading">'.\Parser::parse($title).'</div>'
+                 . '<div class="panel-body">'.\Parser::parse($content).'</div></div>';
+        }
+
         return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
              . '<div class="panel-body">'.\Parser::parse($body).'</div></div>';
     }
