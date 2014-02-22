@@ -14,6 +14,11 @@ class PanelPlugin extends Plugin {
      */
     public function convert($params = array(), $body = '')
     {
-      
+        $base_class = 'panel';
+        $prefix = $base_class.'-';
+        $type = 'default';
+
+        return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
+             . '<div class="panel-body">'.$body.'</div></div>';
     }
 }
