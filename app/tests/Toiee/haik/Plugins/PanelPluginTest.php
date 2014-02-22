@@ -15,32 +15,32 @@ class PanelPluginTest extends TestCase {
             'default' => array(
                 'panel' => array(),
                 'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_primary' => array(
                 'panel' => array('primary'),
                 'assert' => '<div class="haik-plugin-panel panel panel-primary">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_success' => array(
                 'panel' => array('success'),
                 'assert' => '<div class="haik-plugin-panel panel panel-success">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_info' => array(
                 'panel' => array('info'),
                 'assert' => '<div class="haik-plugin-panel panel panel-info">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_warning' => array(
                 'panel' => array('warning'),
                 'assert' => '<div class="haik-plugin-panel panel panel-warning">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_danger' => array(
                 'panel' => array('danger'),
                 'assert' => '<div class="haik-plugin-panel panel panel-danger">'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
 
         );
@@ -61,38 +61,38 @@ class PanelPluginTest extends TestCase {
             'default' => array(
                 'panel' => array(),
                 'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_primary' => array(
                 'panel' => array('primary'),
                 'assert' => '<div class="haik-plugin-panel panel panel-primary">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_success' => array(
                 'panel' => array('success'),
                 'assert' => '<div class="haik-plugin-panel panel panel-success">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_info' => array(
                 'panel' => array('info'),
                 'assert' => '<div class="haik-plugin-panel panel panel-info">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_warning' => array(
                 'panel' => array('warning'),
                 'assert' => '<div class="haik-plugin-panel panel panel-warning">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
             'twbs_danger' => array(
                 'panel' => array('danger'),
                 'assert' => '<div class="haik-plugin-panel panel panel-danger">'
-                          . '<div class="panel-heading">test title</div>'
-                          . '<div class="panel-body">test</div></div>',
+                          . '<div class="panel-heading">'.\Parser::parse('test title').'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
             ),
 
         );
@@ -161,7 +161,8 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($directly_html_heading1['assert'], 
-                            with(new PanelPlugin)->convert($directly_html_heading1['panel'], '<h1 class="panel-title">test title</h1>\n====\ntest'));
+                            with(new PanelPlugin)->convert($directly_html_heading1['panel'],
+                                                           '<h1 class="panel-title">test title</h1>\n====\ntest'));
 
 
         $directly_html_heading6 = array(
@@ -172,7 +173,8 @@ class PanelPluginTest extends TestCase {
                       . '<div class="panel-body">test</div></div>',
         );
         $this->assertEquals($directly_html_heading6['assert'], 
-                            with(new PanelPlugin)->convert($directly_html_heading6['panel'], '<h6 class="panel-title">test title</h6>\n====\ntest'));
+                            with(new PanelPlugin)->convert($directly_html_heading6['panel'],
+                                                           '<h6 class="panel-title">test title</h6>\n====\ntest'));
 
 
         $this->markTestIncomplete(

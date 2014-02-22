@@ -34,6 +34,6 @@ class PanelPlugin extends Plugin {
         }
 
         return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
-             . '<div class="panel-body">'.$body.'</div></div>';
+             . '<div class="panel-body">'.\Parser::parse($body).'</div></div>';
     }
 }
