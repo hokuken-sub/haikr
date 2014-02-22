@@ -18,6 +18,21 @@ class PanelPlugin extends Plugin {
         $prefix = $base_class.'-';
         $type = 'default';
 
+        foreach ($params as $param)
+        {
+            switch ($param)
+            {
+                case 'default':
+                case 'primary':
+                case 'success':
+                case 'info':
+                case 'warning':
+                case 'danger':
+                    $type = $param;
+                    break;
+            }
+        }
+
         return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
              . '<div class="panel-body">'.$body.'</div></div>';
     }
