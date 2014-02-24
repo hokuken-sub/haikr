@@ -5,7 +5,8 @@ use Toiee\haik\Plugins\Plugin;
 
 class ColsPlugin extends Plugin {
 
-    const MAX_COL_NUM  = 12;
+    const COL_MAX_NUM  = 12;
+    const COL_DELIMITER = "\r====\r";
 
     protected $className;
     protected $delimiter;
@@ -18,10 +19,11 @@ class ColsPlugin extends Plugin {
     
     protected $totalColNum;
 
+    
     public function __construct()
     {
         $this->colBase = array (
-            'cols'   => self::MAX_COL_NUM,
+            'cols'   => self::COL_MAX_NUM,
             'offset' => 0,
             'class'  => '',
             'style'  => '',
@@ -31,6 +33,7 @@ class ColsPlugin extends Plugin {
         $this->cols = array();
         $this->totalColNum = 0;
         $this->className = '';
+        $this->delimiter = self::COL_DELIMITER;
     }
 
     /**
@@ -51,9 +54,9 @@ class ColsPlugin extends Plugin {
         $this->parseParams();
         
         // !TODO over max col num
-        if ($this->totalColNum > self::MAX_COL_NUM)
+        if ($this->totalColNum > self::COL_MAX_NUM)
         {
-            $message = 'Over '. self::MAX_COL_NUM . 'columns.';
+            $message = 'Over '. self::COL_MAX_NUM . 'columns.';
         }
 
         $html = '';
