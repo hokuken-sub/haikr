@@ -19,14 +19,6 @@ class ButtonPluginTest extends TestCase {
                 'button' => array('http://hokuken.com'),
                 'assert' => '<a class="haik-plugin-button btn btn-default" href="http://hokuken.com">test</a>',
             ),
-            'nopage' => array(
-                'button' => array('Keishi'),
-                'assert' => '<a class="haik-plugin-button btn btn-default" href="' . Haik::pageUrl('Keishi') . '">test</a>',
-            ),
-            'none' => array(
-                'button' => array('FrontPage'),
-                'assert' => '<a class="haik-plugin-button btn btn-default" href="' . Haik::pageUrl('FrontPage') . '">test</a>',
-            ),
             'primary' => array(
                 'button' => array('FrontPage', 'primary'),
                 'assert' => '<a class="haik-plugin-button btn btn-primary" href="' . Haik::pageUrl('FrontPage') . '">test</a>',
