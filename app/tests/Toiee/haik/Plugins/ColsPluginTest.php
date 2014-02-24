@@ -266,6 +266,21 @@ class ColsPluginTest extends TestCase {
                             '<div class="col-sm-4 starbacks" style="">'.\Parser::parse("col2\ncol3").'</div>'."\n".
                             '</div>',
             ),
+            'nodelimiter' => array(
+                'cols' => array('3+2','4+1.starbacks','class=tea'),
+                'body' => "STYLE:background-color:#000;color:#ccc;\n".
+                          "CLASS:burbon\n".
+                          "col1\n".
+                          "\n====\n".
+                          "STYLE:background-color:#f33;color:#222;\n".
+                          "CLASS:cafe\n".
+                          "col2\n".
+                          "col3",
+                'assert' => '<div class="haik-plugin-cols row tea">'."\n".
+                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
+                            '<div class="col-sm-4 col-sm-offset-1 starbacks cafe" style="background-color:#f33;color:#222;">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                            '</div>',
+            ),
         );
 
         foreach ($tests as $key => $data)

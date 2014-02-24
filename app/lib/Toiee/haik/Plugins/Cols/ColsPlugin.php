@@ -132,7 +132,7 @@ class ColsPlugin extends Plugin {
 
     		    if (preg_match('/(?:^|\n)CLASS:(.+?)\n/', $data[$i], $mts))
     		    {
-    		        $this->cols[$i]['class'] = trim($mts[1]);
+    		        $this->cols[$i]['class'] = trim($this->cols[$i]['class'] . ' ' . trim($mts[1]));
         		    $data[$i] = preg_replace('/'.preg_quote($mts[0], '/'). '/', '', $data[$i], 1);
     		    }
 
