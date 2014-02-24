@@ -25,11 +25,68 @@ class ColsPluginTest extends TestCase {
                 )
             ),
             'only1num' => array(
-                'cols'   => array(),
+                'cols'   => array(3),
                 'assert' => array(
                     array (
                         'cols'   => 3,
                         'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
+            'only1nums' => array(
+                'cols'   => array(3,4),
+                'assert' => array(
+                    array (
+                        'cols'   => 3,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                    array (
+                        'cols'   => 4,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
+            'offset' => array(
+                'cols'   => array('3+3'),
+                'assert' => array(
+                    array (
+                        'cols'   => 3,
+                        'offset' => 3,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
+            'offsets' => array(
+                'cols'   => array('3+3','2+1','1+2'),
+                'assert' => array(
+                    array (
+                        'cols'   => 3,
+                        'offset' => 3,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                    array (
+                        'cols'   => 2,
+                        'offset' => 1,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                    array (
+                        'cols'   => 1,
+                        'offset' => 2,
                         'class'  => '',
                         'style'  => '',
                         'body'   => '',
@@ -44,6 +101,11 @@ class ColsPluginTest extends TestCase {
             $cols->convert($data['cols'], '');
             $this->assertAttributeSame($data['assert'], 'cols', $cols);
         }
+    }
+
+    public function testOverMaxCols()
+    {
+        $this->markTestIncomplete('This implements not yet');
     }
 
 }
