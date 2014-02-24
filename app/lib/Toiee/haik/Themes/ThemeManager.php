@@ -5,10 +5,9 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
 
     protected $layout_data;
     protected $layout_data_context;
+
+    /** Theme object */
     protected $theme;
-    protected $layout;
-    protected $color;
-    protected $texture;
 
     public function __construct()
     {
@@ -144,16 +143,23 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     
     /**
      * set theme if theme is exist
-     * @params string $theme theme name
+     * @params string|ThemeInterface $theme theme name or Theme object
      */
     public function themeSet($theme)
     {
-        $this->theme = $theme;
+        if ($theme instanceof ThemeInterface)
+        {
+            $this->theme = $theme;
+        }
+        else if (is_string($theme))
+        {
+            // !TODO: create Theme object
+        }
     }
 
     /**
      * get theme name
-     * @return string|false theme. if theme is not set then return false
+     * @return ThemeInterface|false theme. if theme is not set then return false
      */
     public function themeGet()
     {
@@ -161,78 +167,6 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
         {
             return $this->theme;
         }
-        
         return false;
     }
-
-    /**
-     * set layout if layout is exist
-     * @params string $layout layout name
-     */
-    public function layoutSet($layout)
-    {
-        $this->layout = $layout;
-    }
-
-    /**
-     * get layout name
-     * @return string|false layout. if layout is not set then return false
-     */
-    public function layoutGet()
-    {
-        if ($this->layout)
-        {
-            return $this->layout;
-        }
-        
-        return false;
-    }
-
-    /**
-     * set color if color is exist
-     * @params string $color
-     */
-    public function colorSet($color)
-    {
-        $this->color = $color;
-    }
-
-    /**
-     * get color
-     * @return string|false color. if color is not set then return false
-     */
-    public function colorGet()
-    {
-        if ($this->color)
-        {
-            return $this->color;
-        }
-        
-        return false;
-    }
-
-    /**
-     * set texture if texture is exist
-     * @params string $texture
-     */
-    public function textureSet($texture)
-    {
-        $this->texture = $texture;
-    }
-
-    /**
-     * get texture
-     * @return string|false texture. if texture is not set then return false
-     */
-    public function textureGet()
-    {
-        if ($this->texture)
-        {
-            return $this->texture;
-        }
-        
-        return false;
-    }
-    
-
 }
