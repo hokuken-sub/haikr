@@ -5,7 +5,7 @@ use App;
 
 class Theme implements ThemeInterface {
     
-    protected $theme_data;
+    protected $manager;
 
     protected $config;
 
@@ -13,11 +13,10 @@ class Theme implements ThemeInterface {
     protected $color;
     protected $texture;
     
-    public function __construct(ThemeDataInterface $theme_data, ThemeConfigLoaderInterface $loader, ThemeInterface $theme_taked_over = null)
+    public function __construct(ThemeManager $manager, $config = array(), ThemeInterface $theme_taked_over = null)
     {
-        $this->theme_data = $theme_data;
-        $this->loader = $loader;
-        $this->config = $this->loader->load($this);
+        $this->manager = $manager;
+        $this->config = $config;
         
         $this->initLayouts();
         $this->initColors();

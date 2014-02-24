@@ -191,6 +191,7 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     protected function createLocalRepositoryDriver()
     {
         $path = \Config::get('theme.local.path');
-        return new LocalRepository($path);
+        return new LocalRepository($this, $path);
     }
+
 }

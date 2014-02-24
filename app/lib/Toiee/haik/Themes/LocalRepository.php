@@ -3,12 +3,14 @@ namespace Toiee\haik\Themes;
 
 class LocalRepository implements ThemeRepositoryInterface {
 
+    protected $manager;
+
     /**
      * path to theme repository
      */
     protected $path;
 
-    public function __construct($path)
+    public function __construct(ThemeManager $manager, $path)
     {
         $this->path = $path;
     }
@@ -63,5 +65,16 @@ class LocalRepository implements ThemeRepositoryInterface {
     protected function getClassName($name)
     {
         return studly_case($name.'_theme');
+    }
+
+    public function getPath($name)
+    {
+        return str_finish($this->path, '/') . $name;
+    }
+
+    public function getConfig($name)
+    {
+        //TODO: parse
+        return include($this->getPath($name) . '/config.php');
     }
 }
