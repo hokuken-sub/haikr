@@ -93,6 +93,25 @@ class ColsPluginTest extends TestCase {
                     ),
                 )
             ),
+            'colClass' = array(
+                'cols'   => array('1.colOneClass, 2.colTwoClass'),
+                'assert' => array(
+                    array (
+                        'cols'   => 1,
+                        'offset' => 0,
+                        'class'  => 'colOneClass',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                    array (
+                        'cols'   => 2,
+                        'offset' => 0,
+                        'class'  => 'colTwoClass',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
         );
 
         foreach ($tests as $key => $data)
