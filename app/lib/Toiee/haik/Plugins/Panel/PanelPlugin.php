@@ -34,31 +34,34 @@ class PanelPlugin extends Plugin {
         }
 
         # check $body has "====".
-        if (preg_match("/\n====\n/", $body))
+        if (preg_match('{ \n+====\n+ }mx', $body))
         {
-            $body = explode("\n====\n", $body);
+            $body = preg_split('{ \n+====\n+ }mx', $body);
             list($title, $content) = $body;
+            $parse_title = \Parser::parse($title);
 
-            # check $body after parsed is heading.
-            if (preg_match("/(<h[1-6].*?>).*?(<\/h[1-6]>)/", \Parser::parse($title)))
+            # check $parse_title after parsed is heading.
+            if (preg_match_all('{ (<h([1-6]).*?>)(.*?(</h\2>)) }mx', $parse_title, $matches))
             {
-                # start check detail
-                switch (true)
+                # prepare replacing heading.
+                $serches = $matches[0];
+                $replaces = array();
+                # check heading has class.
+                foreach ($matches[1] as $i => $heading)
                 {
-                    # if user use markdown, put {.panel-title}
-                    case preg_match_all("/^#{1,6}/", $title):
-                        $title = $title.' {.panel-title}';
-                        break;
-
-                    # if user use raw html without panel-title class, put it.
-                    case preg_match("/<h[1-6]>/", $title):
-                        $title = preg_replace("/>/", " class=\"panel-title\">", $title, 1);
-                        break;
+                    if ( ! preg_match('{ \sclass[ ]*?=[ ]*".*?" }mx', $heading))
+                    {
+                        # add panel-title class to heading.
+                        $heading = str_replace('>', ' class="panel-title">', $heading);
+                        $replaces[] = $heading.$matches[3][$i];
+                    }
                 }
+                # replace $parse_title with right class.
+                $parse_title = str_replace($serches, $replaces, $parse_title);
             }
 
             return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
-                 . '<div class="panel-heading">'.\Parser::parse($title).'</div>'
+                 . '<div class="panel-heading">'.$parse_title.'</div>'
                  . '<div class="panel-body">'.\Parser::parse($content).'</div></div>';
         }
 
