@@ -12,12 +12,14 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider paramProvider
      */
+/*
     public function testParameter($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'cols', $plugin);
     }
+*/
     
     public function paramProvider()
     {
@@ -131,12 +133,14 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider pluginClassProvider
      */
+/*
     public function testPluginClass($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'className', $plugin);
     }
+*/
     
     public function pluginClassProvider()
     {
@@ -157,29 +161,108 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider delimiterProvider
      */
+/*
     public function testDeleimiter($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'delimiter', $plugin);
     }
+*/
     
     public function delimiterProvider()
     {
         $tests = array(
             'delimiter' => array(
                 'cols'   => array('++++'),
-                'assert' => "\r++++\r",
+                'assert' => "\n++++\n",
             ),
             'no-delimiter' => array(
                 'cols'   => array(),
-                'assert' => "\r====\r",
+                'assert' => "\n====\n",
             ),
         );
         
         return $tests;
     }
-  
+    
+    /**
+     * @dataProvider bodyProvider
+     */
+/*
+    public function testParseBody($body, $assert)
+    {
+        $plugin = new ColsPlugin;
+        $plugin->convert(array(), $body);
+        $this->assertAttributeSame($assert, 'cols', $plugin);
+    }
+*/
+    
+    public function bodyProvider()
+    {
+        $tests = array(
+            'none' => array(
+                'body'   => "str1\nstr2",
+                'assert' => array(
+                    array (
+                        'cols'   => 12,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => "str1\nstr2",
+                    ),
+                ),
+            ),
+            '2cols' => array(
+                'body'   => "str1\n====\nstr2",
+                'assert' => array(
+                    array (
+                        'cols'   => 6,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => "str1",
+                    ),
+                    array (
+                        'cols'   => 6,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => "str2",
+                    ),
+                ),
+            ),
+        );
+        
+        return $tests;
+    }
+    
+    public function testHtml()
+    {
+        $tests = array(
+            'no_params' => array(
+                'cols' => array(),
+                'body' => 'test',
+                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12" style="">'.\Parser::parse('test').'</div></div>',
+            ),
+            'class' => array(
+                'cols' => array(),
+                'body' => "CLASS:hogeclass\ntest",
+                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12 hogeclass" style="">'.\Parser::parse('test').'</div></div>',
+            ),
+            'style' => array(
+                'cols' => array(),
+                'body' => "STYLE:background-color:#330000;color:#fff;\ntest",
+                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12" style="background-color:#330000;color:#fff;">'.\Parser::parse('test').'</div></div>',
+            ),
+        );
+
+        foreach ($tests as $key => $data)
+        {
+            $this->assertEquals($data['assert'], with(new ColsPlugin)->convert($data['cols'], $data['body']));
+        }
+    }
+    
 
     public function testOverMaxCols()
     {

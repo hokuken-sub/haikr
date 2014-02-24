@@ -6,7 +6,7 @@ use Toiee\haik\Plugins\Plugin;
 class ColsPlugin extends Plugin {
 
     const COL_MAX_NUM  = 12;
-    const COL_DELIMITER = "\r====\r";
+    const COL_DELIMITER = "\n====\n";
 
     protected $className;
     protected $delimiter;
@@ -45,21 +45,23 @@ class ColsPlugin extends Plugin {
      */
     public function convert($params = array(), $body = '')
     {
+
         // set params
         $this->params = $params;
         $this->body = $body;
-        
+
         $message = '';
         
         $this->parseParams();
+        $this->parseBody();
+        
+        $html = $this->getHtml();
         
         // !TODO over max col num
         if ($this->totalColNum > self::COL_MAX_NUM)
         {
             $message = 'Over '. self::COL_MAX_NUM . 'columns.';
         }
-
-        $html = '';
 
         return $html;
     }
@@ -83,18 +85,12 @@ class ColsPlugin extends Plugin {
                 else
                 {
                     // if you want change delimiter
-                    $this->delimiter = "\r" . trim($param) . "\r";
+                    $this->delimiter = "\n" . trim($param) . "\n";
                 }
             }
             
             $this->cols[] = array_merge($this->colBase, $cols);
             $this->totalColNum++;
-        }
-
-        if (count($this->params) == 0)
-        {
-            $this->cols[] = $this->colBase;
-            $this->totalColNum = 1;
         }
     }
 
@@ -103,8 +99,61 @@ class ColsPlugin extends Plugin {
      */
     protected function parseBody()
     {
-        $this->cols['body'] = $this->body;
+        if (count($this->cols) === 0)
+        {
+            // if parameter is not set then make cols with body
+        	$data = explode($this->delimiter, $this->body);
+    		$col_num = (int)(self::COL_MAX_NUM / count($data));
+    		for ($i = 0; $i < count($data); $i++)
+    		{
+    		    $col['cols'] = $col_num;
+                $this->cols[$i] = array_merge($this->colBase, $col);
+    		}
+        }
+        
+        // if parameter and body delimiter is not match then bind body over cols 
+        $data = array_pad(explode($this->delimiter, $this->body, count($this->cols)), count($this->cols), '');
+    	for($i = 0; $i < count($this->cols); $i++)
+    	{
+    		if (isset($data[$i]))
+    		{
+    		    if (preg_match('/(?:^|\n)STYLE:(.+?)\n/', $data[$i], $mts))
+    		    {
+    		        $this->cols[$i]['style'] = trim($mts[1]);
+        		    $data[$i] = preg_replace('/'.preg_quote($mts[0], '/'). '/', '', $data[$i], 1);
+    		    }
+
+    		    if (preg_match('/(?:^|\n)CLASS:(.+?)\n/', $data[$i], $mts))
+    		    {
+    		        $this->cols[$i]['class'] = trim($mts[1]);
+        		    $data[$i] = preg_replace('/'.preg_quote($mts[0], '/'). '/', '', $data[$i], 1);
+    		    }
+
+    		    $this->cols[$i]['body'] = $data[$i];
+    		}
+    	}
     }
+    
+    protected function getHtml()
+    {
+        $col_html = array();
+        $col_format = '<div class="%s" style="%s">%s</div>';
+
+        foreach ($this->cols as $col)
+        {
+            $span   = 'col-sm-'.$col['cols'];
+            $offset = $col['offset'] ? (' col-sm-offset-' . $col['offset']) : '';
+            $class  = $col['class']  ? (' ' . $col['class']) : '';
+            $style  = $col['style']  ? $col['style'] : '';
+            $body = \Parser::parse($col['body']);
+
+            $col_html[] = sprintf($col_format, ($span . $offset . $class), $style, $body);
+        }
+        $html = '<div class="haik-plugin-cols row">'.join("\n", $col_html).'</div>';
+
+        return $html;
+    }
+    
     
     /**
      * parse cols param
