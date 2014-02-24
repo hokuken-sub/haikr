@@ -22,12 +22,12 @@ class LocalRepository implements ThemeRepositoryInterface {
      */
     public function exists($name)
     {
-        $theme_class = $this->getClassName($name);
-        if (class_exists($theme_class, true))
+        $theme_dir = $this->getPath($name);
+        $config_path = $this->getPath($name) . '/config.php';
+        if (is_dir($theme_dir) && file_exists($config_path))
         {
             return true;
         }
-        
         return false;
     }
 
@@ -41,9 +41,7 @@ class LocalRepository implements ThemeRepositoryInterface {
     {
         if ($this->exists($name))
         {
-            $theme_class = $this->getClassName($name);
-            App::bind($theme_class, $theme_class);
-            return App::make($theme_class);
+            return new Theme($this->manager, $this->getConfig());
         }
         
         throw new \InvalidArgumentException("This {$name} theme was not exist");
@@ -58,15 +56,6 @@ class LocalRepository implements ThemeRepositoryInterface {
         return array();
     }
     
-    /**
-     * get theme class name
-     * @return string theme class name
-     */
-    protected function getClassName($name)
-    {
-        return studly_case($name.'_theme');
-    }
-
     public function getPath($name)
     {
         return str_finish($this->path, '/') . $name;
@@ -74,7 +63,21 @@ class LocalRepository implements ThemeRepositoryInterface {
 
     public function getConfig($name)
     {
-        //TODO: parse
-        return include($this->getPath($name) . '/config.php');
+        $config = array();
+        $config_path = $this->getPath($name) . '/config.php';
+        if ($this->exists($name))
+        {
+            $config = include($config_path);
+        }
+        if (array_key_exists('name', $config))
+        {
+            $config['name'] = $name;
+        }
+        return $this->parseConfig($config);
+    }
+
+    public function parseConfig($config)
+    {
+        return $config;
     }
 }
