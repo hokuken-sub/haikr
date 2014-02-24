@@ -137,4 +137,27 @@ class PanelPluginTest extends TestCase {
             'This test is Incomplete.'
         );
     }
+
+    public function testHedingWithCustomClass()
+    {
+        $md_heading = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse('# test title {.custom-class}').'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
+        $this->assertEquals($md_heading['assert'],
+                            with(new PanelPlugin)->convert($md_heading['panel'], "# test title {.custom-class}\n====\ntest"));
+
+        $md_heading = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse('<h1 class="custom-class">test title</h1>').'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
+        $this->assertEquals($md_heading['assert'],
+                            with(new PanelPlugin)->convert($md_heading['panel'], "<h1 class=\"custom-class\">test title</h1>\n====\ntest"));
+    }
 }
