@@ -1,10 +1,16 @@
 <?php
 namespace Toiee\haik\Themes;
 
-class ThemeRepository implements ThemeRepositoryInterface {
+class LocalRepository implements ThemeRepositoryInterface {
 
-    public function __construct()
+    /**
+     * path to theme repository
+     */
+    protected $path;
+
+    public function __construct($path)
     {
+        $this->path = $path;
     }
 
     /**

@@ -1,12 +1,15 @@
 <?php 
 
-use Toiee\haik\Themes\ThemeRepository;
+use Toiee\haik\Themes\LocalRepository;
 
-class ThemeRepositoryTest extends TestCase {
+class LocalRepositoryTest extends TestCase {
     
     public function setUp()
     {
-        App::bind('ThemeRepositoryInterface', 'Toiee\haik\Themes\ThemeRepository');
+        App::bind('ThemeRepositoryInterface', function()
+        {
+            return new LocalRepository(\Config::get('theme.local.path'));
+        });
     }
 
     public function testGetWhenThereIsNoTheme()
