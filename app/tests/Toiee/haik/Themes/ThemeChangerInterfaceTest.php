@@ -13,9 +13,11 @@ class ThemeChangerInterfaceTest extends TestCase {
     
     public function testSetThemeByThemeName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $mock_theme = Mockery::mock('Toiee\haik\Themes\ThemeInterface');
+        $mock_repo = Mockery::mock('Toiee\haik\Themes\ThemeRepositoryInterface');
+        $mock_repo->shouldReceive('get')->andReturn($mock_theme);
+        $manager = App::make('ThemeManager');
+        $manager->themes = $mock_repo;
 
         Theme::themeSet('kawaz');
         $result = Theme::themeGet();
