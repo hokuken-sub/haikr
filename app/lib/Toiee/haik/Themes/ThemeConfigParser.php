@@ -43,16 +43,16 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
 
     protected function parseLayouts($layouts)
     {
-        
+        return $layouts;
     }
 
     protected function parseColors($colors)
     {
-        
+        return $colors;
     }
 
     protected function parseTextures($textures)
     {
-        
+        return $textures;
     }
 }
