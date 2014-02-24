@@ -8,7 +8,7 @@ class LocalRepositoryTest extends TestCase {
     {
         App::bind('ThemeRepositoryInterface', function()
         {
-            return new LocalRepository(\Config::get('theme.local.path'));
+            return new LocalRepository(App::make('ThemeManager'), \Config::get('theme.local.path'));
         });
     }
 
@@ -63,4 +63,5 @@ class LocalRepositoryTest extends TestCase {
         $result = $repository->exists('kawaz');
         $this->assertFalse($result);
     }
+
 }

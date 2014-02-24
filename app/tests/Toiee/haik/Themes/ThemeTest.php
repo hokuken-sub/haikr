@@ -5,29 +5,20 @@ class ThemeTest extends TestCase {
     
     public function setUp()
     {
-        \App::bind('ThemeConfigLoaderInterface', function()
-        {
-            $dummyOptions = array(
-                'name' => 'kawaz',
-                'layouts' => array(
-                    'content', 'top'
-                ),
-                'default_layout' => 'top',
-                'colors' => array('blue', 'green', 'red'),
-                'textures' => array('dot', 'hemp'),
-            );
-            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
-            $mock->shouldReceive('load')->andReturn($dummyOptions);
-            return $mock;
-        });
-        
-        App::bind('HaikTheme', function()
-        {
-            return new Theme(
-                App::make('ThemeManager'),
-                App::make('ThemeConfigLoaderInterface')
-            );
-        });
+        $dummyOptions = array(
+            'name' => 'kawaz',
+            'layouts' => array(
+                'content', 'top'
+            ),
+            'default_layout' => 'top',
+            'colors' => array('blue', 'green', 'red'),
+            'textures' => array('dot', 'hemp'),
+        );
+        $theme = new Theme(
+            App::make('ThemeManager'),
+            $dummyOptions
+        );
+        App::instance('HaikTheme', $theme);
     }
     
     public function testHasConfig()
@@ -107,21 +98,15 @@ class ThemeTest extends TestCase {
         $theme->colorSet('blue');
         $theme->textureSet('hemp');
 
-        App::bind('ThemeConfigLoaderInterface', function()
-        {
-            $dummyOptions = array(
-                'name' => 'semi',
-                'layouts' => array(
-                    'content',
-                ),
-                'default_layout' => 'content',
-                'colors' => array('blue'),
-                'textures' => array(),
-            );
-            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
-            $mock->shouldReceive('load')->andReturn($dummyOptions);
-            return $mock;
-        });
+        $dummyOptions = array(
+            'name' => 'semi',
+            'layouts' => array(
+                'content',
+            ),
+            'default_layout' => 'content',
+            'colors' => array('blue'),
+            'textures' => array(),
+        );
         
         // take over below status
         // layout: content
@@ -130,7 +115,7 @@ class ThemeTest extends TestCase {
         
         $new_theme = new Theme(
             App::make('ThemeManager'),
-            App::make('ThemeConfigLoaderInterface'),
+            $dummyOptions,
             $theme
         );
 
@@ -145,21 +130,17 @@ class ThemeTest extends TestCase {
      */
     public function testSetNoLayoutsConfigThrowsException()
     {
-        App::bind('ThemeConfigLoaderInterface', function()
-        {
-            $dummyOptions = array(
-                'name' => 'semi',
-                'layouts' => array(),
-                'default_layout' => 'content',
-                'colors' => array('blue'),
-                'textures' => array(),
-            );
-            $mock = Mockery::mock('Toiee\haik\Themes\ThemeConfigLoaderInterface');
-            $mock->shouldReceive('load')->andReturn($dummyOptions);
-            return $mock;
-        });
-
-        $theme = App::make('HaikTheme');
+        $dummyOptions = array(
+            'name' => 'semi',
+            'layouts' => array(),
+            'default_layout' => 'content',
+            'colors' => array('blue'),
+            'textures' => array(),
+        );
+        new Theme(
+            App::make('ThemeManager'),
+            $dummyOptions
+        );
     }
     
 }
