@@ -55,12 +55,7 @@ class ColsPlugin extends Plugin {
         
         foreach ($this->params as $param)
         {
-            $cols = array();
-            if (preg_match('/^(\d+)(?:\+(\d+))?$/', $param, $mts))
-            {
-                $cols['cols'] = (int)$mts[1];
-                $cols['offset'] = isset($mts[2]) ? (int)$mts[2] : 0;
-            }
+            $cols = $this->parseParam($param);
             $this->cols[] = array_merge($this->colBase, $cols);
             $this->totalColNum++;
         }
@@ -75,6 +70,18 @@ class ColsPlugin extends Plugin {
     protected function parseBody()
     {
         $this->cols['body'] = $this->body;
+    }
+    
+    protected function parseParam($param)
+    {
+        $data = array();
+        if (preg_match('/^(\d+)(?:\+(\d+))?((?:\.[a-zA-Z0-9_-]+)+)?$/', $param, $mts))
+        {
+            $data['cols']   = (int)$mts[1];
+            $data['offset'] = isset($mts[2]) ? (int)$mts[2] : 0;
+            $data['class']  = isset($mts[3]) ? trim(str_replace('.', ' ',$mts[3])) : '';
+        }
+        return $data;
     }
 
 }

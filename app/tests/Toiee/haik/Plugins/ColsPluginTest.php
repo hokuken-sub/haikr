@@ -93,8 +93,8 @@ class ColsPluginTest extends TestCase {
                     ),
                 )
             ),
-            'colClass' = array(
-                'cols'   => array('1.colOneClass, 2.colTwoClass'),
+            'colClass' => array(
+                'cols'   => array('1.colOneClass', '2.colTwoClass'),
                 'assert' => array(
                     array (
                         'cols'   => 1,
