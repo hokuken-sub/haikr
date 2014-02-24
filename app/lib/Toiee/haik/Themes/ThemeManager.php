@@ -6,6 +6,9 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     protected $layout_data;
     protected $layout_data_context;
 
+    /** ThemeRepositoryInterface */
+    protected $themes;
+
     /** Theme object */
     protected $theme;
 
@@ -13,6 +16,8 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     {
         $this->layout_data = array();
         $this->layout_data_context = array();
+
+        $this->themes = null;
     }
 
     /**
@@ -168,5 +173,24 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
             return $this->theme;
         }
         return false;
+    }
+    
+    public function setRepositoryDriver($repository)
+    {
+		$method = 'create'.ucfirst($repository).'RepositoryDriver';
+
+		if (method_exists($this, $method))
+		{
+			$this->themes = $this->$method();
+			return;
+		}
+
+		throw new \InvalidArgumentException("Repository Driver [$repository] not supported.");
+    }
+    
+    protected function createLocalRepositoryDriver()
+    {
+        $path = \Config::get('theme.local.path');
+        return new LocalRepository($path);
     }
 }

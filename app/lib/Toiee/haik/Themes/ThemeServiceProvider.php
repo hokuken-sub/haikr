@@ -9,8 +9,9 @@ class ThemeServiceProvider extends ServiceProvider {
     {
         $this->app->singleton('ThemeManager', function()
         {
-            return new ThemeManager();
+            return new ThemeManager;
         });
+        $this->setThemeRepository();
     }
 
     public function register()
@@ -19,5 +20,10 @@ class ThemeServiceProvider extends ServiceProvider {
         {
             return \App::make('ThemeManager');
         });
+    }
+    
+    protected function setThemeRepository()
+    {
+        $this->app['ThemeManager']->setRepositoryDriver($this->app['config']['theme.repository']);
     }
 }
