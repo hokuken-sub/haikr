@@ -7,7 +7,7 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     protected $layout_data_context;
 
     /** ThemeRepositoryInterface */
-    protected $themes;
+    public $themes;
 
     /** Theme object */
     protected $theme;
@@ -158,7 +158,7 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
         }
         else if (is_string($theme))
         {
-            // !TODO: create Theme object
+            $this->theme = $this->themes->get($theme);
         }
     }
 
