@@ -9,7 +9,17 @@ class ColsPluginTest extends TestCase {
         $this->assertInternalType('string', with(new ColsPlugin)->convert());
     }
 
-    public function testParameter()
+    /**
+     * @dataProvider paramProvider
+     */
+    public function testParameter($cols, $assert)
+    {
+        $plugin = new ColsPlugin;
+        $plugin->convert($cols, '');
+        $this->assertAttributeSame($assert, 'cols', $plugin);
+    }
+    
+    public function paramProvider()
     {
         $tests = array(
             'no_params' => array(
@@ -112,19 +122,44 @@ class ColsPluginTest extends TestCase {
                     ),
                 )
             ),
-        );
 
-        foreach ($tests as $key => $data)
-        {
-            $cols = new ColsPlugin;
-            $cols->convert($data['cols'], '');
-            $this->assertAttributeSame($data['assert'], 'cols', $cols);
-        }
+        );
+        
+        return $tests;
     }
+
+    /**
+     * @dataProvider pluginClassProvider
+     */
+    public function testPluginClass($cols, $assert)
+    {
+        $plugin = new ColsPlugin;
+        $plugin->convert($cols, '');
+        $this->assertAttributeSame($assert, 'className', $plugin);
+    }
+    
+    public function pluginClassProvider()
+    {
+        $tests = array(
+            'classname' => array(
+                'cols'   => array('class=test-class'),
+                'assert' => 'test-class',
+            ),
+            'no-classname' => array(
+                'cols'   => array('class='),
+                'assert' => '',
+            ),
+        );
+        
+        return $tests;
+    }
+  
 
     public function testOverMaxCols()
     {
         $this->markTestIncomplete('This implements not yet');
     }
+    
+    
 
 }
