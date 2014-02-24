@@ -13,10 +13,22 @@ class ColsPluginTest extends TestCase {
     {
         $tests = array(
             'no_params' => array(
-                'cols' => array(),
+                'cols'   => array(),
                 'assert' => array(
-                    0 => array (
+                    array (
                         'cols'   => 12,
+                        'offset' => 0,
+                        'class'  => '',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
+            'only1num' => array(
+                'cols'   => array(),
+                'assert' => array(
+                    array (
+                        'cols'   => 3,
                         'offset' => 0,
                         'class'  => '',
                         'style'  => '',
