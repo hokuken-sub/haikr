@@ -153,6 +153,32 @@ class ColsPluginTest extends TestCase {
         
         return $tests;
     }
+
+    /**
+     * @dataProvider delimiterProvider
+     */
+    public function testDeleimiter($cols, $assert)
+    {
+        $plugin = new ColsPlugin;
+        $plugin->convert($cols, '');
+        $this->assertAttributeSame($assert, 'delimiter', $plugin);
+    }
+    
+    public function delimiterProvider()
+    {
+        $tests = array(
+            'delimiter' => array(
+                'cols'   => array('++++'),
+                'assert' => "\r++++\r",
+            ),
+            'no-delimiter' => array(
+                'cols'   => array(),
+                'assert' => "\r====\r",
+            ),
+        );
+        
+        return $tests;
+    }
   
 
     public function testOverMaxCols()
