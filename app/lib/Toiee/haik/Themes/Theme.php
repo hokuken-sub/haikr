@@ -229,11 +229,11 @@ class Theme implements ThemeInterface {
     }
     
     /**
-     * Make view
+     * Render view
      *
      * @return View
      */
-    public function make()
+    public function render()
     {
         foreach (array('layout', 'color', 'texture') as $variation)
         {

@@ -95,10 +95,10 @@ class ThemeTest extends TestCase {
         $this->assertFalse($theme->textureGet());
     }
     
-    public function testMake()
+    public function testRender()
     {
         $theme = App::make('HaikTheme');
-        $this->assertInstanceOf('View', $theme->make());
+        $this->assertInstanceOf('View', $theme->render());
     }
     
     public function testTakeOverTheme()
