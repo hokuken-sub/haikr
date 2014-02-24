@@ -12,14 +12,12 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider paramProvider
      */
-/*
     public function testParameter($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'cols', $plugin);
     }
-*/
     
     public function paramProvider()
     {
@@ -133,14 +131,12 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider pluginClassProvider
      */
-/*
     public function testPluginClass($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'className', $plugin);
     }
-*/
     
     public function pluginClassProvider()
     {
@@ -161,14 +157,12 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider delimiterProvider
      */
-/*
     public function testDeleimiter($cols, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert($cols, '');
         $this->assertAttributeSame($assert, 'delimiter', $plugin);
     }
-*/
     
     public function delimiterProvider()
     {
@@ -189,14 +183,12 @@ class ColsPluginTest extends TestCase {
     /**
      * @dataProvider bodyProvider
      */
-/*
     public function testParseBody($body, $assert)
     {
         $plugin = new ColsPlugin;
         $plugin->convert(array(), $body);
         $this->assertAttributeSame($assert, 'cols', $plugin);
     }
-*/
     
     public function bodyProvider()
     {
@@ -243,17 +235,36 @@ class ColsPluginTest extends TestCase {
             'no_params' => array(
                 'cols' => array(),
                 'body' => 'test',
-                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12" style="">'.\Parser::parse('test').'</div></div>',
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-12" style="">'.\Parser::parse('test').'</div>'."\n". 
+                            '</div>',
             ),
             'class' => array(
                 'cols' => array(),
                 'body' => "CLASS:hogeclass\ntest",
-                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12 hogeclass" style="">'.\Parser::parse('test').'</div></div>',
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-12 hogeclass" style="">'.\Parser::parse('test').'</div>'."\n".
+                            '</div>',
             ),
             'style' => array(
                 'cols' => array(),
                 'body' => "STYLE:background-color:#330000;color:#fff;\ntest",
-                'assert' => '<div class="haik-plugin-cols row"><div class="col-sm-12" style="background-color:#330000;color:#fff;">'.\Parser::parse('test').'</div></div>',
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-12" style="background-color:#330000;color:#fff;">'.\Parser::parse('test').'</div>'."\n".
+                            '</div>',
+            ),
+            'all' => array(
+                'cols' => array('3+2','4.starbacks','++++', 'class=late'),
+                'body' => "STYLE:background-color:#000;color:#ccc;\n".
+                          "CLASS:burbon\n".
+                          "col1\n".
+                          "\n++++\n".
+                          "col2\n".
+                          "col3",
+                'assert' => '<div class="haik-plugin-cols row late">'."\n".
+                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
+                            '<div class="col-sm-4 starbacks" style="">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                            '</div>',
             ),
         );
 
@@ -266,9 +277,42 @@ class ColsPluginTest extends TestCase {
 
     public function testOverMaxCols()
     {
+        $tests = array(
+            'notAuth' => array(
+                'cols' => array(7,7),
+                'body' => "test1\n====\ntest2",
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-7" style="">'.\Parser::parse('test1').'</div>'."\n".
+                            '<div class="col-sm-7" style="">'.\Parser::parse('test2').'</div>'."\n".
+                            '</div>',
+            ),
+            'Auth' => array(
+                'cols' => array(7,7),
+                'body' => "test1\n====\ntest2",
+                'assert' => '<div class="haik-plugin-alert alert alert-danger alert-dismissable">'.
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.
+                            '<p>There are over 12 columns.</p>'."\n".
+                            '</div>'."\n".
+                            '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-7" style="">'.\Parser::parse('test1').'</div>'."\n".
+                            '<div class="col-sm-7" style="">'.\Parser::parse('test2').'</div>'."\n".
+                            '</div>',
+            ),
+        );
+
+
+        foreach ($tests as $key => $data)
+        {
+            if ($key === 'Auth')
+            {
+                $user = User::where('email', 'touch@toiee.jp')->first();
+                $this->be($user);
+            }
+            $this->assertEquals($data['assert'], with(new ColsPlugin)->convert($data['cols'], $data['body']));
+        }
+    
+    
         $this->markTestIncomplete('This implements not yet');
     }
-    
-    
 
 }

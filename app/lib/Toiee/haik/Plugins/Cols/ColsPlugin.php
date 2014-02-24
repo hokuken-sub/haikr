@@ -50,17 +50,22 @@ class ColsPlugin extends Plugin {
         $this->params = $params;
         $this->body = $body;
 
-        $message = '';
         
         $this->parseParams();
         $this->parseBody();
         
         $html = $this->getHtml();
         
-        // !TODO over max col num
+        // When over max col, show alert message if auth.
+        $alert = '';
         if ($this->totalColNum > self::COL_MAX_NUM)
         {
-            $message = 'Over '. self::COL_MAX_NUM . 'columns.';
+            if (\Auth::check())
+            {
+                $message = 'There are over '. self::COL_MAX_NUM . ' columns.';
+                $alert = with(\Plugin::get('alert'))->convert(array('danger', 'close'), $message);
+                $html = $alert . "\n" . $html;
+            }
         }
 
         return $html;
@@ -87,10 +92,12 @@ class ColsPlugin extends Plugin {
                     // if you want change delimiter
                     $this->delimiter = "\n" . trim($param) . "\n";
                 }
+                continue;
             }
             
-            $this->cols[] = array_merge($this->colBase, $cols);
-            $this->totalColNum++;
+            $cols = array_merge($this->colBase, $cols);
+            $this->cols[] = $cols;
+            $this->totalColNum += $cols['cols'];
         }
     }
 
@@ -136,7 +143,7 @@ class ColsPlugin extends Plugin {
     
     protected function getHtml()
     {
-        $col_html = array();
+        $col_body = array();
         $col_format = '<div class="%s" style="%s">%s</div>';
 
         foreach ($this->cols as $col)
@@ -147,9 +154,12 @@ class ColsPlugin extends Plugin {
             $style  = $col['style']  ? $col['style'] : '';
             $body = \Parser::parse($col['body']);
 
-            $col_html[] = sprintf($col_format, ($span . $offset . $class), $style, $body);
+            $col_body[] = sprintf($col_format, ($span . $offset . $class), $style, $body);
         }
-        $html = '<div class="haik-plugin-cols row">'.join("\n", $col_html).'</div>';
+        
+        $top_class = $this->className ? (' ' . $this->className) : '';
+        
+        $html = '<div class="haik-plugin-cols row'.$top_class.'">'."\n".join("\n", $col_body)."\n".'</div>';
 
         return $html;
     }
