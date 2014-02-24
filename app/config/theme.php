@@ -6,4 +6,8 @@ return array(
     'local' => array(
         'path' => app_path() . '/themes',
     ),
+    
+    'partials' => array(
+        'default' => array(),
+    ),
 );
