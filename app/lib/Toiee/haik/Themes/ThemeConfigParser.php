@@ -1,5 +1,6 @@
 <?php
 namespace Toiee\haik\Themes;
+use Config;
 
 class ThemeConfigParser implements ThemeConfigParserInterface {
 
@@ -36,13 +37,64 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
                     {
                         $parsed_config[$key] = $this->$method_name($value);
                     }
+                    break;
+                // other options
+                default:
+                    $parsed_config[$key] = $value;
             }
         }
         return $parsed_config;
     }
 
+    /**
+     * Parse layouts array
+     * Acceptable array is like ["foo", "bar", "buzz"] or {foo : {filename: "...", partial: "...", thumbnail: "..."}}
+     */
     protected function parseLayouts($layouts)
     {
+        foreach ($layouts as $key => $layout)
+        {
+            if (is_int($key))
+            {
+                $name = '';
+                if (is_string($layout))
+                {
+                    $name = trim($layout);
+                    $data = array();
+                }
+                else if (is_array($layout) && isset($layout['name']))
+                {
+                    $name = trim($layout['name']);
+                    unset($layout['name']);
+                    $data = $layout;
+                }
+                
+                if ($name !== '')
+                {
+                    $data = array_merge_recursive(
+                        array(
+                            'filename'  => "{$name}.layout.blade.php",
+                            'partials'  => $this->getDefaultPartials(),
+                            'thumbnail' => "assets/images/{$name}.thumbnail.png",
+                        ),
+                        (array)$data
+                    );
+                    $layouts[$name] = $data;
+                }
+                unset($layouts[$key]);
+            }
+            else
+            {
+                $layouts[$key] = array_merge(
+                    array(
+                        'filename'  => '',
+                        'partials'  => $this->getDefaultPartials(),
+                        'thumbnail' => '',
+                    ),
+                    (array)$layout
+                );
+            }
+        }
         return $layouts;
     }
 
@@ -54,5 +106,10 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
     protected function parseTextures($textures)
     {
         return $textures;
+    }
+    
+    protected function getDefaultPartials()
+    {
+        return Config::get('theme.partials.default', array());
     }
 }
