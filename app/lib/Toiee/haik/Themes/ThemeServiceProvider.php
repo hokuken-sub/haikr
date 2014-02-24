@@ -7,9 +7,15 @@ class ThemeServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->app->singleton('ThemeManager', function()
+        $this->app->singleton('ThemeConfigParserInterface', function()
         {
-            return new ThemeManager;
+            return new ThemeConfigParser;
+        });
+        $this->app->singleton('ThemeManager', function($app)
+        {
+            return new ThemeManager(
+                $app->make('ThemeConfigParserInterface')
+            );
         });
         $this->setThemeRepository();
     }

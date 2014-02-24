@@ -12,12 +12,16 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     /** Theme object */
     protected $theme;
 
-    public function __construct()
+    public $configParser;
+
+    public function __construct(ThemeConfigParserInterface $parser)
     {
         $this->layout_data = array();
         $this->layout_data_context = array();
 
         $this->themes = null;
+
+        $this->configParser = $parser;
     }
 
     /**
@@ -193,5 +197,4 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
         $path = \Config::get('theme.local.path');
         return new LocalRepository($this, $path);
     }
-
 }
