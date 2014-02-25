@@ -13,6 +13,7 @@ class PanelPluginTest extends TestCase {
      */
     public function testParameterNoHeading($panel, $assert)
     {
+        # create mock to return same content.
         App::bind('ParserInterface', function()
         {
             $mock = Mockery::mock('Toiee\haik\Providers\ParserInterface');
@@ -42,6 +43,7 @@ class PanelPluginTest extends TestCase {
 
     public function testParameterWithHeading()
     {
+        # test $body has only one line.
         $title_online = array(
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
@@ -52,6 +54,7 @@ class PanelPluginTest extends TestCase {
                             with(new PanelPlugin)->convert($title_online['panel'], "test title\n====\ntest"));
 
 
+        # test $body has many break line.
         $title_multiline = array(
             'panel' => array('primary'),
             'assert' => '<div class="haik-plugin-panel panel panel-primary">'
@@ -65,6 +68,7 @@ class PanelPluginTest extends TestCase {
 
     public function testHeadingParse()
     {
+        # test $body is markdown case for 6 times(heading num is increase 1 by 1).
         for ($i = 1; $i <= 6; $i++)
         {
             $md_heading = array(
@@ -78,6 +82,7 @@ class PanelPluginTest extends TestCase {
                                 with(new PanelPlugin)->convert($md_heading['panel'], str_repeat('#', $i)." test title\n====\ntest"));
         }
 
+        # test $body is html case for 6 times(heading num is increase 1 by 1).
         for ($i = 1; $i <= 6; $i++)
         {
             $html_heading = array(
@@ -90,15 +95,12 @@ class PanelPluginTest extends TestCase {
             $this->assertEquals($html_heading['assert'],
                                 with(new PanelPlugin)->convert($html_heading['panel'], "<h".strval($i).">test title</h".strval($i).">\n====\ntest"));
         }
-
-        $this->markTestIncomplete(
-            'This test is Incomplete.'
-        );
     }
 
 
     public function testMultipleHeadingParse()
     {
+        # test $body is markdown case for 6 times(heading num & line are increase 1 by 1).
         for ($i = 1; $i <= 6; $i++)
         {
             $html = str_repeat('<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>', $i);
@@ -116,6 +118,7 @@ class PanelPluginTest extends TestCase {
                                 with(new PanelPlugin)->convert($md_heading['panel'], $body));
         }
 
+        # test $body is html case for 6 times(heading num & line are increase 1 by 1).
         for ($i = 1; $i <= 6; $i++)
         {
             $html = str_repeat('<h'.strval($i).' class="panel-title">test title</h'.strval($i).'>', $i);
@@ -132,14 +135,55 @@ class PanelPluginTest extends TestCase {
             $this->assertEquals($html_heading['assert'],
                                 with(new PanelPlugin)->convert($html_heading['panel'], $body));
         }
-
-        $this->markTestIncomplete(
-            'This test is Incomplete.'
-        );
     }
 
-    public function testHedingWithCustomClass()
+    public function testHeadingWithSomeClass()
     {
+            # return is always with panel-title class when user didn't put custom class.
+            $return = "# test title {.panel-title}\n"
+                    . "# test title {.panel-title}\n"
+                    . "# test title {.panel-title}\n";
+
+            # test $body is markdown case.
+            $md_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($return).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+
+            $body = "# test title {.panel-title}\n"
+                  . "# test title\n"
+                  . "# test title\n====\ntest";
+            $this->assertEquals($md_heading['assert'],
+                                with(new PanelPlugin)->convert($md_heading['panel'], $body));
+
+            $body = "# test title\n"
+                  . "# test title {.panel-title}\n"
+                  . "# test title {.panel-title}\n====\ntest";
+            $this->assertEquals($md_heading['assert'],
+                                with(new PanelPlugin)->convert($md_heading['panel'], $body));
+
+            # test $body is html case.
+            $html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($return).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+
+            $body = "<h1 class=\"panel-title\">test title</h1>\n"
+                  . "<h1>test title</h1>\n"
+                  . "<h1>test title</h1>\n====\ntest";
+            $this->assertEquals($html_heading['assert'],
+                                with(new PanelPlugin)->convert($html_heading['panel'], $body));
+    }
+
+    public function testHeadingWithCustomClass()
+    {
+        # test $body is markdown case.
         $md_heading = array(
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
@@ -150,14 +194,81 @@ class PanelPluginTest extends TestCase {
         $this->assertEquals($md_heading['assert'],
                             with(new PanelPlugin)->convert($md_heading['panel'], "# test title {.custom-class}\n====\ntest"));
 
-        $md_heading = array(
+        # test $body is html case.
+        $html_heading = array(
             'panel' => array(),
             'assert' => '<div class="haik-plugin-panel panel panel-default">'
                       . '<div class="panel-heading">'
                       . \Parser::parse('<h1 class="custom-class">test title</h1>').'</div>'
                       . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
         );
-        $this->assertEquals($md_heading['assert'],
-                            with(new PanelPlugin)->convert($md_heading['panel'], "<h1 class=\"custom-class\">test title</h1>\n====\ntest"));
+        $this->assertEquals($html_heading['assert'],
+                            with(new PanelPlugin)->convert($html_heading['panel'],
+                                                           "<h1 class=\"custom-class\">test title</h1>\n====\ntest"));
+    }
+
+    public function testHeadingWithCustomData()
+    {
+        # test $body has only custom data.
+        $html_heading = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse('<h1 data-hoge="hoge" class="panel-title">test title</h1>').'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
+        $this->assertEquals($html_heading['assert'],
+                            with(new PanelPlugin)->convert($html_heading['panel'],
+                                                           "<h1 data-hoge=\"hoge\">test title</h1>\n====\ntest"));
+
+        # test $body has custom data & custom class.
+        $html_heading_with_class = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse('<h1 data-hoge="hoge" class="hogehoge">test title</h1>').'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
+        $this->assertEquals($html_heading_with_class['assert'],
+                            with(new PanelPlugin)->convert($html_heading_with_class['panel'],
+                                                           "<h1 data-hoge=\"hoge\" class=\"hogehoge\">test title</h1>\n====\ntest"));
+    }
+
+    public function testParseHeadingAndElse()
+    {
+            $return = "# test title {.panel-title}\n"
+                    . "test\n"
+                    . "# test title {.panel-title}\n";
+
+            # test $body is markdown case.
+            $md_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($return).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+
+            $body = "# test title\n"
+                  . "test\n"
+                  . "# test title {.panel-title}\n====\ntest";
+            $this->assertEquals($md_heading['assert'],
+                                with(new PanelPlugin)->convert($md_heading['panel'], $body));
+
+            # test $body is html case.
+            $html_heading = array(
+                'panel' => array(),
+                'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                          . '<div class="panel-heading">'
+                          . \Parser::parse($return).'</div>'
+                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+            );
+
+            $body = "<h1 class=\"panel-title\">test title</h1>\n"
+                  . "<p>test</p>\n"
+                  . "<h1>test title</h1>\n====\ntest";
+            $this->assertEquals($html_heading['assert'],
+                                with(new PanelPlugin)->convert($html_heading['panel'], $body));
+
     }
 }
