@@ -53,10 +53,11 @@ class PanelPlugin extends Plugin {
                     {
                         # add panel-title class to heading.
                         $heading = str_replace('>', ' class="panel-title">', $heading);
-                        $replaces[] = $heading.$matches[3][$i];
                     }
+                    $replaces[] = $heading.$matches[3][$i];
                 }
                 # replace $parse_title with right class.
+                if (count($replaces) > 0)
                 $parse_title = str_replace($serches, $replaces, $parse_title);
             }
 
