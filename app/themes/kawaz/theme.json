@@ -1,0 +1,22 @@
+{
+	"name" : "kawaz",
+	"version" : "1.0.0",
+	"author" : "toiee",
+	"thumbnail" : "assets/images/thumbnail.png",
+	"styleFile" : "assets/stylesheets/docs.css",
+	"layouts" : {
+		"top" : {
+			"filename" : "top.layout.blade.php",
+			"layouts" : ["SiteNavigator", "SiteFooter"],
+			"thumbnail" : "assets/images/top.thumbnail.png"
+		},
+		"content" : {
+			"filename" : "content.layout.blade.php",
+			"layouts" : ["SiteNavigator", "SiteFooter", "MenuBar"],
+			"thumbnail" : "assets/images/content.thumbnail.png"
+		}
+	},
+	"defaultLayout" : "top",
+	"colors" : ["black", "gray", "hemp", "navy", "sakura", "beige"],
+	"textures" : ["hemp-light", "hemp-dark", "square", "wood", "rainbow"]
+}
