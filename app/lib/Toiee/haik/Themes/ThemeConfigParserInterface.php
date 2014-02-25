@@ -6,8 +6,9 @@ interface ThemeConfigParserInterface {
     /**
      * Parse config array
      *
-     * @param assoc $config config array load from config file
-     * @return assoc $config array
+     * @param mixed $config config array load from config file
+     * @return mixed $config array
+     * @throws Toiee\haik\Themes\ThemeInvalidConfigProvidedException when config has not required values
      */
     public function parse($config);
 }
