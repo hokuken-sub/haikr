@@ -19,11 +19,12 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
         {
             switch ($key)
             {
-                // sigle line string
+                // single line string
                 case 'name':
-                case 'defaultLayout':
-                case 'styleFile':
                 case 'version':
+                case 'author':
+                case 'styleFile':
+                case 'defaultLayout':
                 case 'thumbnail':
                     $parsed_config[$key] = trim($value);
                     break;
@@ -227,6 +228,7 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
         if (
             isset($config['name']) && $config['name'] !== ''
          && isset($config['version']) && $config['version'] !== ''
+         && isset($config['author']) && $config['author'] !== ''
          && isset($config['layouts']) && ! empty($config['layouts'])
         )
         {
