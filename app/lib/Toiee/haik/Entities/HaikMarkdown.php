@@ -6,8 +6,12 @@ use Validator;
 
 class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     
+    protected $running;
+
     public function __construct()
     {
+        $running = false;
+
         $this->empty_element_suffix = '>';
         
         $this->document_gamut += array(
@@ -24,6 +28,11 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     
     public function parse($text)
     {
+        if ($this->running)
+        {
+            return with(new HaikMarkdown())->parse($text);
+        }
+        $this->running = true;
         return $this->transform($text);
     }
 
@@ -239,7 +248,6 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     protected function _doConvertPlugin($plugin_id, $params = '', $body = '')
     {
         $params = ($params !== '') ? str_getcsv($params, ',', '"', '\\') : array();
-        $body = ($body !== '') ? $this->unhash($this->runSpanGamut($body)) : '';
 
         $result = \Plugin::get($plugin_id)->convert($params, $body);
 		return "\n\n".$this->hashBlock($result)."\n\n";

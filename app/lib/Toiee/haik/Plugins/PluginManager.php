@@ -13,12 +13,6 @@ class PluginManager {
      */
     public function get($id)
     {
-        $class_name = class_basename(self::getClassName($id));
-        if (App::bound($class_name))
-        {
-            return App::make($class_name);
-        }
-        
         $repository = App::make('PluginRepositoryInterface');
         
         if ( ! $repository->exists($id))
@@ -26,9 +20,7 @@ class PluginManager {
             throw new \InvalidArgumentException("A plugin with id=$id was not exist");
         }
         
-        $plugin = $repository->load($id);
-        App::instance($class_name, $plugin);
-        return App::make($class_name);
+        return $repository->load($id);
     }
     
     /**
