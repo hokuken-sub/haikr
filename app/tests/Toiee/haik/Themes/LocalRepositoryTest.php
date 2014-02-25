@@ -61,7 +61,14 @@ class LocalRepositoryTest extends TestCase {
     {
         $repository = App::make('ThemeRepositoryInterface');
         $result = $repository->exists('kawaz');
-        $this->assertFalse($result);
+        $this->assertTrue($result);
+    }
+
+    public function testGetConfig()
+    {
+        $repository = App::make('ThemeRepositoryInterface');
+        $result = $repository->getConfig('kawaz');
+        $this->assertEquals("kawaz", $result['name']);
     }
 
 }
