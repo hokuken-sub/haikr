@@ -1,6 +1,5 @@
 <?php
 use Toiee\haik\Themes\ThemeConfigParser;
-use Config;
 
 class ThemeConfigParserTest extends TestCase {
 
@@ -16,23 +15,23 @@ class ThemeConfigParserTest extends TestCase {
             'version' => '1.0.0',
         	'layouts' => array(
         		'top' => array(
-        			'filename' => 'top.skin.php',
+        			'filename' => 'top.theme.blade.php',
         			'partials' => array('SiteNavigator', 'SiteFooter'),
-        			'thumbnail' => 'img/thumbnail.top.png',
+        			'thumbnail' => 'assets/images/thumbnail.top.png',
         		),
         		'content' => array(
-        			'filename' => 'content.skin.php',
+        			'filename' => 'content.theme.blade.php',
         			'partials' => array('SiteNavigator', 'SiteFooter', 'MenuBar'),
-        			'thumbnail' => 'img/thumbnail.content.png',
+        			'thumbnail' => 'assets/images/thumbnail.content.png',
         		),
         	),
-        	'default_layout' => 'top',
+        	'defaultLayout' => 'top',
         	'colors' => array(
-        		'black'          => 'css/color.black.css',
-        		'brown'          => 'css/color.brown.css',
+        		'black'          => array('className' => 'haik-theme-color-black'),
+        		'brown'          => array('className' => 'haik-theme-color-brown'),
         	),
         	'textures' => array(
-        		'hemp'        => 'css/texture.hemp.css',
+        		'hemp'        => array('className' => 'haik-theme-texture-hemp'),
             )
         );
         
@@ -47,7 +46,7 @@ class ThemeConfigParserTest extends TestCase {
             'name' => 'kawaz',
             'version' => '1.0.0',
             'layouts' => array("top", "content"),
-            'default_layout' => 'top',
+            'defaultLayout' => 'top',
         );
         $default_partials = Config::get('theme.partials.default', array());
         $expected_layouts = array(
@@ -74,18 +73,18 @@ class ThemeConfigParserTest extends TestCase {
             'name' => 'kawaz',
             'version' => '1.0.0',
             'layouts' => array("top", "content"),
-            'default_layout' => 'top',
+            'defaultLayout' => 'top',
             'colors' => array('black', 'white', 'raspberry'),
         );
         $expected_colors = array(
             'black' => array(
-                'className' => 'haik-theme-kawaz-color-black',
+                'className' => 'haik-theme-color-black',
             ),
             'white' => array(
-                'className' => 'haik-theme-kawaz-color-white',
+                'className' => 'haik-theme-color-white',
             ),
             'raspberry' => array(
-                'className' => 'haik-theme-kawaz-color-raspberry',
+                'className' => 'haik-theme-color-raspberry',
             ),
         );
 
@@ -99,18 +98,18 @@ class ThemeConfigParserTest extends TestCase {
             'name' => 'kawaz',
             'version' => '1.0.0',
             'layouts' => array("top", "content"),
-            'default_layout' => 'top',
+            'defaultLayout' => 'top',
             'textures' => array('hemp', 'tile', 'stripe'),
         );
         $expected_textures = array(
             'hemp' => array(
-                'className' => 'haik-theme-kawaz-texture-hemp',
+                'className' => 'haik-theme-texture-hemp',
             ),
             'tile' => array(
-                'className' => 'haik-theme-kawaz-texture-tile',
+                'className' => 'haik-theme-texture-tile',
             ),
             'stripe' => array(
-                'className' => 'haik-theme-kawaz-texture-stripe',
+                'className' => 'haik-theme-texture-stripe',
             ),
         );
 
@@ -128,6 +127,17 @@ class ThemeConfigParserTest extends TestCase {
         $expected = 'top';
         
         $result = $this->parser->parse($shorthand_options);
-        $this->assertEquals($expected, $result['default_layout']);
+        $this->assertEquals($expected, $result['defaultLayout']);
+    }
+    
+    /**
+     * @expectedException Toiee\haik\Themes\ThemeInvalidConfigProvidedException
+     */
+    public function testInvalidConfigThrowsException()
+    {
+        $invalid_options = array(
+            'layouts' => array("top"),
+        );
+        $this->parser->parse($invalid_options);
     }
 }
