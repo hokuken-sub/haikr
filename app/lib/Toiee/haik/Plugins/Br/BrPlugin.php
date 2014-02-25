@@ -14,7 +14,7 @@ class BrPlugin extends Plugin {
      */
      public function inline($params = array(), $body = '')
      {
-        return '<br>\n';
+        return "<br>\n";
      }
 
     /**
