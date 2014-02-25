@@ -235,6 +235,30 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
             $has_error = false;
         }
 
+        if ($has_error) return false;
+
+        foreach (array('layout', 'color', 'texture') as $key)
+        {
+            $method_name = 'validate'.ucfirst($key).'Name';
+            $has_error = ! $this->$method_name($config);
+            if ($has_error) return false;
+        }
+
         return ! $has_error;
+    }
+
+    protected function validateLayoutName($config)
+    {
+        return preg_match('/\A[\w-]+\z/', join("", array_keys($config['layouts'])));
+    }
+    protected function validateColorName($config)
+    {
+        if ( ! isset($config['colors'])) return true;
+        return preg_match('/\A[\w-]+\z/', join("", array_keys($config['colors'])));
+    }
+    protected function validateTextureName($config)
+    {
+        if ( ! isset($config['textures'])) return true;
+        return preg_match('/\A[\w-]+\z/', join("", array_keys($config['textures'])));
     }
 }
