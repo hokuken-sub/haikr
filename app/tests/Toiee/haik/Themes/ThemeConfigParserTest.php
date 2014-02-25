@@ -13,6 +13,7 @@ class ThemeConfigParserTest extends TestCase {
         $full_stack_options = array(
             'name' => 'kawaz',
             'version' => '1.0.0',
+            'author' => 'toiee',
         	'layouts' => array(
         		'top' => array(
         			'filename' => 'top.theme.blade.php',
@@ -45,6 +46,7 @@ class ThemeConfigParserTest extends TestCase {
         $shorthand_options = array(
             'name' => 'kawaz',
             'version' => '1.0.0',
+            'author' => 'toiee',
             'layouts' => array("top", "content"),
             'defaultLayout' => 'top',
         );
@@ -72,6 +74,7 @@ class ThemeConfigParserTest extends TestCase {
         $shorthand_options = array(
             'name' => 'kawaz',
             'version' => '1.0.0',
+            'author' => 'toiee',
             'layouts' => array("top", "content"),
             'defaultLayout' => 'top',
             'colors' => array('black', 'white', 'raspberry'),
@@ -97,6 +100,7 @@ class ThemeConfigParserTest extends TestCase {
         $shorthand_options = array(
             'name' => 'kawaz',
             'version' => '1.0.0',
+            'author' => 'toiee',
             'layouts' => array("top", "content"),
             'defaultLayout' => 'top',
             'textures' => array('hemp', 'tile', 'stripe'),
@@ -122,6 +126,7 @@ class ThemeConfigParserTest extends TestCase {
         $shorthand_options = array(
             'name' => 'kawaz',
             'version' => '1.0.0',
+            'author' => 'toiee',
             'layouts' => array('top', 'content'),
         );
         $expected = 'top';
@@ -133,10 +138,25 @@ class ThemeConfigParserTest extends TestCase {
     /**
      * @expectedException Toiee\haik\Themes\ThemeInvalidConfigProvidedException
      */
-    public function testInvalidConfigThrowsException()
+    public function testProvideLackConfigValuesThrowsException()
     {
         $invalid_options = array(
             'layouts' => array("top"),
+        );
+        $this->parser->parse($invalid_options);
+    }
+
+    /**
+     * @expectedException Toiee\haik\Themes\ThemeInvalidConfigProvidedException
+     */
+    public function testUsingInvalidClassNameThrowsException()
+    {
+        $invalid_options = array(
+            'name' => 'kawaz',
+            'version' => '1.0.0',
+            'author' => 'toiee',
+            'layouts' => array('top', 'content'),
+            'colors' => array('日本語', '$_symbols_$', /*empty string*/''),
         );
         $this->parser->parse($invalid_options);
     }
