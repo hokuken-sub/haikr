@@ -122,6 +122,25 @@ class ColsPluginTest extends TestCase {
                     ),
                 )
             ),
+            'manyclass' => array(
+                'cols'   => array('3+2.starbuks', '4.soy.late'),
+                'assert' => array(
+                    array (
+                        'cols'   => 3,
+                        'offset' => 2,
+                        'class'  => 'starbuks',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                    array (
+                        'cols'   => 4,
+                        'offset' => 0,
+                        'class'  => 'soy late',
+                        'style'  => '',
+                        'body'   => '',
+                    ),
+                )
+            ),
 
         );
         
@@ -254,7 +273,7 @@ class ColsPluginTest extends TestCase {
                             '</div>',
             ),
             'all' => array(
-                'cols' => array('3+2','4.starbacks','++++', 'class=late'),
+                'cols' => array('3+2','4.starbucks','++++', 'class=late'),
                 'body' => "STYLE:background-color:#000;color:#ccc;\n".
                           "CLASS:burbon\n".
                           "col1\n".
@@ -263,11 +282,11 @@ class ColsPluginTest extends TestCase {
                           "col3",
                 'assert' => '<div class="haik-plugin-cols row late">'."\n".
                             '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-4 starbacks" style="">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                            '<div class="col-sm-4 starbucks" style="">'.\Parser::parse("col2\ncol3").'</div>'."\n".
                             '</div>',
             ),
             'nodelimiter' => array(
-                'cols' => array('3+2','4+1.starbacks','class=tea'),
+                'cols' => array('3+2','4+1.starbucks','class=tea'),
                 'body' => "STYLE:background-color:#000;color:#ccc;\n".
                           "CLASS:burbon\n".
                           "col1\n".
@@ -278,7 +297,30 @@ class ColsPluginTest extends TestCase {
                           "col3",
                 'assert' => '<div class="haik-plugin-cols row tea">'."\n".
                             '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-4 col-sm-offset-1 starbacks cafe" style="background-color:#f33;color:#222;">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                            '<div class="col-sm-4 col-sm-offset-1 starbucks cafe" style="background-color:#f33;color:#222;">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                            '</div>',
+            ),
+            'diffColsOverBody' => array(
+                'cols' => array(6,6),
+                'body' => "col1\n".
+                          "\n====\n".
+                          "col2\n".
+                          "\n====\n".
+                          "col3",
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-6" style="">'.\Parser::parse("col1").'</div>'."\n".
+                            '<div class="col-sm-6" style="">'.\Parser::parse("col2\n\n====\ncol3").'</div>'."\n".
+                            '</div>',
+            ),
+            'diffColsLessBody' => array(
+                'cols' => array(4,4,4),
+                'body' => "col1\n".
+                          "\n====\n".
+                          "col2",
+                'assert' => '<div class="haik-plugin-cols row">'."\n".
+                            '<div class="col-sm-4" style="">'.\Parser::parse("col1").'</div>'."\n".
+                            '<div class="col-sm-4" style="">'.\Parser::parse("col2").'</div>'."\n".
+                            '<div class="col-sm-4" style="">'."\n".'</div>'."\n".
                             '</div>',
             ),
         );
