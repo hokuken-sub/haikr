@@ -124,6 +124,8 @@ class PageController extends \BaseController {
 
     protected function setView($html = '')
     {
+        $this->setupTheme();
+
         $pagename = isset($this->page->name) ? $this->page->name : Config::get('app.haik.defaultPage');
 
         $html .= '<hr>';
@@ -133,14 +135,10 @@ class PageController extends \BaseController {
         $html .= " ";
         $html .= '<a href="/haik--admin/create/">追加</a>';
 
-        // デザインを指定
-        View::addLocation(app_path('themes/kawaz'));
-        View::addNamespace('kawaz', app_path('themes/kawaz'));
-        
-        $this->layout = View::make('kawaz::top')->with(array(
-          'page_title' => 'タイトル',
-          'content' => $html,
-        ));
+        Theme::set('page_title', 'タイトル');
+        Theme::set('content', $html);
+
+        $this->layout = $this->renderTheme();
     }
 
     /**
@@ -151,7 +149,7 @@ class PageController extends \BaseController {
      */
     public function edit($pagename)
     {
-        // TODO: $id からページのソースをひっぱってきて
+        // $id からページのソースをひっぱってきて
         // textarea に入れる
         
         $page = Page::where('name', $pagename)->first();
@@ -164,21 +162,13 @@ class PageController extends \BaseController {
             $title = $page->title;
             $md = $page->body;
         }
-        else
-        {
-            //TODO: 404 error
-/*
-            var_dump($page);
-            exit;
-*/
-        }
         
         $this->layout = View::make('settings.layouts.editor')->with(array(
-           'title'    => $title,
-           'md'       => $md,
-           'name' => $pagename,
-           'view' => 'settings.edit',
-           'nav' => 'settings.includes.nav_edit',
+           'title' => $title,
+           'md'    => $md,
+           'name'  => $pagename,
+           'view'  => 'settings.edit',
+           'nav'   => 'settings.includes.nav_edit',
         ));
     }
 

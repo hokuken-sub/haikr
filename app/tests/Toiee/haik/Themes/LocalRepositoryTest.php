@@ -71,4 +71,12 @@ class LocalRepositoryTest extends TestCase {
         $this->assertEquals("kawaz", $result['name']);
     }
 
+    public function testGetPath()
+    {
+        $repository = App::make('ThemeRepositoryInterface');
+        $result = $repository->getPath('kawaz');
+        $expect = Config::get('theme.local.path') . '/kawaz';
+        $this->assertEquals($expect, $result);
+    }
+
 }

@@ -88,8 +88,8 @@ class ThemeTest extends TestCase {
     
     public function testRender()
     {
-        $theme = App::make('HaikTheme');
-        $this->assertInstanceOf('View', $theme->render());
+        $theme = App::make('ThemeManager')->themes->get('kawaz');
+        $this->assertInstanceOf('Illuminate\View\View', $theme->render());
     }
     
     public function testTakeOverTheme()
