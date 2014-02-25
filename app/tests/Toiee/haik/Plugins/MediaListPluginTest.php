@@ -25,6 +25,7 @@ class MediaListPluginTest extends TestCase {
         $body = "![alt](http://placehold.jp/80x80.png)\n"."#### test title\n"."test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
+
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -38,6 +39,36 @@ class MediaListPluginTest extends TestCase {
         );
 
         $body = "#### test title\n"."test\n";
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test</p>'
+                      . '</div></div>',
+        );
+
+        $body = "test\n";
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test</p>'
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"."test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
     }
 }
