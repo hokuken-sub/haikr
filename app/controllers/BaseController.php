@@ -15,4 +15,14 @@ class BaseController extends Controller {
 		}
 	}
 
+    protected function setupTheme()
+    {
+        $theme_name = Config::get('theme.default');
+        Theme::themeSet($theme_name);
+    }
+
+    protected function renderTheme()
+    {
+        return Theme::themeGet()->render();
+    }
 }
