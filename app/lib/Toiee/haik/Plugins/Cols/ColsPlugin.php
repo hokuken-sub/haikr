@@ -145,6 +145,7 @@ class ColsPlugin extends Plugin {
     {
         $col_body = array();
         $col_format = '<div class="%s" style="%s">%s</div>';
+        $top_class = $this->className ? (' ' . $this->className) : '';
 
         foreach ($this->cols as $col)
         {
@@ -152,22 +153,21 @@ class ColsPlugin extends Plugin {
             $offset = $col['offset'] ? (' col-sm-offset-' . $col['offset']) : '';
             $class  = $col['class']  ? (' ' . $col['class']) : '';
             $style  = $col['style']  ? $col['style'] : '';
+            
             $body = \Parser::parse($col['body']);
 
             $col_body[] = sprintf($col_format, ($span . $offset . $class), $style, $body);
         }
         
-        $top_class = $this->className ? (' ' . $this->className) : '';
-        
         $html = '<div class="haik-plugin-cols row'.$top_class.'">'."\n".join("\n", $col_body)."\n".'</div>';
-
         return $html;
     }
     
     
     /**
      * parse cols param
-     * @return array parameter for cols
+     * @params string $param
+     * @return array $data parameter for cols
      */
     protected function parseParam($param)
     {
