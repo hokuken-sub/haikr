@@ -146,49 +146,4 @@ class ThemeDataTest extends TestCase {
         $result = Theme::get('key');
         $this->assertEquals('value_third:prepend_value', $result);
     }
-    
-    public function testSetTheme()
-    {
-        Theme::themeSet('kawaz');
-        $result = Theme::themeGet();
-        $this->assertEquals('kawaz', $result);
-        
-        Theme::themeSet('');
-        $result = Theme::themeGet();
-        $this->assertFalse($result);
-    }
-
-    public function testSetLayout()
-    {
-        Theme::layoutSet('top');
-        $result = Theme::layoutGet();
-        $this->assertEquals('top', $result);
-        
-        Theme::layoutSet('');
-        $result = Theme::layoutGet();
-        $this->assertFalse($result);
-    }
-
-    public function testSetColor()
-    {
-        Theme::colorSet('blue');
-        $result = Theme::colorGet();
-        $this->assertEquals('blue', $result);
-        
-        Theme::colorSet('');
-        $result = Theme::colorGet();
-        $this->assertFalse($result);
-    }
-
-    public function testSetTexture()
-    {
-        Theme::textureSet('smorkey');
-        $result = Theme::textureGet();
-        $this->assertEquals('smorkey', $result);
-        
-        Theme::textureSet('');
-        $result = Theme::textureGet();
-        $this->assertFalse($result);
-    }
-    
 }
