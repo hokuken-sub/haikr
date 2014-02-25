@@ -9,18 +9,31 @@ module.exports = function(grunt){
         files: [
           {
             src: ['./app/assets/stylesheets/haik.less'],
-            dest: './public/assets/stylesheets/haik.css',
+            dest: './public/assets/stylesheets/haik.css'
           },
           {
             src: [
               './app/assets/stylesheets/haik-admin.less',
               './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/helper.less'
             ],
-            dest: './public/assets/stylesheets/haik-admin.css',
+            dest: './public/assets/stylesheets/haik-admin.css'
           }
         ]
       }
   };
+  
+  var themeDirs = grunt.file.glob.sync('./app/themes/*/');
+  for (var i in themeDirs) {
+    var config = grunt.file.readJSON(themeDirs + 'theme.json');
+    
+    var themeLess = grunt.file.glob.sync(themeDirs[i] + 'assets/stylesheets/*.less');
+    lessConfig.development.files.push({
+        src: themeLess,
+        dest: './public/assets/themes/' + config.name + '/stylesheets/' + config.name + '.css'
+    });
+  }
+
+ console.log(lessConfig.development.files);
 
   grunt.initConfig({
     less: lessConfig,
@@ -73,7 +86,8 @@ module.exports = function(grunt){
         files: [
           './app/assets/stylesheets/*.less',
           './app/assets/stylesheets/admin/*',
-          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*',
+          './app/themes/*/assets/stylesheets/*.less'
         ],
         tasks: ['less'],
         options: {
