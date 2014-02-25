@@ -134,8 +134,8 @@ class PageController extends \BaseController {
         $html .= '<a href="/haik--admin/create/">追加</a>';
 
         // デザインを指定
-        View::addLocation(public_path('addons/themes/kawaz'));
-        View::addNamespace('kawaz', public_path('addons/themes/kawaz'));
+        View::addLocation(app_path('themes/kawaz'));
+        View::addNamespace('kawaz', app_path('themes/kawaz'));
         
         $this->layout = View::make('kawaz::top')->with(array(
           'page_title' => 'タイトル',
