@@ -1,6 +1,8 @@
 <?php
 namespace Toiee\haik\Themes;
 
+use View;
+
 class LocalRepository implements ThemeRepositoryInterface {
 
     protected $manager;
@@ -57,6 +59,11 @@ class LocalRepository implements ThemeRepositoryInterface {
         return array();
     }
     
+    /**
+     * Get path to Theme's directory
+     * @param string $name theme name
+     * @return string path to theme dir
+     */
     public function getPath($name)
     {
         return str_finish($this->path, '/') . $name;
