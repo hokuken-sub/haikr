@@ -15,7 +15,7 @@ class BrPluginTest extends TestCase {
     
     public function testIsInlineMethodReturnRight()
     {
-        $normal = array('br' => array(), 'assert' => '<br>\n');
+        $normal = array('br' => array(), 'assert' => "<br>\n");
         $this->assertEquals($normal['assert'], with(new BrPlugin)->inline());
     }
 
