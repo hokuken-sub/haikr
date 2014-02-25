@@ -33,8 +33,6 @@ module.exports = function(grunt){
     });
   }
 
- console.log(lessConfig.development.files);
-
   grunt.initConfig({
     less: lessConfig,
     concat: {
@@ -42,7 +40,7 @@ module.exports = function(grunt){
         separator: ';'
       },
       js_haik: {
-        src: ['./app/assets/javascript/*.js', './app/lib/Toiee/haik/Plugins/**/public/javascript/*.js'],
+        src: ['./app/assets/javascript/*.js', './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js'],
         dest: './public/assets/javascript/haik.js'
       },
       js_haik_admin: {
@@ -69,9 +67,9 @@ module.exports = function(grunt){
       js_haik: {
         files: [
           './app/assets/javascript/*.js',
-          './app/lib/Toiee/haik/Plugins/**/public/javascript/*.js',
+          './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js',
           './app/assets/stylesheets/*',
-          './app/lib/Toiee/haik/Plugins/**/public/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/assets/stylesheets/*'
         ],
         tasks: ['concat:js_haik']
       },
