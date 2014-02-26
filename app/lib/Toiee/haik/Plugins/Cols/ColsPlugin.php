@@ -4,7 +4,6 @@ namespace Toiee\haik\Plugins\Cols;
 use Toiee\haik\Plugins\Plugin;
 use Toiee\haik\Plugins\Utility;
 
-
 class ColsPlugin extends Plugin {
 
     const COL_MAX_NUM  = 12;
