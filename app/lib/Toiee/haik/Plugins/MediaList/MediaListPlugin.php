@@ -37,79 +37,65 @@ class MediaListPlugin extends Plugin {
 
     protected function createMediaList($medialist)
     {
-        # Initialize variables.
         $this->setUp();
-        # First, split $body with break.
+
         $elements = preg_split('{ \n+ }mx', trim($medialist));
-        # Second, each split body convert.
         foreach ($elements as $element)
         {
             $parsed_elements[] = \Parser::parse($element);
         }
-        # Start check each parameters converted.
-        # check first parameter has image tag.
-        if (strstr($parsed_elements[0], '<img'))
+        if (preg_match('{ <img.*?>< }mx', $parsed_elements[0]))
         {
             $this->image = str_replace('<img', '<img class="media-object"', $parsed_elements[0]);
-            # check next parameter has heading tag.
-            if (strstr($parsed_elements[1], '<h'))
+            $this->image = strip_tags($this->image, '<img>');
+            $searches[] = $elements[0];
+            if (preg_match('{ <h }mx', $parsed_elements[1]))
             {
                 $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[1]);
-                array_splice($parsed_elements, 0, 2);
-                # remain content join to create content.
-                $this->content = join("\n", $parsed_elements);
+                $searches[] = $elements[1];
+                $content = str_replace($searches, '', $elements);
+                $this->content = \Parser::parse(join("\n", $content));
             }
             else
             {
-                # no heading & image tag is first parameter, delete image tag to create content. 
-                array_shift($parsed_elements);
-                $this->content = join("\n", $parsed_elements);
+                $content = str_replace($searches, '', $elements);
+                $this->content = \Parser::parse(join("\n", $content));
             }
         }
-        # check last parameter has image tag.
-        else if (strstr(end($parsed_elements), '<img'))
+        else if (preg_match('{ <img.*?>< }mx', end($parsed_elements)))
         {
-            # change pull-left to right.
             $this->align = "pull-right";
             $this->image = str_replace('<img', '<img class="media-object"', end($parsed_elements));
-            # check first parameter has heading tag
-            if (strstr($parsed_elements[0], '<h'))
+            $this->image = strip_tags($this->image, '<img>');
+            $searches[] = end($elements);
+            if (preg_match('{ <h }mx', $parsed_elements[0]))
             {
                 $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-                # delete image tag & heading tag to create content.
-                array_shift($parsed_elements);
-                array_pop($parsed_elements);
-                $this->content = join("\n", $parsed_elements);
+                $searches[] = $elements[0];
+                $content = str_replace($searches, '', $elements);
+                $this->content = \Parser::parse(join("\n", $content));
             }
             else
             {
-                # no heading & image tag is last parameter, delete image tag to create content.
-                array_pop($parsed_elements);
-                $this->content = join("\n", $parsed_elements);
+                $content = str_replace($searches, '', $elements);
+                $this->content = \Parser::parse(join("\n", $content));
             }
         }
-        # check first parameter has heading tag & last parameter is NOT image tag.
-        else if (strstr($parsed_elements[0], '<h') && ! strstr(end($parsed_elements), '<img'))
+        else if (preg_match('{ <h }mx', $parsed_elements[0]))
         {
             $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-            # delete heading tag to create content.
-            array_shift($parsed_elements);
-            $this->content = join("\n", $parsed_elements);
+            $searches[] = $elements[0];
+            $content = str_replace($searches, '', $elements);
+            $this->content = \Parser::parse(join("\n", $content));
         }
-        # no image, no heading, all parameters are content.
         else
         {
-            $this->content = join("\n", $parsed_elements);
+            $this->content = \Parser::parse($medialist);
         }
-
-        # create only image tag.
-        $this->image = strip_tags($this->image, '<img>');
-
         # all parameter trimed.
         $this->image = trim($this->image);
         $this->heading = trim($this->heading);
-        # if $content has some lines, trim breaks.
-        $this->content = trim(str_replace("\n", "", $this->content));
+        $this->content = trim($this->content);
 
         $result = '<div class="media">'
               . '<span class="'.$this->align.'">'.$this->image.'</span>'
