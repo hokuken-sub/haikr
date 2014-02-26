@@ -201,8 +201,8 @@ class ThemeConfigParser implements ThemeConfigParserInterface {
 
     protected function setDefaultLayout($config)
     {
-        $defaultLayout = isset($config['defaultLayout']) ? $config['defaultLayout'] : '';
-        if ($defaultLayout !== '' && isset($config['layouts'][$defaultLayout]))
+        $default_layout = isset($config['defaultLayout']) ? $config['defaultLayout'] : '';
+        if ($default_layout !== '' && isset($config['layouts'][$default_layout]))
         {
             return $config;
         }

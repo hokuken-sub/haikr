@@ -32,4 +32,10 @@ interface ThemeRepositoryInterface {
      */
     public function getConfig($name);
 
+    /**
+     * Get path to Theme's directory
+     * @param string $name theme name
+     * @return string path to theme dir
+     */
+    public function getPath($name);
 }

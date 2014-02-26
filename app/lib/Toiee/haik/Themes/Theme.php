@@ -2,6 +2,7 @@
 namespace Toiee\haik\Themes;
 
 use App;
+use View;
 
 class Theme implements ThemeInterface {
     
@@ -18,6 +19,8 @@ class Theme implements ThemeInterface {
         $this->manager = $manager;
         $this->config = $config;
         
+        $this->addNamespace($this->get('name'));
+
         $this->initLayouts();
         $this->initColors();
         $this->initTextures();
@@ -243,8 +246,26 @@ class Theme implements ThemeInterface {
             }
         }
 
-        //TODO: make view using ThemeData
-        return App::make('View');
+        $theme_name = $this->get('name');
+        $layout_name = $this->layoutGet();
+        $theme_data = $this->manager->getAll();
+
+        return View::make("{$theme_name}::{$layout_name}")
+                            ->with($theme_data);
+    }
+
+    /**
+     * Add namespace of View by theme name
+     *
+     * @param string $name theme name
+     * @return void
+     */
+    protected function addNamespace()
+    {
+        $name = $this->get('name');
+        $theme_path = $this->manager->themes->getPath($name);
+        View::addLocation($theme_path);
+        View::addNamespace($name, $theme_path);
     }
 
     protected function layoutAfterFilter(){}

@@ -1,6 +1,8 @@
 <?php
 namespace Toiee\haik\Themes;
 
+use View;
+
 class LocalRepository implements ThemeRepositoryInterface {
 
     protected $manager;
@@ -12,6 +14,7 @@ class LocalRepository implements ThemeRepositoryInterface {
 
     public function __construct(ThemeManager $manager, $path)
     {
+        $this->manager = $manager;
         $this->path = $path;
     }
 
@@ -23,7 +26,7 @@ class LocalRepository implements ThemeRepositoryInterface {
     public function exists($name)
     {
         $theme_dir = $this->getPath($name);
-        $config_path = $this->getPath($name) . '/config.php';
+        $config_path = $this->getConfigFilePath($name);
         if (is_dir($theme_dir) && file_exists($config_path))
         {
             return true;
@@ -41,7 +44,7 @@ class LocalRepository implements ThemeRepositoryInterface {
     {
         if ($this->exists($name))
         {
-            return new Theme($this->manager, $this->getConfig());
+            return new Theme($this->manager, $this->getConfig($name));
         }
         
         throw new \InvalidArgumentException("This {$name} theme was not exist");
@@ -56,6 +59,11 @@ class LocalRepository implements ThemeRepositoryInterface {
         return array();
     }
     
+    /**
+     * Get path to Theme's directory
+     * @param string $name theme name
+     * @return string path to theme dir
+     */
     public function getPath($name)
     {
         return str_finish($this->path, '/') . $name;
@@ -64,10 +72,10 @@ class LocalRepository implements ThemeRepositoryInterface {
     public function getConfig($name)
     {
         $config = array();
-        $config_path = $this->getPath($name) . '/config.php';
+        $config_path = $this->getConfigFilePath($name);
         if ($this->exists($name))
         {
-            $config = include($config_path);
+            $config = json_decode(file_get_contents($config_path), true);
         }
         if (array_key_exists('name', $config))
         {
@@ -78,6 +86,11 @@ class LocalRepository implements ThemeRepositoryInterface {
 
     public function parseConfig($config)
     {
-        return $config;
+        return $this->manager->configParser->parse($config);
+    }
+
+    protected function getConfigFilePath($name)
+    {
+        return $this->getPath($name) . '/theme.json';
     }
 }

@@ -10,4 +10,6 @@ return array(
     'partials' => array(
         'default' => array(),
     ),
+
+    'default' => 'kawaz'
 );
