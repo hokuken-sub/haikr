@@ -2,6 +2,7 @@
 namespace Toiee\haik\Plugins\Cols;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class ColsPlugin extends Plugin {
 
@@ -79,8 +80,8 @@ class ColsPlugin extends Plugin {
 
         foreach ($this->params as $param)
         {
-            $cols = $this->parseParam($param);
-            if (count($cols) === 0)
+            $cols = Utility::parseColumnData($param);
+            if ( ! $cols)
             {
                 if (preg_match('/^class=(.+)$/', $param, $mts))
                 {
@@ -94,7 +95,7 @@ class ColsPlugin extends Plugin {
                 }
                 continue;
             }
-            
+
             $cols = array_merge($this->colBase, $cols);
             $this->cols[] = $cols;
             $this->totalColNum += $cols['cols'];
@@ -161,25 +162,6 @@ class ColsPlugin extends Plugin {
         
         $html = '<div class="haik-plugin-cols row'.$top_class.'">'."\n".join("\n", $col_body)."\n".'</div>';
         return $html;
-    }
-    
-    
-    /**
-     * parse cols param
-     * @params string $param
-     * @return array $data parameter for cols
-     */
-    protected function parseParam($param)
-    {
-        $data = array();
-        if (preg_match('/^(\d+)(?:\+(\d+))?((?:\.[a-zA-Z0-9_-]+)+)?$/', $param, $mts))
-        {
-            $data['cols']   = (int)$mts[1];
-            $data['offset'] = isset($mts[2]) ? (int)$mts[2] : 0;
-            $data['class']  = isset($mts[3]) ? trim(str_replace('.', ' ',$mts[3])) : '';
-        }
-
-        return $data;
     }
 
 }
