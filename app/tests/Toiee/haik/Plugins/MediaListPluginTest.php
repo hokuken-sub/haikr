@@ -10,6 +10,7 @@ class MediaListPluginTest extends TestCase {
 
     public function testOneMediaListWithMarkdownImage()
     {
+        # This is the test of left image, heading, body set.
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -25,7 +26,7 @@ class MediaListPluginTest extends TestCase {
         $body = "![alt](http://placehold.jp/80x80.png)\n"."#### test title\n"."test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
-
+        # This is the test of left DUMMY image, heading, body set.
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -41,7 +42,7 @@ class MediaListPluginTest extends TestCase {
         $body = "#### test title\n"."test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
-
+        # This is the test of left DUMMY image and body set.
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -56,7 +57,7 @@ class MediaListPluginTest extends TestCase {
         $body = "test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
-
+        # This is the test of left image, body set.
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -71,7 +72,7 @@ class MediaListPluginTest extends TestCase {
         $body = "![alt](http://placehold.jp/80x80.png)\n"."test\n";
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
-
+        # This is the test of right image, heading, body set.
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
