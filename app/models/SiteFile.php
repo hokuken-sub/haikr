@@ -2,7 +2,7 @@
 
 use Toiee\haik\File\FileInterface;
 
-class File extends Eloquent implements FileInterface {
+class SiteFile extends Eloquent implements FileInterface {
 
     protected $table = 'haik_files';
 
