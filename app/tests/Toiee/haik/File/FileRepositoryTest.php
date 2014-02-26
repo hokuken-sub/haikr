@@ -1,13 +1,12 @@
 <?php
 use Toiee\haik\File\FileRepository;
-use SiteFile;
 
 class FileRepositoryTest extends TestCase {
 
     public function setUp()
     {
-        $this->files = new FileRepository('File');
-//        $this->siteId = Haik::getID();
+        $this->files = new FileRepository('SiteFile');
+        $this->siteId = \Haik::getID();
     }
 
     public function testListGet()
@@ -15,12 +14,12 @@ class FileRepositoryTest extends TestCase {
         $this->markTestIncomplete('This test needs File model');
         
         $list = $this->files->listGet();
-        // test return array
-        $this->assertInternalType('array', $list);
+        // test return Collection
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $list);
         
         // test list data
         $newest_file = SiteFile::where("haik_site_id", $this->siteId)->orderBy("updated_at", "desc")->first();
-        $this->assertEquals($newest_file, $list[0]);
+        $this->assertEquals($newest_file, $list->first());
     }
     
     public function testListByType()
@@ -34,19 +33,19 @@ class FileRepositoryTest extends TestCase {
         // test list data
         $newest_file = SiteFile::where("haik_site_id", $this->siteId)->where("type", "image")
                            ->orderBy("updated_at", "desc")->first();
-        $this->assertEquals($newest_file, $list[0]);
+        $this->assertEquals($newest_file, $list->first());
     }
     
     public function testListStarred()
     {
         $list = $this->files->listByType("image");
-        // test return array
-        $this->assertInternalType('array', $list);
+        // test return Collection
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $list);
         
         // test list data
         $newest_file = SiteFile::where("haik_site_id", $this->siteId)->where("starred", 1)
                            ->orderBy("updated_at", "desc")->first();
-        $this->assertEquals($newest_file, $list[0]);
+        $this->assertEquals($newest_file, $list->first());
     }
     
     public function testExists()
