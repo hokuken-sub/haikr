@@ -2,6 +2,7 @@
 namespace Toiee\haik\Plugins\Cols;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class ColsPlugin extends Plugin {
 
@@ -86,8 +87,8 @@ EOD;
 
         foreach ($this->params as $param)
         {
-            $cols = $this->parseParam($param);
-            if (count($cols) === 0)
+            $cols = Utility::parseColumnData($param);
+            if ( ! $cols)
             {
                 if (preg_match('/^class=(.+)$/', $param, $mts))
                 {
@@ -101,7 +102,7 @@ EOD;
                 }
                 continue;
             }
-            
+
             $cols = array_merge($this->colBase, $cols);
             $this->cols[] = $cols;
             $this->totalColNum += $cols['cols'];
@@ -171,7 +172,7 @@ EOD;
         $html = sprintf($c::ROW_FORMAT, $top_class, join("\n", $col_body));
         return $html;
     }
-    
+
     protected function setFormatEach($data)
     {
         $c = get_called_class();
