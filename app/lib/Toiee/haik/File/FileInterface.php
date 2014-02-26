@@ -5,8 +5,10 @@ interface FileInterface {
 
     /**
      * Mark star the file
+     *
+     * @param boolean $star
      */
-    public function star();
+    public function star($star = true);
 
     /**
      * Is the file private?
