@@ -37,13 +37,13 @@ class MediaListPlugin extends Plugin {
                 $heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $split[1]);
                 array_splice($split, 0, 2);
                 # remain content join to create content.
-                $content = implode($split);
+                $content = join("\n", $split);
             }
             else
             {
                 # no heading & image tag is first parameter, delete image tag to create content. 
                 array_shift($split);
-                $content = implode($split);
+                $content = join("\n", $split);
             }
         }
         # check last parameter has image tag.
@@ -59,13 +59,13 @@ class MediaListPlugin extends Plugin {
                 # delete image tag & heading tag to create content.
                 array_shift($split);
                 array_pop($split);
-                $content = implode($split);
+                $content = join("\n", $split);
             }
             else
             {
                 # no heading & image tag is last parameter, delete image tag to create content.
                 array_pop($split);
-                $content = implode($split);
+                $content = join("\n", $split);
             }
         }
         # check first parameter has heading tag & last parameter is NOT image tag.
@@ -74,12 +74,12 @@ class MediaListPlugin extends Plugin {
             $heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $split[0]);
             # delete heading tag to create content.
             array_shift($split);
-            $content = implode($split);
+            $content = join("\n", $split);
         }
         # no image, no heading, all parameters are content.
         else
         {
-            $content = implode($split);
+            $content = join("\n", $split);
         }
 
         # create only image tag.
