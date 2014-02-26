@@ -39,10 +39,10 @@ class UtilityTest extends TestCase {
                 ),
             ),
             'num_and_offset_data' => array(
-                'columndata' => '3+3',
+                'columndata' => '3+1',
                 'assert'     => array(
                     'cols'   => 3,
-                    'offset' => 3,
+                    'offset' => 1,
                     'class'  => '',
                 ),
             ),

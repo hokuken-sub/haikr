@@ -2,11 +2,20 @@
 namespace Toiee\haik\Plugins\Cols;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class ColsPlugin extends Plugin {
 
-    const COL_MAX_NUM  = 12;
-    const COL_DELIMITER = "\n====\n";
+    const COL_MAX_NUM     = 12;
+    const COL_DELIMITER   = "\n====\n";
+
+    const COL_FORMAT_EACH = '  <div class="%s" style="%s">%s</div>';
+
+    const ROW_FORMAT      = <<< EOD
+<div class="haik-plugin-cols row %s">
+%s
+</div>
+EOD;
 
     protected $className;
     protected $delimiter;
@@ -79,8 +88,8 @@ class ColsPlugin extends Plugin {
 
         foreach ($this->params as $param)
         {
-            $cols = $this->parseParam($param);
-            if (count($cols) === 0)
+            $cols = Utility::parseColumnData($param);
+            if ( ! $cols)
             {
                 if (preg_match('/^class=(.+)$/', $param, $mts))
                 {
@@ -94,7 +103,7 @@ class ColsPlugin extends Plugin {
                 }
                 continue;
             }
-            
+
             $cols = array_merge($this->colBase, $cols);
             $this->cols[] = $cols;
             $this->totalColNum += $cols['cols'];
@@ -141,45 +150,45 @@ class ColsPlugin extends Plugin {
     	}
     }
     
+    /**
+     * get html
+     * @return string $html cols html
+     */
     protected function getHtml()
     {
         $col_body = array();
-        $col_format = '<div class="%s" style="%s">%s</div>';
-        $top_class = $this->className ? (' ' . $this->className) : '';
+        $top_class = $this->className ? $this->className : '';
 
         foreach ($this->cols as $col)
         {
             $span   = 'col-sm-'.$col['cols'];
             $offset = $col['offset'] ? (' col-sm-offset-' . $col['offset']) : '';
             $class  = $col['class']  ? (' ' . $col['class']) : '';
-            $style  = $col['style']  ? $col['style'] : '';
-            
-            $body = \Parser::parse($col['body']);
 
-            $col_body[] = sprintf($col_format, ($span . $offset . $class), $style, $body);
+            $coldata = array();
+            $coldata[] = $span . $offset . $class;
+            $coldata[] = $col['style']  ? $col['style'] : '';
+            $coldata[] = $col['body'];
+
+            $col_body[] = $this->getColHtml($coldata);
         }
         
-        $html = '<div class="haik-plugin-cols row'.$top_class.'">'."\n".join("\n", $col_body)."\n".'</div>';
+        $c = get_called_class();
+        $html = sprintf($c::ROW_FORMAT, $top_class, join("\n", $col_body));
         return $html;
     }
-    
-    
-    /**
-     * parse cols param
-     * @params string $param
-     * @return array $data parameter for cols
-     */
-    protected function parseParam($param)
-    {
-        $data = array();
-        if (preg_match('/^(\d+)(?:\+(\d+))?((?:\.[a-zA-Z0-9_-]+)+)?$/', $param, $mts))
-        {
-            $data['cols']   = (int)$mts[1];
-            $data['offset'] = isset($mts[2]) ? (int)$mts[2] : 0;
-            $data['class']  = isset($mts[3]) ? trim(str_replace('.', ' ',$mts[3])) : '';
-        }
 
-        return $data;
+    /**
+     * get formated col html
+     * @params array $data col options data
+     * @return string $html formated col html
+     */
+    protected function getColHtml($data)
+    {
+        $c = get_called_class();
+        $body = \Parser::parse($data[2]);
+        $html = sprintf($c::COL_FORMAT_EACH, $data[0], $data[1], $body);
+        return $html;
     }
 
 }
