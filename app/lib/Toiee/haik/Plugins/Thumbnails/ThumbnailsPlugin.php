@@ -4,7 +4,7 @@ namespace Toiee\haik\Plugins\Thumbnails;
 use Toiee\haik\Plugins\Cols\ColsPlugin;
 
 class ThumbnailsPlugin extends ColsPlugin {
-    
+
     const COL_FORMAT_EACH = <<< EOD
   <div class="%s" style="%s">
     <div class="thumbnail">
@@ -26,15 +26,13 @@ EOD;
     {
         parent::__construct();
     }
-    
+
     /**
-     * convert call via HaikMarkdown :::{plugin-name(...):::
-     * @params array $params
-     * @params string $body when {...} was set
-     * @return string converted HTML string
-     * @throws RuntimeException when unimplement
+     * get formated col html
+     * @params array $data col options data
+     * @return string $html formated col html
      */
-    protected function setFormatEach($data)
+    protected function getColHtml($data)
     {
         $body = $data[2];
         $elements = preg_split('{ \n+ }mx', trim($body));

@@ -8,6 +8,7 @@ class ColsPlugin extends Plugin {
 
     const COL_MAX_NUM     = 12;
     const COL_DELIMITER   = "\n====\n";
+
     const COL_FORMAT_EACH = '  <div class="%s" style="%s">%s</div>';
 
     const ROW_FORMAT      = <<< EOD
@@ -149,6 +150,10 @@ EOD;
     	}
     }
     
+    /**
+     * get html
+     * @return string $html cols html
+     */
     protected function getHtml()
     {
         $col_body = array();
@@ -165,7 +170,7 @@ EOD;
             $coldata[] = $col['style']  ? $col['style'] : '';
             $coldata[] = $col['body'];
 
-            $col_body[] = $this->setFormatEach($coldata);
+            $col_body[] = $this->getColHtml($coldata);
         }
         
         $c = get_called_class();
@@ -173,31 +178,17 @@ EOD;
         return $html;
     }
 
-    protected function setFormatEach($data)
+    /**
+     * get formated col html
+     * @params array $data col options data
+     * @return string $html formated col html
+     */
+    protected function getColHtml($data)
     {
         $c = get_called_class();
         $body = \Parser::parse($data[2]);
         $html = sprintf($c::COL_FORMAT_EACH, $data[0], $data[1], $body);
         return $html;
-    }
-    
-    /**
-     * parse cols param
-     * @params string $param
-     * @return array $data parameter for cols
-     */
-    protected function parseParam($param)
-    {
-        $data = array();
-        
-        if (preg_match('/^(\d+)(?:\+(\d+))?((?:\.[a-zA-Z0-9_-]+)+)?$/', $param, $mts))
-        {
-            $data['cols']   = (int)$mts[1];
-            $data['offset'] = isset($mts[2]) ? (int)$mts[2] : 0;
-            $data['class']  = isset($mts[3]) ? trim(str_replace('.', ' ',$mts[3])) : '';
-        }
-
-        return $data;
     }
 
 }
