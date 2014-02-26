@@ -129,6 +129,30 @@ class MediaListPluginTest extends TestCase {
               . "test\n";
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
+        # This is the test of left image, heading, some lines body set.
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<p>test</p>'
+                      . '<p>test</p>'
+                      . '<p>test</p>'
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n"
+              . "test\n"
+              . "test\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
     }
 
     public function testMoreThanTwoMediaListWithMarkdownImage()
