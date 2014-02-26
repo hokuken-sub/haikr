@@ -108,7 +108,8 @@ class MediaListPlugin extends Plugin {
         # all parameter trimed.
         $this->image = trim($this->image);
         $this->heading = trim($this->heading);
-        $this->content = trim($this->content);
+        # if $content has some lines, trim breaks.
+        $this->content = trim(str_replace("\n", "", $this->content));
 
         $result = '<div class="media">'
               . '<span class="'.$this->align.'">'.$this->image.'</span>'
