@@ -12,6 +12,10 @@ class SiteManager implements SiteManagerInterface{
         $this->id = 1;
     }
     
+    public function getID()
+    {
+        return $this->id;
+    }
     /**
      * get site config value by name
      * @params string $name site config name
