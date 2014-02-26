@@ -5,6 +5,19 @@ use Toiee\haik\Plugins\Plugin;
 
 class MediaListPlugin extends Plugin {
 
+    protected $align;
+    protected $image;
+    protected $heading;
+    protected $content;
+    protected $html;
+
+    public function setUp()
+    {
+        $this->align = 'pull-left';
+        $this->image = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
+        $this->heading = $this->content = $this->html = '';
+    }
+
     /**
      * convert call via HaikMarkdown :::{#plugin-name}\n...\n:::;
      * @params array $params
@@ -14,82 +27,93 @@ class MediaListPlugin extends Plugin {
      */
     public function convert($params = array(), $body = '')
     {
-        # set default parameter.
-        $align = 'pull-left';
-        $image = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
-        $heading = $content = "";
-
-        # First, split $body with break.
-        $split_body = preg_split('{ \n+ }mx', trim($body));
-        # Second, each split body convert.
-        foreach ($split_body as $s)
+        $medialists = explode("\n====\n", $body);
+        foreach ($medialists as $medialist)
         {
-            $split[] = \Parser::parse($s);
+            $this->html = $this->html.$this->createMediaList($medialist);
+        }
+        return $this->html;
+    }
+
+    protected function createMediaList($medialist)
+    {
+        # Initialize variables.
+        $this->setUp();
+        # First, split $body with break.
+        $elements = preg_split('{ \n+ }mx', trim($medialist));
+        # Second, each split body convert.
+        foreach ($elements as $element)
+        {
+            $parsed_elements[] = \Parser::parse($element);
         }
         # Start check each parameters converted.
         # check first parameter has image tag.
-        if (strstr($split[0], '<img'))
+        if (strstr($parsed_elements[0], '<img'))
         {
-            $image = str_replace('<img', '<img class="media-object"', $split[0]);
+            $this->image = str_replace('<img', '<img class="media-object"', $parsed_elements[0]);
             # check next parameter has heading tag.
-            if (strstr($split[1], '<h'))
+            if (strstr($parsed_elements[1], '<h'))
             {
-                $heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $split[1]);
-                array_splice($split, 0, 2);
+                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[1]);
+                array_splice($parsed_elements, 0, 2);
                 # remain content join to create content.
-                $content = join("\n", $split);
+                $this->content = join("\n", $parsed_elements);
             }
             else
             {
                 # no heading & image tag is first parameter, delete image tag to create content. 
-                array_shift($split);
-                $content = join("\n", $split);
+                array_shift($parsed_elements);
+                $this->content = join("\n", $parsed_elements);
             }
         }
         # check last parameter has image tag.
-        else if (strstr(end($split), '<img'))
+        else if (strstr(end($parsed_elements), '<img'))
         {
             # change pull-left to right.
-            $align = "pull-right";
-            $image = str_replace('<img', '<img class="media-object"', end($split));
+            $this->align = "pull-right";
+            $this->image = str_replace('<img', '<img class="media-object"', end($parsed_elements));
             # check first parameter has heading tag
-            if (strstr($split[0], '<h'))
+            if (strstr($parsed_elements[0], '<h'))
             {
-                $heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $split[0]);
+                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
                 # delete image tag & heading tag to create content.
-                array_shift($split);
-                array_pop($split);
-                $content = join("\n", $split);
+                array_shift($parsed_elements);
+                array_pop($parsed_elements);
+                $this->content = join("\n", $parsed_elements);
             }
             else
             {
                 # no heading & image tag is last parameter, delete image tag to create content.
-                array_pop($split);
-                $content = join("\n", $split);
+                array_pop($parsed_elements);
+                $this->content = join("\n", $parsed_elements);
             }
         }
         # check first parameter has heading tag & last parameter is NOT image tag.
-        else if (strstr($split[0], '<h') && ! strstr(end($split), '<img'))
+        else if (strstr($parsed_elements[0], '<h') && ! strstr(end($parsed_elements), '<img'))
         {
-            $heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $split[0]);
+            $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
             # delete heading tag to create content.
-            array_shift($split);
-            $content = join("\n", $split);
+            array_shift($parsed_elements);
+            $this->content = join("\n", $parsed_elements);
         }
         # no image, no heading, all parameters are content.
         else
         {
-            $content = join("\n", $split);
+            $this->content = join("\n", $parsed_elements);
         }
 
         # create only image tag.
-        $image = strip_tags($image, '<img>');
+        $this->image = strip_tags($this->image, '<img>');
 
         # all parameter trimed.
-        $image = trim($image); $heading = trim($heading); $content = trim($content);
-        $html = '<div class="media">'
-              . '<span class="'.$align.'">'.$image.'</span>'
-              . '<div class="media-body">'.$heading.$content.'</div></div>';
-        return $html;
+        $this->image = trim($this->image);
+        $this->heading = trim($this->heading);
+        $this->content = trim($this->content);
+
+        $result = '<div class="media">'
+              . '<span class="'.$this->align.'">'.$this->image.'</span>'
+              . '<div class="media-body">'.$this->heading.$this->content.'</div></div>';
+
+        return $result;
     }
 }
