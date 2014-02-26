@@ -130,4 +130,54 @@ class MediaListPluginTest extends TestCase {
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
     }
+
+    public function testMoreThanTwoMediaListWithMarkdownImage()
+    {
+
+        $assert = '<div class="media">'
+                . '<span class="pull-left">'
+                . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                . '</span>'
+                . '<div class="media-body">'
+                . '<h4 class="media-heading">test title</h4>'
+                . '<p>test</p>'
+                . '</div></div>';
+
+
+        # This is the test of TWO medialists with left image, heading, body set.
+        $test = array(
+            'medialist' => array(),
+            'assert' => $assert.$assert,
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n"
+              . "====\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+        # This is the test of THREE medialists with left image, heading, body set.
+        $test = array(
+            'medialist' => array(),
+            'assert' => $assert.$assert.$assert,
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n"
+              . "====\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n"
+              . "====\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+    }
 }
