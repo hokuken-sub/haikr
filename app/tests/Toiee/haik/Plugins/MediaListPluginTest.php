@@ -140,9 +140,7 @@ class MediaListPluginTest extends TestCase {
                       . '</span>'
                       . '<div class="media-body">'
                       . '<h4 class="media-heading">test title</h4>'
-                      . '<p>test</p>'
-                      . '<p>test</p>'
-                      . '<p>test</p>'
+                      . "<p>test\ntest\ntest</p>"
                       . '</div></div>',
         );
 
