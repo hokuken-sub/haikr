@@ -32,8 +32,12 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
         {
             return with(new HaikMarkdown())->parse($text);
         }
+
         $this->running = true;
-        return $this->transform($text);
+        $html = $this->transform($text);
+        $this->running = false;
+
+        return $html;
     }
 
     protected function doHaikLinks($text)
