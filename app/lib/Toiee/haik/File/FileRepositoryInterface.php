@@ -6,26 +6,27 @@ interface FileRepositoryInterface {
     /**
      * Get list in range
      *
-     * @param mixed $range
+     * @param integer $page
      * @return array of files
      */
-    public function list($range);
+    public function listGet($page = 1);
 
     /**
      * Get list by type in range
      *
-     * @param mixed $range
+     * @param string $type type of file
+     * @param integer $page
      * @return array of files
      */
-    public function listByType($range);
+    public function listByType($type, $page = 1);
 
     /**
      * Get starred file list in range
      *
-     * @param mixed $range
+     * @param integer $page
      * @return array of files
      */
-    public function listStarred($range);
+    public function listStarred($page = 1);
 
     /**
      * Is file exists?
