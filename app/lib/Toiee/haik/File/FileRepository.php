@@ -1,7 +1,7 @@
 <?php
 namespace Toiee\haik\File;
 
-use File;
+use SiteFile;
 
 class FileRepository implements FileRepositoryInterface {
 
