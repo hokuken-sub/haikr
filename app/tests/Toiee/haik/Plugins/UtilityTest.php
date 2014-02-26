@@ -3,7 +3,7 @@ use Toiee\haik\Plugins\Utility;
 
 class UtilityTest extends TestCase {
 
-    public function testParseColumnDateExists()
+    public function testParseColumnDataExists()
     {
         # return array if parseColumnData work correctly.
         $this->assertInternalType('array', Utility::parseColumnData('12'));
