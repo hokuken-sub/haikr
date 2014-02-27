@@ -4,6 +4,13 @@ namespace Toiee\haik\File;
 interface FileInterface {
 
     /**
+     * get identifier
+     *
+     * @return string file identifier
+     */
+    public function getIdentifier();
+
+    /**
      * get file name
      *
      * @return string file name
