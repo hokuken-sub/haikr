@@ -31,15 +31,23 @@ interface FileRepositoryInterface {
     /**
      * Is file exists?
      *
-     * @param string $id
+     * @param string $identifier
      * @return existance
      */
-    public function exists($id);
+    public function exists($identifier);
 
     /**
      * Get file by ID
-     * @param string $id
+     * @param string $identifier
      * @return FileInterface
      */
-    public function retrieve($id);
+    public function retrieve($identifier);
+
+    /**
+     * Get new file object
+     *
+     * @return string $identifier
+     * @return FileInterface
+     */
+    public function factory($identifier = null);
 }

@@ -17,7 +17,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function get($file)
     {
-        return File::get($this->getPath($file->getName()));
+        return File::get($this->getPath($file->getIdentifier()));
     }
 
     /**
@@ -29,7 +29,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function save($file, $content)
     {
-        return File::put($this->getPath($file->getName()), $content);
+        return File::put($this->getPath($file->getIdentifier()), $content);
     }
 
     /**
@@ -40,7 +40,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function delete($file)
     {
-        return File::delete($this->getPath($file->getName()));
+        return File::delete($this->getPath($file->getIdentifier()));
     }
 
     /**
@@ -52,7 +52,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function copy($file, $dest_id)
     {
-        return File::copy($this->getPath($file->getName()), $this->getPath($dest_id));
+        return File::copy($this->getPath($file->getIdentifier()), $this->getPath($dest_id));
     }
 
     /**
@@ -63,7 +63,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function exists($file)
     {
-        return File::exists($this->getPath($file->getName()));
+        return File::exists($this->getPath($file->getIdentifier()));
     }
 
     /**
@@ -84,7 +84,7 @@ class LocalStorage implements FileStorageInterface {
      */
     public function passthru($file)
     {
-        $filepath = $this->getPath($file->getName());
+        $filepath = $this->getPath($file->getIdentifier());
         $fp = fopen($filepath, 'rb');
 
         // send header
