@@ -17,7 +17,7 @@ interface FileStorageInterface {
      *
      * @param FileInterface $file
      * @param mixed $content
-     * @return boolean when success return true
+     * @return integer file size when faile then return false
      */
     public function save($file, $content);
 

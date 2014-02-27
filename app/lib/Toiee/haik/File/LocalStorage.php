@@ -1,6 +1,8 @@
 <?php
 namespace Toiee\haik\File;
 
+use Config;
+use Haik;
 use File;
 use Response;
 
@@ -23,7 +25,7 @@ class LocalStorage implements FileStorageInterface {
      *
      * @param FileInterface $file
      * @param mixed $content
-     * @return boolean when success return true
+     * @return integer file size when faile then return false
      */
     public function save($file, $content)
     {
@@ -83,7 +85,7 @@ class LocalStorage implements FileStorageInterface {
     public function passthru($file)
     {
         $filepath = $this->getPath($file->getName());
-        $fp = fopen($filepath), 'rb');
+        $fp = fopen($filepath, 'rb');
 
         // send header
         header("Content-Type: ". $file->mime_type);
@@ -102,7 +104,7 @@ class LocalStorage implements FileStorageInterface {
      */
     protected function getPath($id)
     {
-        return Config::get('file::local.path').Haik::getID() . '/'. $id;
+        return Config::get('file.local.path').Haik::getID() . '/'. $id;
     }
 
 }
