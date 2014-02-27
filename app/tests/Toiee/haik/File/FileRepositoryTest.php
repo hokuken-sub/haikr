@@ -36,6 +36,12 @@ class FileRepositoryTest extends TestCase {
         $file2->save();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        SiteFile::truncate();
+    }
+
     public function testListGet()
     {
         $list = $this->files->listGet();
@@ -75,7 +81,7 @@ class FileRepositoryTest extends TestCase {
     {
         $file = SiteFile::where("haik_site_id", $this->siteId)
                            ->orderBy("updated_at", "desc")->first();
-        $idenfier = $file->key;
+        $idenfier = $file->getIdentifier();
         $this->assertTrue($this->files->exists($idenfier));
     }
 
@@ -83,7 +89,7 @@ class FileRepositoryTest extends TestCase {
     {
         $file = SiteFile::where("haik_site_id", $this->siteId)
                            ->orderBy("updated_at", "desc")->first();
-        $idenfier = $file->key;
+        $idenfier = $file->getIdentifier();
         $this->assertEquals($file, $this->files->retrieve($idenfier));
     }
 
