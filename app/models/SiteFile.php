@@ -17,6 +17,17 @@ class SiteFile extends Eloquent implements FileInterface {
     }
 
     /**
+     * set identifier
+     *
+     * @param string $identifier file identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->key = $identifier;
+        $this->save();
+    }
+
+    /**
      * get file name
      *
      * @return string file name

@@ -11,6 +11,13 @@ interface FileInterface {
     public function getIdentifier();
 
     /**
+     * set identifier
+     *
+     * @param string $identifier file identifier
+     */
+    public function setIdentifier($identifier);
+
+    /**
      * get file name
      *
      * @return string file name
