@@ -3,7 +3,7 @@ namespace Toiee\haik\File;
 
 class FileManager {
 
-    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z_.-]+\z/';
+    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z][0-9a-zA-Z_.-]*[0-9a-zA-Z]\z/';
     const AUTO_IDENTIFIER_SEED = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const AUTO_IDENTIFIER_MIN_LENGTH = 4;
     const AUTO_IDENTIFIER_TRY_LIMIT = 10000;
@@ -107,6 +107,20 @@ class FileManager {
         return false;
     }
 
+    /**
+     * Create empty file for save
+     *
+     * @param string $identifier
+     * @return FileInterface
+     */
+    public function fileCreate($identifier = '', $options = array())
+    {
+        $file = $this->files->factory($identifier);
+        $file->setIdentify($this->createIdentifier($file));
+        $file->init($options);
+        return $file;
+    }
+
     public function fileDelete($identifier)
     {
         if ($this->fileExists($identifier))
@@ -170,8 +184,10 @@ class FileManager {
         return preg_match(IDENTIFIER_REGEX, $identifier);
     }
 
-    protected function getStorageDriver($storage)
+    protected function getStorageDriver($storage = '')
     {
+        $storage = $storage ? $storage : \Config::get('file.storage');
+
         if (array_key_exists($storage, $this->storageDrivers))
         {
             return $this->storageDrivers[$storage];
@@ -196,7 +212,7 @@ class FileManager {
 
     protected function createLocalStorageDriver()
     {
-        return $this->storageDrivers['local'] = new LocalStorage();
+        return $this->storageDrivers['local'] = App::make('LocalStorage');
     }
 
     protected function createDatabaseStorageDriver()
