@@ -15,19 +15,12 @@ interface FileStorageInterface {
     /**
      * Save file content data
      *
+     * @param string $id
      * @param mixed $content
      * @return boolean when success return true
      */
-    public function saveFile($content);
+    public function save($id, $content);
 
-    /**
-     * Update file content by ID
-     *
-     * @param string $id
-     * @param mixed $content
-     * @return FileInterface|false when failed return false
-     */
-    public function update($id, $content);
 
     /**
      * Delete file by ID
