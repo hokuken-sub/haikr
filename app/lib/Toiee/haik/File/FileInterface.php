@@ -13,7 +13,7 @@ interface FileInterface {
     /**
      * set identifier
      *
-     * @param string $identifier file identifier
+     * @param FileInterface for method chain
      */
     public function setIdentifier($identifier);
 
@@ -27,7 +27,7 @@ interface FileInterface {
     /**
      * Mark star the file
      *
-     * @param boolean $star
+     * @param FileInterface for method chain
      */
     public function star($star = true);
 

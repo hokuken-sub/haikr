@@ -19,12 +19,12 @@ class SiteFile extends Eloquent implements FileInterface {
     /**
      * set identifier
      *
-     * @param string $identifier file identifier
+     * @param FileInterface for method chain
      */
     public function setIdentifier($identifier)
     {
         $this->key = $identifier;
-        $this->save();
+        return $this;
     }
 
     /**
@@ -40,12 +40,12 @@ class SiteFile extends Eloquent implements FileInterface {
     /**
      * Mark star the file
      *
-     * @param boolean $star
+     * @param FileInterface for method chain
      */
     public function star($star = true)
     {
         $this->starred = !! $star;
-        $this->save();
+        return $this;
     }
 
     /**
