@@ -61,7 +61,7 @@ class FileManager {
         $file = $this->fileGet($identifier);
 
         try {
-            return $this->getStorageDriver($file->storage)->get($file->getIdentifier());
+            return $this->getStorageDriver($file->storage)->get($file);
         }
         catch (Exception $c)
         {
@@ -83,7 +83,7 @@ class FileManager {
         {
             $identifier = $file->getIdentifier();
             $file = $this->fileGet($identifier);
-            if ($file->getStorageDriver($file->storage)->save($identifier, $content))
+            if ($this->getStorageDriver($file->storage)->save($file, $content))
             {
                 $file->touch();
                 return true;
@@ -92,7 +92,7 @@ class FileManager {
         else
         {
             // When file is set identifier, use it.
-            $identifier = trim($this->getIdentifier());
+            $identifier = trim($file->getIdentifier());
             if ($identifier === '' OR $this->files->exists($identifier))
             {
                 $identifier = $this->createIdentifier();
@@ -100,6 +100,7 @@ class FileManager {
 
             if ($this->getStorageDriver()->save($identifier, $content))
             {
+                $file->setIdentifier($identifier);
                 $file->save();
                 return true;
             }
@@ -126,7 +127,7 @@ class FileManager {
         if ($this->fileExists($identifier))
         {
             $file = $this->fileGet($identifier);
-            $file->getStorageDriver($file->storage)->delete($identifier);
+            $this->getStorageDriver($file->storage)->delete($file);
         }
         return false;
     }
@@ -156,12 +157,12 @@ class FileManager {
     protected function generateIdentifier(FileInterface $file = null)
     {
         $identifier = '';
-        $seed_length = strlen(AUTO_IDENTIFIER_SEED);
+        $seed_length = strlen(self::AUTO_IDENTIFIER_SEED);
         $length = $this->getAutoIdentifierLength();
         for ($i = 0; $i < $length; $i++)
         {
             $index = rand(0, $seed_length - 1);
-            $identifier .= substr(AUTO_IDENTIFIER_SEED, $index, 1);
+            $identifier .= substr(self::AUTO_IDENTIFIER_SEED, $index, 1);
         }
         return $identifier;
     }
@@ -171,17 +172,17 @@ class FileManager {
         static $call_count = 0,
                $increment = 0;
         $call_count++;
-        if ($call_count > AUTO_IDENTIFIER_TRY_LIMIT)
+        if ($call_count > self::AUTO_IDENTIFIER_TRY_LIMIT)
         {
             $increment++;
             $call_count = 0;
         }
-        return AUTO_IDENTIFIER_MIN_LEN + $increment;
+        return self::AUTO_IDENTIFIER_MIN_LENGTH + $increment;
     }
 
     protected function validateIdentifier($identifier)
     {
-        return preg_match(IDENTIFIER_REGEX, $identifier);
+        return preg_match(self::IDENTIFIER_REGEX, $identifier);
     }
 
     protected function getStorageDriver($storage = '')
@@ -212,7 +213,7 @@ class FileManager {
 
     protected function createLocalStorageDriver()
     {
-        return $this->storageDrivers['local'] = App::make('LocalStorage');
+        return $this->storageDrivers['local'] = \App::make('LocalStorage');
     }
 
     protected function createDatabaseStorageDriver()
