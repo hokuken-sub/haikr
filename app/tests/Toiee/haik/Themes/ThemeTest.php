@@ -5,6 +5,8 @@ class ThemeTest extends TestCase {
     
     public function setUp()
     {
+        parent::setUp();
+
         $dummyOptions = array(
             'name' => 'kawaz',
             'layouts' => array(

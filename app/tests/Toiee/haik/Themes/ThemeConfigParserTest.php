@@ -5,6 +5,8 @@ class ThemeConfigParserTest extends TestCase {
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->parser = new ThemeConfigParser;
     }
 
