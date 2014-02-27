@@ -36,5 +36,30 @@ abstract class Plugin implements PluginInterface {
     {
         throw new \RuntimeException('not implemented');
     }
-    
+
+    /**
+     * render view file
+     * @params string $view [namespace::]viewfile
+     * @params array $data
+     * @return string converted HTML string
+     */
+    public static function renderView($view, $data)
+    {
+        $namespace = class_basename(get_called_class());
+
+        if (strpos($view, '::') !== false)
+        {
+            list($namespace, $view) = explode("::", $view, 2);
+        }
+
+        $viewfile = $namespace . "::" . $view;
+        if ( ! \View::exists($viewfile))
+        {
+            $dirname = dirname(with(new \ReflectionClass(get_called_class()))->getFileName());
+            \View::addLocation($dirname.'/views');
+            \View::addNamespace($namespace, $dirname.'/views');
+        }
+
+        return \View::make($viewfile, $data)->render();
+    }
 }
