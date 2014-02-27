@@ -5,6 +5,8 @@ class FileRepositoryTest extends TestCase {
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->files = new FileRepository('SiteFile');
         $this->siteId = \Haik::getID();
 
