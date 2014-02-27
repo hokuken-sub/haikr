@@ -93,4 +93,11 @@ class FileRepositoryTest extends TestCase {
         $this->assertEquals($file, $this->files->retrieve($idenfier));
     }
 
+    public function testFactory()
+    {
+        $identifier = 'foobar';
+        $file = $this->files->factory($identifier);
+        $this->assertInstanceOf('Toiee\haik\File\FileInterface', $file);
+        $this->assertEquals($identifier, $file->getIdentifier());
+    }
 }

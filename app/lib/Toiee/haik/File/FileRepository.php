@@ -74,25 +74,36 @@ class FileRepository implements FileRepositoryInterface {
     /**
      * Is file exists?
      *
-     * @param string $id
+     * @param string $identifier
      * @return existance
      */
-    public function exists($id)
+    public function exists($identifier)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where($this->identifierColumn, $id)->first()->exists;
+        return $query->where($this->identifierColumn, $identifier)->first()->exists;
     }
 
     /**
      * Get file by ID
-     * @param string $id
+     * @param string $identifier
      * @return FileInterface
      */
-    public function retrieve($id)
+    public function retrieve($identifier)
     {
         $query = $this->createModel()->newQuery();
-        $query->where($this->identifierColumn, $id);
+        $query->where($this->identifierColumn, $identifier);
         return $query->first();
+    }
+
+    /**
+     * Get new file object
+     *
+     * @return string $identifier
+     * @return FileInterface
+     */
+    public function factory($identifier = null)
+    {
+        return $this->createModel()->setIdentifier($identifier);
     }
 
     /**
@@ -100,7 +111,7 @@ class FileRepository implements FileRepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function createModel()
+    protected function createModel()
     {
         $class = '\\'.ltrim($this->model, '\\');
 

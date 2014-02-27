@@ -4,7 +4,7 @@ use Toiee\haik\File\LocalStorage;
 
 class LocalStorageTest extends TestCase {
 
-    public $fname = 'AnPnMn.jpg';
+    public $fname = 'AnPnMn';
     public $fpath;
     
     public function setUp()
@@ -18,6 +18,9 @@ class LocalStorageTest extends TestCase {
             $mock = Mockery::mock('Toiee\haik\File\FileInterface');
 
             $mock->shouldReceive('getName')
+                 ->once()
+                 ->andReturn($this->fname);
+            $mock->shouldReceive('getIdentifier')
                  ->once()
                  ->andReturn($this->fname);
 
