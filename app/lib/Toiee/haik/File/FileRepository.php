@@ -5,25 +5,25 @@ class FileRepository implements FileRepositoryInterface {
 
     protected $identifierColumn = 'key';
 
-	/**
-	 * The Eloquent user model.
-	 *
-	 * @var string
-	 */
-	protected $model;
+    /**
+     * The Eloquent user model.
+     *
+     * @var string
+     */
+    protected $model;
 
     protected $perPage = 50;
 
-	/**
-	 * Create a new database file repository.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public function __construct($model)
-	{
-		$this->model = $model;
-	}
+    /**
+    * Create a new database file repository.
+    *
+    * @param  string  $model
+    * @return void
+    */
+    public function __construct($model)
+    {
+        $this->model = $model;
+    }
 
     /**
      * Get list in range
@@ -92,18 +92,18 @@ class FileRepository implements FileRepositoryInterface {
     {
         $query = $this->createModel()->newQuery();
         $query->where($this->identifierColumn, $id);
-		return $query->first();
+        return $query->first();
     }
 
-	/**
-	 * Create a new instance of the model.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public function createModel()
-	{
-		$class = '\\'.ltrim($this->model, '\\');
+    /**
+     * Create a new instance of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function createModel()
+    {
+        $class = '\\'.ltrim($this->model, '\\');
 
-		return new $class;
-	}
+        return new $class;
+    }
 }
