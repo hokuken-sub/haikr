@@ -32,10 +32,6 @@ class ThumbnailsPlugin extends ColsPlugin {
             $data['data'][$key]['body'] = \Parser::parse($body);
         }
 
-        \View::addLocation(__DIR__.'/views');
-        \View::addNamespace('ThumbnailsPlugin', __DIR__.'/views');
-        $html = \View::make('templete', $data)->render();
-
-        return $html;
+        return self::renderView('template', $data);
     }
 }

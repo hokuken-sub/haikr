@@ -180,11 +180,6 @@ class ColsPlugin extends Plugin {
             $data['data'][$key]['body'] = \Parser::parse($col['body']);
         }
 
-        \View::addLocation(__DIR__.'/views');
-        \View::addNamespace('ColsPlugin', __DIR__.'/views');
-        $html = \View::make('ColsPlugin::templete', $data)->render();
-
-        return $html;
-
+        return self::renderView('template', $data);
     }
 }
