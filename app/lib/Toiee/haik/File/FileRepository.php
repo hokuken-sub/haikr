@@ -34,7 +34,7 @@ class FileRepository implements FileRepositoryInterface {
     public function listGet($page = 1)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where("site_id", \Haik::getID())
+        return $query->where("haik_site_id", \Haik::getID())
                      ->orderBy('updated_at', 'desc')
                      ->forPage($page, $this->perPage)->get();
     }
@@ -49,7 +49,7 @@ class FileRepository implements FileRepositoryInterface {
     public function listByType($type, $page = 1)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where("site_id", \Haik::getID())
+        return $query->where("haik_site_id", \Haik::getID())
                      ->where("type", $type)
                      ->orderBy('updated_at', 'desc')
                      ->forPage($page, $this->perPage)->get();
@@ -64,7 +64,7 @@ class FileRepository implements FileRepositoryInterface {
     public function listStarred($page = 1)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where("site_id", \Haik::getID())
+        return $query->where("haik_site_id", \Haik::getID())
                      ->where("starred", 1)
                      ->orderBy('updated_at', 'desc')
                      ->forPage($page, $this->perPage)->get();
