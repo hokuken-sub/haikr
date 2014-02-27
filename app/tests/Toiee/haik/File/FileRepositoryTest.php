@@ -36,6 +36,12 @@ class FileRepositoryTest extends TestCase {
         $file2->save();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        SiteFile::truncate();
+    }
+
     public function testListGet()
     {
         $list = $this->files->listGet();
