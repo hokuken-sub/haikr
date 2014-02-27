@@ -4,66 +4,59 @@ namespace Toiee\haik\File;
 interface FileStorageInterface {
 
     /**
-     * Get file content data by ID
+     * Get file content data
      *
-     * @param string $id
-     * @return FileInterface
+     * @param FileInterface $file
+     * @return string file contents
      * @throws FileNotFoundException
      */
-    public function getData($id);
+    public function get($file);
 
     /**
      * Save file content data
      *
+     * @param FileInterface $file
      * @param mixed $content
+     * @return integer file size when faile then return false
+     */
+    public function save($file, $content);
+
+    /**
+     * Delete file
+     *
+     * @param  FileInterface $file 
      * @return boolean when success return true
      */
-    public function saveFile($content);
+    public function delete($file);
 
     /**
-     * Update file content by ID
+     * Copy file
      *
-     * @param string $id
-     * @param mixed $content
-     * @return FileInterface|false when failed return false
-     */
-    public function update($id, $content);
-
-    /**
-     * Delete file by ID
-     *
-     * @param string $id
+     * @param FileInterface $file path to the source file
+     * @param string $dest_id the destination path
      * @return boolean when success return true
      */
-    public function delete($id);
-
-    /**
-     * Copy file by ID
-     *
-     * @param string $id
-     * @return FileInterface|false when failed return false
-     */
-    public function copy($id);
+    public function copy($file, $dest_id);
 
     /**
      * Is file exists?
      *
-     * @param string $id
+     * @param FileInterface $file
      * @return boolean existance
      */
-    public function exists($id);
+    public function exists($file);
 
     /**
-     * Download file by ID
+     * Download file
      *
-     * @param string $id
+     * @param FileInterface $file
      */
-    public function download($id);
+    public function download($file);
 
     /**
-     * Pass through file by ID
+     * Pass through file
      *
-     * @param string $id
+     * @param string FileInterface $file
      */
-    public function passthru($id);
+    public function passthru($file);
 }
