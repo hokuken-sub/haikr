@@ -20,7 +20,7 @@ class FileRepositoryTest extends TestCase {
         $file1->key     = 'HgHg';
         $file1->type    = 'file';
         $file1->size    = '1024';
-        $file1->path    = sha1('HgHg') . '.ext';
+        $file1->ext     = 'ext';
         $file1->storage = 'local';
         $file1->save();
         
@@ -29,7 +29,7 @@ class FileRepositoryTest extends TestCase {
         $file2->key     = 'FgFg';
         $file2->type    = 'file';
         $file2->size    = '2048';
-        $file2->path    = sha1('FgFg') . '.ext';
+        $file2->ext     = 'ext';
         $file2->storage = 'local';
         $file2->save();
     }
@@ -47,12 +47,12 @@ class FileRepositoryTest extends TestCase {
 
     public function testListByType()
     {
-        $list = $this->files->listByType("image");
-        // test return array
-        $this->assertInternalType('array', $list);
+        $list = $this->files->listByType("file");
+        // test return Collection
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $list);
 
         // test list data
-        $newest_file = SiteFile::where("haik_site_id", $this->siteId)->where("type", "image")
+        $newest_file = SiteFile::where("haik_site_id", $this->siteId)->where("type", "file")
                            ->orderBy("updated_at", "desc")->first();
         $this->assertEquals($newest_file, $list->first());
     }
@@ -82,7 +82,7 @@ class FileRepositoryTest extends TestCase {
         $file = SiteFile::where("haik_site_id", $this->siteId)
                            ->orderBy("updated_at", "desc")->first();
         $idenfier = $file->key;
-        $this->assertEquals($this->files->retrieve($idenfier));
+        $this->assertEquals($file, $this->files->retrieve($idenfier));
     }
 
 }
