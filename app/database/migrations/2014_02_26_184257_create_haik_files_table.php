@@ -12,7 +12,6 @@ class CreateHaikFilesTable extends Migration {
     */
     public function up()
     {
-        //
         Schema::create('haik_files', function($table)
         {
             $table->increments('id')->unsigned();
@@ -23,8 +22,8 @@ class CreateHaikFilesTable extends Migration {
             $table->integer('size')->unsigined()->default(0);
             $table->string('dimensions')->nullable();
             $table->boolean('starred')->default(false);
-            $table->binary('value');
-            $table->string('path')->nullable();
+            $table->binary('value')->nullable();
+            $table->string('ext')->nullable();
             $table->string('storage');
             $table->boolean('publicity')->default(true);
             $table->timestamps();
