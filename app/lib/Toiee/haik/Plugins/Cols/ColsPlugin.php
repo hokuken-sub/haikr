@@ -9,13 +9,15 @@ class ColsPlugin extends Plugin {
     const COL_MAX_NUM     = 12;
     const COL_DELIMITER   = "\n====\n";
 
-    const COL_FORMAT_EACH = '  <div class="%s" style="%s">%s</div>';
+/*
+    const COL_FORMAT_EACH = '<div class="%s" style="%s">%s</div>';
 
     const ROW_FORMAT      = <<< EOD
 <div class="haik-plugin-cols row %s">
 %s
 </div>
 EOD;
+*/
 
     protected $className;
     protected $delimiter;
@@ -156,8 +158,8 @@ EOD;
      */
     protected function getHtml()
     {
-        $col_body = array();
-        $top_class = $this->className ? $this->className : '';
+        $cols = array();
+        $cols['row_class'] = $this->className ? $this->className : '';
 
         foreach ($this->cols as $col)
         {
@@ -166,16 +168,57 @@ EOD;
             $class  = $col['class']  ? (' ' . $col['class']) : '';
 
             $coldata = array();
+/*
             $coldata[] = $span . $offset . $class;
             $coldata[] = $col['style']  ? $col['style'] : '';
             $coldata[] = $col['body'];
 
             $col_body[] = $this->getColHtml($coldata);
+*/
+
+            $coldata['class'] = $span . $offset . $class;
+            $coldata['style'] = $col['style']  ? $col['style'] : '';
+            $coldata['body'] = $col['body'];
+
+            $cols['data'][] = $coldata;
         }
+
+        return $this->makeHtml($cols);
+                
+/*
         
+        
+        $html = \View::make('colsPlugin::Cols', array(
+                    'cols' => $cols,
+                    'row_class' => $top_class,
+                )
+        );
+*/
+        
+/*
         $c = get_called_class();
         $html = sprintf($c::ROW_FORMAT, $top_class, join("\n", $col_body));
+*/
+
+        
+
+
         return $html;
+    }
+
+    protected function makeHtml($data)
+    {
+        foreach ($data['data'] as $key => $col)
+        {
+            $data['data'][$key]['body'] = \Parser::parse($col['body']);
+        }
+
+        \View::addLocation(__DIR__.'/views');
+        \View::addNamespace('ColsPlugin', __DIR__.'/views');
+        $html = \View::make('ColsPlugin::templete', $data)->render();
+
+        return $html;
+
     }
 
     /**
