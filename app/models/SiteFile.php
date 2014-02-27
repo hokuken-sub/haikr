@@ -7,6 +7,16 @@ class SiteFile extends Eloquent implements FileInterface {
     protected $table = 'haik_files';
 
     /**
+     * get file name
+     *
+     * @return string file name
+     */
+    public function getName()
+    {
+        return $this->key.'.'.$this->ext;   
+    }
+
+    /**
      * Mark star the file
      *
      * @param boolean $star

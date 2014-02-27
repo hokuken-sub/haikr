@@ -4,6 +4,13 @@ namespace Toiee\haik\File;
 interface FileInterface {
 
     /**
+     * get file name
+     *
+     * @return string file name
+     */
+    public function getName();
+
+    /**
      * Mark star the file
      *
      * @param boolean $star
