@@ -34,7 +34,11 @@ class SiteFile extends Eloquent implements FileInterface {
      */
     public function getName()
     {
-        return $this->key.'.'.$this->ext;
+        if ($this->ext)
+        {
+            return $this->key.'.'.$this->ext;
+        }
+        return $this->key;
     }
 
     /**
