@@ -27,6 +27,33 @@ EOD;
         parent::__construct();
     }
 
+
+    protected function makeHtml($data)
+    {
+        foreach ($data['data'] as $key => $col)
+        {
+            $elements = preg_split('{ \n+ }mx', trim($col['body']));
+
+            $top_line = \Parser::parse($elements[0]);
+            if (strpos($top_line, '<img') !== FALSE)
+            {
+                $data['data'][$key]['image'] = trim(strip_tags($top_line,'<a><img>'));
+                array_shift($elements);
+            }
+            
+            $body = join("\n", $elements);
+            $data['data'][$key]['body'] = \Parser::parse($body);
+        }
+
+        \View::addLocation(__DIR__.'/views');
+        \View::addNamespace('ThumbnailsPlugin', __DIR__.'/views');
+        $html = \View::make('templete', $data)->render();
+
+        return $html;
+
+    }
+
+
     /**
      * get formated col html
      * @params array $data col options data
