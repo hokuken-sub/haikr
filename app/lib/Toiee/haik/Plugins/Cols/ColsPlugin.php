@@ -9,16 +9,6 @@ class ColsPlugin extends Plugin {
     const COL_MAX_NUM     = 12;
     const COL_DELIMITER   = "\n====\n";
 
-/*
-    const COL_FORMAT_EACH = '<div class="%s" style="%s">%s</div>';
-
-    const ROW_FORMAT      = <<< EOD
-<div class="haik-plugin-cols row %s">
-%s
-</div>
-EOD;
-*/
-
     protected $className;
     protected $delimiter;
 
@@ -168,14 +158,6 @@ EOD;
             $class  = $col['class']  ? (' ' . $col['class']) : '';
 
             $coldata = array();
-/*
-            $coldata[] = $span . $offset . $class;
-            $coldata[] = $col['style']  ? $col['style'] : '';
-            $coldata[] = $col['body'];
-
-            $col_body[] = $this->getColHtml($coldata);
-*/
-
             $coldata['class'] = $span . $offset . $class;
             $coldata['style'] = $col['style']  ? $col['style'] : '';
             $coldata['body'] = $col['body'];
@@ -183,30 +165,15 @@ EOD;
             $cols['data'][] = $coldata;
         }
 
-        return $this->makeHtml($cols);
-                
-/*
-        
-        
-        $html = \View::make('colsPlugin::Cols', array(
-                    'cols' => $cols,
-                    'row_class' => $top_class,
-                )
-        );
-*/
-        
-/*
-        $c = get_called_class();
-        $html = sprintf($c::ROW_FORMAT, $top_class, join("\n", $col_body));
-*/
-
-        
-
-
-        return $html;
+        return $this->format($cols);
     }
 
-    protected function makeHtml($data)
+    /**
+     * get formated html
+     * @params array $data col options data
+     * @return string $html formated col html
+     */
+    protected function format($data)
     {
         foreach ($data['data'] as $key => $col)
         {
@@ -220,18 +187,4 @@ EOD;
         return $html;
 
     }
-
-    /**
-     * get formated col html
-     * @params array $data col options data
-     * @return string $html formated col html
-     */
-    protected function getColHtml($data)
-    {
-        $c = get_called_class();
-        $body = \Parser::parse($data[2]);
-        $html = sprintf($c::COL_FORMAT_EACH, $data[0], $data[1], $body);
-        return $html;
-    }
-
 }
