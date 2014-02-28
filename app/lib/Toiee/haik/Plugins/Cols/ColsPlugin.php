@@ -9,14 +9,6 @@ class ColsPlugin extends Plugin {
     const COL_MAX_NUM     = 12;
     const COL_DELIMITER   = "\n====\n";
 
-    const COL_FORMAT_EACH = '  <div class="%s" style="%s">%s</div>';
-
-    const ROW_FORMAT      = <<< EOD
-<div class="haik-plugin-cols row %s">
-%s
-</div>
-EOD;
-
     protected $className;
     protected $delimiter;
 
@@ -156,8 +148,8 @@ EOD;
      */
     protected function getHtml()
     {
-        $col_body = array();
-        $top_class = $this->className ? $this->className : '';
+        $cols = array();
+        $cols['row_class'] = $this->className ? $this->className : '';
 
         foreach ($this->cols as $col)
         {
@@ -166,29 +158,28 @@ EOD;
             $class  = $col['class']  ? (' ' . $col['class']) : '';
 
             $coldata = array();
-            $coldata[] = $span . $offset . $class;
-            $coldata[] = $col['style']  ? $col['style'] : '';
-            $coldata[] = $col['body'];
+            $coldata['class'] = $span . $offset . $class;
+            $coldata['style'] = $col['style']  ? $col['style'] : '';
+            $coldata['body'] = $col['body'];
 
-            $col_body[] = $this->getColHtml($coldata);
+            $cols['data'][] = $coldata;
         }
-        
-        $c = get_called_class();
-        $html = sprintf($c::ROW_FORMAT, $top_class, join("\n", $col_body));
-        return $html;
+
+        return $this->format($cols);
     }
 
     /**
-     * get formated col html
+     * get formated html
      * @params array $data col options data
      * @return string $html formated col html
      */
-    protected function getColHtml($data)
+    protected function format($data)
     {
-        $c = get_called_class();
-        $body = \Parser::parse($data[2]);
-        $html = sprintf($c::COL_FORMAT_EACH, $data[0], $data[1], $body);
-        return $html;
-    }
+        foreach ($data['data'] as $key => $col)
+        {
+            $data['data'][$key]['body'] = \Parser::parse($col['body']);
+        }
 
+        return self::renderView('template', $data);
+    }
 }

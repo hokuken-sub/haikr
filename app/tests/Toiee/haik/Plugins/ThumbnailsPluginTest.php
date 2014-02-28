@@ -15,8 +15,8 @@ class ThumbnailsPluginTest extends TestCase {
             'no_params' => array(
                 'cols' => array(),
                 'body' => 'test',
-                'assert' => '<div class="haik-plugin-thumbnails row ">'."\n".
-                            '  <div class="col-sm-12" style="">'."\n".
+                'assert' => '<div class="haik-plugin-thumbnails row">'."\n".
+                            '  <div class="col-sm-12">'."\n".
                             '    <div class="thumbnail">'."\n".
                             '      '."\n".
                             '      <div class="caption">'."\n".
@@ -34,7 +34,7 @@ class ThumbnailsPluginTest extends TestCase {
                           "#thumbnail title\n".
                           "body1\n".
                           "body2",
-                'assert' => '<div class="haik-plugin-thumbnails row ">'."\n".
+                'assert' => '<div class="haik-plugin-thumbnails row">'."\n".
                             '  <div class="col-sm-12 burbon" style="background-color:#000;color:#ccc;">'."\n".
                             '    <div class="thumbnail">'."\n".
                             '      <img src="http://pacehold.jp/150x150.png" alt="text" title="title">'."\n".
@@ -54,8 +54,8 @@ class ThumbnailsPluginTest extends TestCase {
                           '![image2](http://pacehold.jp/140x200.png "title2")'."\n".
                           "#thumbnail title2\n".
                           "body2",
-                'assert' => '<div class="haik-plugin-thumbnails row ">'."\n".
-                            '  <div class="col-sm-6" style="">'."\n".
+                'assert' => '<div class="haik-plugin-thumbnails row">'."\n".
+                            '  <div class="col-sm-6">'."\n".
                             '    <div class="thumbnail">'."\n".
                             '      <img src="http://pacehold.jp/120x200.png" alt="image1" title="title1">'."\n".
                             '      <div class="caption">'."\n".
@@ -63,7 +63,7 @@ class ThumbnailsPluginTest extends TestCase {
                             '      </div>'."\n".
                             '    </div>'."\n".
                             '  </div>'."\n".
-                            '  <div class="col-sm-6" style="">'."\n".
+                            '  <div class="col-sm-6">'."\n".
                             '    <div class="thumbnail">'."\n".
                             '      <img src="http://pacehold.jp/140x200.png" alt="image2" title="title2">'."\n".
                             '      <div class="caption">'."\n".
@@ -77,7 +77,10 @@ class ThumbnailsPluginTest extends TestCase {
 
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], with(new ThumbnailsPlugin)->convert($data['cols'], $data['body']));
+            $data['assert'] = preg_replace('/\n| {2,}/', '', trim($data['assert']));
+            $cmpdata = with(new ThumbnailsPlugin)->convert($data['cols'], $data['body']);
+            $cmpdata = preg_replace('/\n| {2,}/', '', trim($cmpdata));
+            $this->assertEquals($data['assert'], $cmpdata);
         }
     }
 
