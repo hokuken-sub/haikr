@@ -62,4 +62,18 @@ class RouteTest extends TestCase {
 		$this->assertTrue($this->client->getResponse()->isOk());
 		$this->assertViewHas('content');
     }
+    
+    function testOtherDomain()
+    {
+        $this->markTestIncomplete('Do not know test other domain');        
+    }
+    
+    function testSubDirectory()
+    {
+        // /sub/FrontPage.html が表示されたら成功
+        $crawler = $this->client->request('GET', 'http://localhost:8080/sub/FrontPage.html');
+        $this->assertTrue($this->client->getResponse()->isOk());
+        $this->assertViewHas('url', 'http://example.com:8080/sub/FrontPage.html');
+        
+    }
 }

@@ -135,6 +135,7 @@ class PageController extends \BaseController {
         $html .= " ";
         $html .= '<a href="/haik--admin/create/">追加</a>';
 
+        Theme::set('url', Request::url());
         Theme::set('page_title', 'タイトル');
         Theme::set('content', $html);
 
