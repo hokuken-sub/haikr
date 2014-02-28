@@ -2,20 +2,28 @@
 namespace Toiee\haik\Plugins\MediaList;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class MediaListPlugin extends Plugin {
 
+    const DEFAULT_MEDIA_OBJECT = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
+
     protected $align;
     protected $image;
+    protected $imageSet;
     protected $heading;
+    protected $headingSet;
     protected $content;
-    protected $html;
+    protected $mediaList = array();
 
     public function setUp()
     {
         $this->align = 'pull-left';
-        $this->image = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
+        $this->image = '';
         $this->heading = $this->content = $this->html = '';
+
+        $this->imageSet = false;
+        $this->headingSet = false;
     }
 
     /**
@@ -28,11 +36,22 @@ class MediaListPlugin extends Plugin {
     public function convert($params = array(), $body = '')
     {
         $medialists = explode("\n====\n", $body);
-        foreach ($medialists as $medialist)
+
+        foreach ($medialists as $i => $medialist)
         {
-            $this->html = $this->html.$this->createMediaList($medialist);
+            $this->mediaList[] = $this->createMediaList($medialist);
         }
-        return $this->html;
+        $html = join("\n", $this->mediaList);
+
+        if (count($params) > 0)
+        {
+            $data = Utility::parseColumnData($params[0]);
+            $col_classes = $data ? $this->createColumnClass($data) : '';
+            $wrapper_open = '<div class="row"><div class="'.$col_classes.'">';
+            $wrapper_close = '</div></div>';
+            $html = $wrapper_open . $html . $wrapper_close;
+        }
+        return $html;
     }
 
     protected function createMediaList($medialist)
@@ -40,58 +59,62 @@ class MediaListPlugin extends Plugin {
         $this->setUp();
 
         $elements = preg_split('{ \n+ }mx', trim($medialist));
-        foreach ($elements as $element)
+        foreach ($elements as $line => $element)
         {
-            $parsed_elements[] = \Parser::parse($element);
-        }
-        if (preg_match('{ <img.*?>< }mx', $parsed_elements[0]))
-        {
-            $this->image = str_replace('<img', '<img class="media-object"', $parsed_elements[0]);
-            $this->image = strip_tags($this->image, '<img>');
-            $searches[] = $elements[0];
-            if (preg_match('{ <h }mx', $parsed_elements[1]))
+            if ($line >= 2) break;
+
+            $html = \Parser::parse($element);
+
+            //画像をセット
+            if ( ! $this->imageSet && preg_match('{ <img\b.*?> }mx', $html))
             {
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[1]);
-                $searches[] = $elements[1];
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $this->image = str_replace(
+                                          '<img', '<img class="media-object"',
+                                          strip_tags($html, '<img>')
+                                          );
+                $this->imageSet = true;
+                unset($elements[$line]);
+            }
+            //見出しをセット
+            else if ( ! $this->headingSet && preg_match('{ <h }mx', $html))
+            {
+                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
+                $this->headingSet = true;
+                $this->imageSet = true;
+                unset($elements[$line]);
+            }
+        }
+        $elements = array_values($elements);
+
+        // 最後に Image がある可能性
+        if ($this->imageSet && $this->image === '')
+        {
+            $html = \Parser::parse(end($elements));
+            if (preg_match('{ <img\b.*?> }mx', $html))
+            {
+                $this->image = str_replace(
+                                          '<img', '<img class="media-object"',
+                                          strip_tags($html, '<img>')
+                                          );
+                $this->imageSet = true;
+                unset($elements[count($elements)-1]);
+                $this->align = 'pull-right';
             }
             else
             {
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $this->image = self::DEFAULT_MEDIA_OBJECT;
+                $this->imageSet = true;
             }
         }
-        else if (preg_match('{ <img.*?>< }mx', end($parsed_elements)))
+        if ( ! $this->imageSet)
         {
-            $this->align = "pull-right";
-            $this->image = str_replace('<img', '<img class="media-object"', end($parsed_elements));
-            $this->image = strip_tags($this->image, '<img>');
-            $searches[] = end($elements);
-            if (preg_match('{ <h }mx', $parsed_elements[0]))
-            {
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-                $searches[] = $elements[0];
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
-            }
-            else
-            {
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
-            }
+            $this->image = self::DEFAULT_MEDIA_OBJECT;
+            $this->imageSet = true;
         }
-        else if (preg_match('{ <h }mx', $parsed_elements[0]))
-        {
-            $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-            $searches[] = $elements[0];
-            $content = str_replace($searches, '', $elements);
-            $this->content = \Parser::parse(join("\n", $content));
-        }
-        else
-        {
-            $this->content = \Parser::parse($medialist);
-        }
+
+        // 残りをparse
+        $this->content = \Parser::parse(join("\n", $elements));
+
         # all parameter trimed.
         $this->image = trim($this->image);
         $this->heading = trim($this->heading);
@@ -102,5 +125,23 @@ class MediaListPlugin extends Plugin {
               . '<div class="media-body">'.$this->heading.$this->content.'</div></div>';
 
         return $result;
+    }
+
+    protected function createColumnClass($data)
+    {
+        $classes = array();
+        if ($data['cols'] > 0)
+        {
+            $classes[] = 'col-sm-' . $data['cols'];
+        }
+        if ($data['offset'] > 0)
+        {
+            $classes[] = 'col-sm-offset-' . $data['offset'];
+        }
+        if ($data['class'] !== '')
+        {
+            $classes[] = $data['class'];
+        }
+        return join(" ", $classes);
     }
 }
