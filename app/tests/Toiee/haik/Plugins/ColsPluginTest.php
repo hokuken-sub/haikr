@@ -254,22 +254,22 @@ class ColsPluginTest extends TestCase {
             'no_params' => array(
                 'cols' => array(),
                 'body' => 'test',
-                'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-12" style="">'.\Parser::parse('test').'</div>'."\n". 
+                'assert' => '<div class="haik-plugin-cols row">'.
+                            '<div class="col-sm-12">'.\Parser::parse('test').'</div>'.
                             '</div>',
             ),
             'class' => array(
                 'cols' => array(),
                 'body' => "CLASS:hogeclass\ntest",
-                'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-12 hogeclass" style="">'.\Parser::parse('test').'</div>'."\n".
+                'assert' => '<div class="haik-plugin-cols row">'.
+                            '<div class="col-sm-12 hogeclass">'.\Parser::parse('test').'</div>'.
                             '</div>',
             ),
             'style' => array(
                 'cols' => array(),
                 'body' => "STYLE:background-color:#330000;color:#fff;\ntest",
-                'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-12" style="background-color:#330000;color:#fff;">'.\Parser::parse('test').'</div>'."\n".
+                'assert' => '<div class="haik-plugin-cols row">'.
+                            '<div class="col-sm-12" style="background-color:#330000;color:#fff;">'.\Parser::parse('test').'</div>'.
                             '</div>',
             ),
             'all' => array(
@@ -280,9 +280,9 @@ class ColsPluginTest extends TestCase {
                           "\n++++\n".
                           "col2\n".
                           "col3",
-                'assert' => '<div class="haik-plugin-cols row late">'."\n".
-                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-4 starbucks" style="">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                'assert' => '<div class="haik-plugin-cols row late">'.
+                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'.
+                            '<div class="col-sm-4 starbucks">'.\Parser::parse("col2\ncol3").'</div>'.
                             '</div>',
             ),
             'nodelimiter' => array(
@@ -295,9 +295,9 @@ class ColsPluginTest extends TestCase {
                           "CLASS:cafe\n".
                           "col2\n".
                           "col3",
-                'assert' => '<div class="haik-plugin-cols row tea">'."\n".
-                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-4 col-sm-offset-1 starbucks cafe" style="background-color:#f33;color:#222;">'.\Parser::parse("col2\ncol3").'</div>'."\n".
+                'assert' => '<div class="haik-plugin-cols row tea">'.
+                            '<div class="col-sm-3 col-sm-offset-2 burbon" style="background-color:#000;color:#ccc;">'.\Parser::parse("col1").'</div>'.
+                            '<div class="col-sm-4 col-sm-offset-1 starbucks cafe" style="background-color:#f33;color:#222;">'.\Parser::parse("col2\ncol3").'</div>'.
                             '</div>',
             ),
             'diffColsOverBody' => array(
@@ -307,9 +307,9 @@ class ColsPluginTest extends TestCase {
                           "col2\n".
                           "\n====\n".
                           "col3",
-                'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-6" style="">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-6" style="">'.\Parser::parse("col2\n\n====\ncol3").'</div>'."\n".
+                'assert' => '<div class="haik-plugin-cols row">'.
+                            '<div class="col-sm-6">'.\Parser::parse("col1").'</div>'.
+                            '<div class="col-sm-6">'.\Parser::parse("col2\n\n====\ncol3").'</div>'.
                             '</div>',
             ),
             'diffColsLessBody' => array(
@@ -318,16 +318,19 @@ class ColsPluginTest extends TestCase {
                           "\n====\n".
                           "col2",
                 'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-4" style="">'.\Parser::parse("col1").'</div>'."\n".
-                            '<div class="col-sm-4" style="">'.\Parser::parse("col2").'</div>'."\n".
-                            '<div class="col-sm-4" style="">'."\n".'</div>'."\n".
+                            '<div class="col-sm-4">'.\Parser::parse("col1").'</div>'.
+                            '<div class="col-sm-4">'.\Parser::parse("col2").'</div>'.
+                            '<div class="col-sm-4">'.'</div>'.
                             '</div>',
             ),
         );
 
         foreach ($tests as $key => $data)
         {
-            $this->assertEquals($data['assert'], with(new ColsPlugin)->convert($data['cols'], $data['body']));
+            $data['assert'] = preg_replace('/\n| {2,}/', '', trim($data['assert']));
+            $cmpdata = with(new ColsPlugin)->convert($data['cols'], $data['body']);
+            $cmpdata = preg_replace('/\n| {2,}/', '', trim($cmpdata));
+            $this->assertEquals($data['assert'], $cmpdata);
         }
     }
     
@@ -339,8 +342,8 @@ class ColsPluginTest extends TestCase {
                 'cols' => array(7,7),
                 'body' => "test1\n====\ntest2",
                 'assert' => '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-7" style="">'.\Parser::parse('test1').'</div>'."\n".
-                            '<div class="col-sm-7" style="">'.\Parser::parse('test2').'</div>'."\n".
+                            '  <div class="col-sm-7">'."\n".'      '.\Parser::parse('test1').'    </div>'."\n".
+                            '  <div class="col-sm-7">'."\n".'      '.\Parser::parse('test2').'    </div>'."\n".
                             '</div>',
             ),
             'Auth' => array(
@@ -351,8 +354,8 @@ class ColsPluginTest extends TestCase {
                             '<p>There are over 12 columns.</p>'."\n".
                             '</div>'."\n".
                             '<div class="haik-plugin-cols row">'."\n".
-                            '<div class="col-sm-7" style="">'.\Parser::parse('test1').'</div>'."\n".
-                            '<div class="col-sm-7" style="">'.\Parser::parse('test2').'</div>'."\n".
+                            '  <div class="col-sm-7">'."\n".'      '.\Parser::parse('test1').'    </div>'."\n".
+                            '  <div class="col-sm-7">'."\n".'      '.\Parser::parse('test2').'    </div>'."\n".
                             '</div>',
             ),
         );
@@ -365,7 +368,11 @@ class ColsPluginTest extends TestCase {
                 $user = User::where('email', 'touch@toiee.jp')->first();
                 $this->be($user);
             }
-            $this->assertEquals($data['assert'], with(new ColsPlugin)->convert($data['cols'], $data['body']));
+            $data['assert'] = preg_replace('/\n| {2,}/', '', trim($data['assert']));
+            $cmpdata = with(new ColsPlugin)->convert($data['cols'], $data['body']);
+            $cmpdata = preg_replace('/\n| {2,}/', '', trim($cmpdata));
+
+            $this->assertEquals($data['assert'], $cmpdata);
         }
     
     
