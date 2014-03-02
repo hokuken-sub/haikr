@@ -35,63 +35,49 @@ class MediaListPlugin extends Plugin {
         return $this->html;
     }
 
-    protected function createMediaList($medialist)
+    protected function createMediaList($md)
     {
         $this->setUp();
 
-        $elements = preg_split('{ \n+ }mx', trim($medialist));
-        foreach ($elements as $element)
+        $splited_md = explode("\n", trim($md));
+        $image_count = 0;
+        $head_count = 0;
+        $content_md = "";
+        foreach ($splited_md as $i => $line)
         {
-            $parsed_elements[] = \Parser::parse($element);
-        }
-        if (preg_match('{ <img.*?>< }mx', $parsed_elements[0]))
-        {
-            $this->image = str_replace('<img', '<img class="media-object"', $parsed_elements[0]);
-            $this->image = strip_tags($this->image, '<img>');
-            $searches[] = $elements[0];
-            if (preg_match('{ <h }mx', $parsed_elements[1]))
+            if (\Parser::parse($line) == "\n")
             {
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[1]);
-                $searches[] = $elements[1];
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $content_md = $content_md."\n";
+                continue;
             }
-            else
+            if (preg_match('{ <img.*?>< }mx', \Parser::parse($line)) && $i == 0 && $image_count == 0)
             {
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $image_count++;
+                $this->image = str_replace('<img', '<img class="media-object"', \Parser::parse($line));
+                $this->image = strip_tags($this->image, '<img>');
+                continue;
             }
-        }
-        else if (preg_match('{ <img.*?>< }mx', end($parsed_elements)))
-        {
-            $this->align = "pull-right";
-            $this->image = str_replace('<img', '<img class="media-object"', end($parsed_elements));
-            $this->image = strip_tags($this->image, '<img>');
-            $searches[] = end($elements);
-            if (preg_match('{ <h }mx', $parsed_elements[0]))
+
+            if (preg_match('{ <h }mx', \Parser::parse($line)) && $head_count == 0)
             {
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-                $searches[] = $elements[0];
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $head_count++;
+                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', \Parser::parse($line));;
+                continue;
             }
-            else
+
+            end($splited_md);
+            if (preg_match('{ <img.*?>< }mx', \Parser::parse($line)) && $i == key($splited_md) && $image_count == 0)
             {
-                $content = str_replace($searches, '', $elements);
-                $this->content = \Parser::parse(join("\n", $content));
+                $image_count++;
+                $this->align = "pull-right";
+                $this->image = str_replace('<img', '<img class="media-object"', \Parser::parse($line));
+                $this->image = strip_tags($this->image, '<img>');
+                continue;
             }
+            $content_md = $content_md.$line."\n";
         }
-        else if (preg_match('{ <h }mx', $parsed_elements[0]))
-        {
-            $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $parsed_elements[0]);
-            $searches[] = $elements[0];
-            $content = str_replace($searches, '', $elements);
-            $this->content = \Parser::parse(join("\n", $content));
-        }
-        else
-        {
-            $this->content = \Parser::parse($medialist);
-        }
+        $this->content = \Parser::parse($content_md);
+
         # all parameter trimed.
         $this->image = trim($this->image);
         $this->heading = trim($this->heading);
