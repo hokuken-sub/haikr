@@ -153,6 +153,28 @@ class MediaListPluginTest extends TestCase {
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
 
 
+        # This is the test of left image, heading, some lines body with break set.
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . "<p>test<br>\ntest\ntest</p>"
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "test  \n"
+              . "test\n"
+              . "test\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
         # This is the test of medialists body contains same <img> of img.media-object
         $test = array(
             'medialist' => array(),
@@ -162,7 +184,8 @@ class MediaListPluginTest extends TestCase {
                       . '</span>'
                       . '<div class="media-body">'
                       . '<h4 class="media-heading">test title</h4>'
-                      . '<p>test <img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '<p>test'."\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
                       . '</div></div>',
         );
 
@@ -170,6 +193,50 @@ class MediaListPluginTest extends TestCase {
               . "#### test title\n"
               . "test\n"
               . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
+        # This is the test of medialists body contains same <img> of img.media-object
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-right">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<p>test'."\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "test\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+
+
+        # This is the test of left image, heading, some body set.
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<h4>test title</h4>'."\n\n"
+                      . '<p>test</p>'
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n"
+              . "#### test title\n"
+              . "test\n";
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
     }
