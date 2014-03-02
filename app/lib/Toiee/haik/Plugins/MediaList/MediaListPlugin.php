@@ -61,7 +61,7 @@ class MediaListPlugin extends Plugin {
             if (preg_match('{ <h }mx', \Parser::parse($line)) && $head_count == 0)
             {
                 $head_count++;
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', \Parser::parse($line));;
+                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', \Parser::parse($line));
                 continue;
             }
 
