@@ -252,6 +252,7 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     protected function _doConvertPlugin($plugin_id, $params = '', $body = '')
     {
         $params = ($params !== '') ? str_getcsv($params, ',', '"', '\\') : array();
+        $body = $this->unHash($body);
 
         $result = \Plugin::get($plugin_id)->convert($params, $body);
 		return "\n\n".$this->hashBlock($result)."\n\n";
