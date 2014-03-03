@@ -15,6 +15,8 @@
     <meta name="keywords" content="<!-- #{$keywords} -->">
     <meta name="description" content="<!-- #{$description} -->">
 
+ 	{{ $user_head or '' }}
+
 <!--
 
   #{$viewport}
@@ -107,6 +109,8 @@
     {{ HTML::script('//code.jquery.com/jquery.js') }}
     {{ HTML::script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js') }}
     {{ HTML::script(asset('assets/javascript/haik.js')) }}
+    
+    {{ $user_script or '' }}
 
   </body>
 
