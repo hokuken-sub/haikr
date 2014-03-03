@@ -80,7 +80,7 @@ class MediaListPlugin extends Plugin {
             {
                 $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
                 $this->headingSet = true;
-                $this->imageSet = true;
+                $this->imageSet = true; // heading, image の順番は認めない
                 unset($elements[$line]);
             }
         }
