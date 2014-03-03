@@ -37,4 +37,10 @@ interface FileInterface {
      * @return boolean is the file private?
      */
     public function isPrivate();
+
+    /**
+     * Get file storage
+     * @return string storage engine name of the file
+     */
+    public function getStorage();
 }
