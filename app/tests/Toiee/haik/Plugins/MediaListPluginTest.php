@@ -196,6 +196,122 @@ class MediaListPluginTest extends TestCase {
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
         
+        # This is the test of medialists only body contains heading
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<h4>test title</h4>' . "\n\n"
+                      . '<p>test</p>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "#### test title\n"
+              . "test\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));        
+
+        # This is the test of medialists order by heading heading image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-right">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));        
+
+        # This is the test of medialists order by heading image heading
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<p><img src="http://placehold.jp/80x80.png" alt="alt"></p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));   
+
+        # This is the test of medialists order by body image heading
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test'. "\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "test\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));   
+
+        # This is the test of medialists order by body head image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-right">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test</p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "test\n"
+              . "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));  
+
+        # This is the test of medialists order by image body image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test'. "\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "test\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));  
     }
 
     public function testMoreThanTwoMediaListWithMarkdownImage()
