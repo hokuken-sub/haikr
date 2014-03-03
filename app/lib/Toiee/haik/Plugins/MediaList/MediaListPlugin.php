@@ -54,7 +54,7 @@ class MediaListPlugin extends Plugin {
         return $html;
     }
 
-    protected function createMediaList($md)
+    protected function createMediaList($medialist)
     {
         $this->setUp();
 
@@ -103,7 +103,6 @@ class MediaListPlugin extends Plugin {
                 }
                 break;
             }
-            $content_md = $content_md.$line."\n";
         }
 
         // 残りをparse
