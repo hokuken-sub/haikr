@@ -236,39 +236,103 @@ class PanelPluginTest extends TestCase {
 
     public function testParseHeadingAndElse()
     {
-            $return = "# test title {.panel-title}\n"
-                    . "test\n"
-                    . "# test title {.panel-title}\n";
+        $return = "# test title {.panel-title}\n"
+                . "test\n"
+                . "# test title {.panel-title}\n";
 
-            # test $body is markdown case.
-            $md_heading = array(
-                'panel' => array(),
-                'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                          . '<div class="panel-heading">'
-                          . \Parser::parse($return).'</div>'
-                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-            );
+        # test $body is markdown case.
+        $md_heading = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse($return).'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
 
-            $body = "# test title\n"
-                  . "test\n"
-                  . "# test title {.panel-title}\n====\ntest";
-            $this->assertEquals($md_heading['assert'],
-                                with(new PanelPlugin)->convert($md_heading['panel'], $body));
+        $body = "# test title\n"
+              . "test\n"
+              . "# test title {.panel-title}\n====\ntest";
+        $this->assertEquals($md_heading['assert'],
+                            with(new PanelPlugin)->convert($md_heading['panel'], $body));
 
-            # test $body is html case.
-            $html_heading = array(
-                'panel' => array(),
-                'assert' => '<div class="haik-plugin-panel panel panel-default">'
-                          . '<div class="panel-heading">'
-                          . \Parser::parse($return).'</div>'
-                          . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
-            );
+        # test $body is html case.
+        $html_heading = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse($return).'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>',
+        );
 
-            $body = "<h1 class=\"panel-title\">test title</h1>\n"
-                  . "<p>test</p>\n"
-                  . "<h1>test title</h1>\n====\ntest";
-            $this->assertEquals($html_heading['assert'],
-                                with(new PanelPlugin)->convert($html_heading['panel'], $body));
+        $body = "<h1 class=\"panel-title\">test title</h1>\n"
+              . "<p>test</p>\n"
+              . "<h1>test title</h1>\n====\ntest";
+        $this->assertEquals($html_heading['assert'],
+                            with(new PanelPlugin)->convert($html_heading['panel'], $body));
+    }
 
+    public function testPanelWithColumn()
+    {
+        # This is the test of only column parameter
+        $wrapper_open = '<div class="row"><div class="col-sm-6">';
+        $wrapper_close = '</div></div>';
+
+        $with_column = array(
+            'panel' => array('6'),
+            'assert' => $wrapper_open
+                      . '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>'
+                      . $wrapper_close,
+        );
+
+        $body = "# test title\n"
+              . "====\n"
+              . "test";
+        $this->assertEquals($with_column['assert'],
+                            with(new PanelPlugin)->convert($with_column['panel'], $body));
+
+
+        # This is the test of panel with params order color, column.
+        $wrapper_open = '<div class="row"><div class="col-sm-6">';
+        $wrapper_close = '</div></div>';
+
+        $with_column = array(
+            'panel' => array('primary', '6'),
+            'assert' => $wrapper_open
+                      . '<div class="haik-plugin-panel panel panel-primary">'
+                      . '<div class="panel-heading">'
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>'
+                      . $wrapper_close,
+        );
+
+        $body = "# test title\n"
+              . "====\n"
+              . "test";
+        $this->assertEquals($with_column['assert'],
+                            with(new PanelPlugin)->convert($with_column['panel'], $body));
+
+
+        # This is the test of panel with params order column, color.
+        $wrapper_open = '<div class="row"><div class="col-sm-6">';
+        $wrapper_close = '</div></div>';
+
+        $with_column = array(
+            'panel' => array('6', 'primary'),
+            'assert' => $wrapper_open
+                      . '<div class="haik-plugin-panel panel panel-primary">'
+                      . '<div class="panel-heading">'
+                      . '<h1 class="panel-title">test title</h1>'."\n".'</div>'
+                      . '<div class="panel-body">'.\Parser::parse('test').'</div></div>'
+                      . $wrapper_close,
+        );
+
+        $body = "# test title\n"
+              . "====\n"
+              . "test";
+        $this->assertEquals($with_column['assert'],
+                            with(new PanelPlugin)->convert($with_column['panel'], $body));
     }
 }
