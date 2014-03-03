@@ -61,7 +61,7 @@ class FileManager {
         $file = $this->fileGet($identifier);
 
         try {
-            return $this->getStorageDriver($file->storage)->get($file);
+            return $this->getStorageDriver($file->getStorage())->get($file);
         }
         catch (Exception $c)
         {
@@ -79,11 +79,11 @@ class FileManager {
      */
     public function fileSaveContent($file, $content = '')
     {
-        if ($file->exists)
+        if ($file->exists())
         {
             $identifier = $file->getIdentifier();
             $file = $this->fileGet($identifier);
-            if ($this->getStorageDriver($file->storage)->save($file, $content))
+            if ($this->getStorageDriver($file->getStorage())->save($file, $content))
             {
                 $file->touch();
                 return true;
@@ -127,21 +127,21 @@ class FileManager {
         if ($this->fileExists($identifier))
         {
             $file = $this->fileGet($identifier);
-            $this->getStorageDriver($file->storage)->delete($file);
+            $this->getStorageDriver($file->getStorage())->delete($file);
         }
         return false;
     }
     public function access($identifier)
     {
         $file = $this->fileGet($identifier);
-        $this->getStorageDriver($file->storage)->passthru($file->getIdentifier());
+        $this->getStorageDriver($file->getStorage())->passthru($file->getIdentifier());
         exit;
     }
 
     public function download($identifier)
     {
         $file = $this->fileGet($identifier);
-        $this->getStorageDriver($file->storage)->download($file->getIdentifier());
+        $this->getStorageDriver($file->getStorage())->download($file->getIdentifier());
     }
 
     protected function createIdentifier(FileInterface $file = null)
@@ -227,4 +227,5 @@ class FileManager {
         // !TODO: create S3Storage
         return null;
     }
+
 }

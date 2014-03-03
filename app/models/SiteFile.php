@@ -62,4 +62,22 @@ class SiteFile extends Eloquent implements FileInterface {
         return ! $this->publicity;
     }
 
+    /**
+     * Get file storage
+     * @return string storage engine name of the file
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * Get existance of the file
+     *
+     * @return boolean existance
+     */
+    public function exists()
+    {
+        return $this->exists;
+    }
 }
