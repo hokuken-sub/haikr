@@ -101,10 +101,14 @@ class MediaListPluginTest extends TestCase {
                       . '</div></div>',
         );
 
-        $body = "#### test title\n"."test\n"
+        $body = "#### test title\n"
+              ."test\n"
               . "![alt](http://placehold.jp/80x80.png)\n";
 
-        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+        $plugin = with(new MediaListPlugin);
+        $result = $plugin->convert($test['medialist'], $body);
+        $this->assertAttributeEquals('pull-right', 'align', $plugin);
+        $this->assertEquals($test['assert'], $result);
 
 
 
@@ -184,8 +188,7 @@ class MediaListPluginTest extends TestCase {
                       . '</span>'
                       . '<div class="media-body">'
                       . '<h4 class="media-heading">test title</h4>'
-                      . '<p>test'."\n"
-                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '<p>test'."\n".'<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
                       . '</div></div>',
         );
 
@@ -195,31 +198,27 @@ class MediaListPluginTest extends TestCase {
               . "![alt](http://placehold.jp/80x80.png)\n";
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
-
-
-        # This is the test of medialists body contains same <img> of img.media-object
+        
+        # This is the test of medialists only body contains heading
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
-                      . '<span class="pull-right">'
+                      . '<span class="pull-left">'
                       . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
                       . '</span>'
                       . '<div class="media-body">'
-                      . '<h4 class="media-heading">test title</h4>'
-                      . '<p>test'."\n"
-                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '<p>test</p>'. "\n\n"
+                      . '<h4>test title</h4>'
                       . '</div></div>',
         );
 
-        $body = "#### test title\n"
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
               . "test\n"
-              . "![alt](http://placehold.jp/80x80.png)\n"
-              . "![alt](http://placehold.jp/80x80.png)\n";
+              . "#### test title\n";
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
-
-
-        # This is the test of left image, heading, some body set.
+        
+        # This is the test of medialists order by heading heading body
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
@@ -228,17 +227,113 @@ class MediaListPluginTest extends TestCase {
                       . '</span>'
                       . '<div class="media-body">'
                       . '<h4 class="media-heading">test title</h4>'
-                      . '<h4>test title</h4>'."\n\n"
+                      . '<h4>test title</h4>' . "\n\n"
                       . '<p>test</p>'
                       . '</div></div>',
         );
 
-        $body = "![alt](http://placehold.jp/80x80.png)\n"
-              . "#### test title\n"
+        $body = "#### test title\n"
               . "#### test title\n"
               . "test\n";
 
-        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));        
+
+        # This is the test of medialists order by heading heading image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-right">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));        
+
+        # This is the test of medialists order by heading image heading
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<h4 class="media-heading">test title</h4>'
+                      . '<p><img src="http://placehold.jp/80x80.png" alt="alt"></p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));   
+
+        # This is the test of medialists order by body image heading
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test'. "\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "test\n"
+              . "![alt](http://placehold.jp/80x80.png)\n"
+              . "#### test title\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));   
+
+        # This is the test of medialists order by body head image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-right">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test</p>' . "\n\n"
+                      . '<h4>test title</h4>'
+                      . '</div></div>',
+        );
+
+        $body = "test\n"
+              . "#### test title\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));  
+
+        # This is the test of medialists order by image body image
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="media">'
+                      . '<span class="pull-left">'
+                      . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'
+                      . '</span>'
+                      . '<div class="media-body">'
+                      . '<p>test'. "\n"
+                      . '<img src="http://placehold.jp/80x80.png" alt="alt"></p>'
+                      . '</div></div>',
+        );
+
+        $body = "![alt](http://placehold.jp/80x80.png)\n"
+              . "test\n"
+              . "![alt](http://placehold.jp/80x80.png)\n";
+
+        $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));  
     }
 
     public function testMoreThanTwoMediaListWithMarkdownImage()
@@ -257,7 +352,7 @@ class MediaListPluginTest extends TestCase {
         # This is the test of TWO medialists with left image, heading, body set.
         $test = array(
             'medialist' => array(),
-            'assert' => $assert.$assert,
+            'assert' => $assert."\n".$assert,
         );
 
         $body = "![alt](http://placehold.jp/80x80.png)\n"
@@ -273,7 +368,7 @@ class MediaListPluginTest extends TestCase {
         # This is the test of THREE medialists with left image, heading, body set.
         $test = array(
             'medialist' => array(),
-            'assert' => $assert.$assert.$assert,
+            'assert' => $assert."\n".$assert."\n".$assert,
         );
 
         $body = "![alt](http://placehold.jp/80x80.png)\n"
@@ -333,7 +428,7 @@ class MediaListPluginTest extends TestCase {
 
 
         # This is the test of medialists with param cols & class.
-        $start_tag = '<div class="row"><div class="col-sm-5 col-sm-offset-1">';
+        $start_tag = '<div class="row"><div class="col-sm-6 well">';
         $close_tag = '</div></div>';
         $test = array(
             'medialist' => array('6.well'),
@@ -363,7 +458,7 @@ class MediaListPluginTest extends TestCase {
 
 
         # This is the test of medialists with param cols & offset & double class.
-        $start_tag = '<div class="row"><div class="col-sm-5 col-sm-offset-1 well text-success">';
+        $start_tag = '<div class="row"><div class="col-sm-5 col-sm-offset-1 panel panel-default">';
         $close_tag = '</div></div>';
         $test = array(
             'medialist' => array('5+1.panel.panel-default'),
@@ -378,11 +473,11 @@ class MediaListPluginTest extends TestCase {
 
 
         # This is the test of multi medialists with param cols & offset & double class.
-        $start_tag = '<div class="row"><div class="col-sm-5 col-sm-offset-1 well text-success">';
+        $start_tag = '<div class="row"><div class="col-sm-5 col-sm-offset-1 panel panel-default">';
         $close_tag = '</div></div>';
         $test = array(
             'medialist' => array('5+1.panel.panel-default'),
-            'assert' => $start_tag.$main.$main.$close_tag,
+            'assert' => $start_tag.$main."\n".$main.$close_tag,
         );
 
         $body = "![alt](http://placehold.jp/80x80.png)\n"
@@ -408,7 +503,7 @@ class MediaListPluginTest extends TestCase {
                 . '</div></div>';
 
         # This is the test of medialists with param cols & offset & double class.
-        $start_tag = '<div class="row"><div class="col-sm-6 &lt;hogehoge&gt;">';
+        $start_tag = '<div class="row"><div class="">';
         $close_tag = '</div></div>';
         $test = array(
             'medialist' => array('6.<hogehoge>'),
