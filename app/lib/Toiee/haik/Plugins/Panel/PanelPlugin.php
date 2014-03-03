@@ -2,6 +2,7 @@
 namespace Toiee\haik\Plugins\Panel;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class PanelPlugin extends Plugin {
   
@@ -17,19 +18,31 @@ class PanelPlugin extends Plugin {
         $base_class = 'panel';
         $prefix = $base_class.'-';
         $type = 'default';
+        $wrapper_open = $wrapper_close = '';
 
-        foreach ($params as $param)
+        if (count($params) > 0)
         {
-            switch ($param)
+            foreach ($params as $param)
             {
-                case 'default':
-                case 'primary':
-                case 'success':
-                case 'info':
-                case 'warning':
-                case 'danger':
-                    $type = $param;
-                    break;
+                switch ($param)
+                {
+                    case 'default':
+                    case 'primary':
+                    case 'success':
+                    case 'info':
+                    case 'warning':
+                    case 'danger':
+                        $type = $param;
+                        break;
+                    default:
+                        $data = Utility::parseColumnData($param);
+                        if ($data)
+                        {
+                            $col_classes = $this->createColumnClass($data);
+                            $wrapper_open = '<div class="row"><div class="'.$col_classes.'">';
+                            $wrapper_close = '</div></div>';
+                        }
+                }
             }
         }
 
@@ -61,12 +74,34 @@ class PanelPlugin extends Plugin {
                 $parse_title = str_replace($serches, $replaces, $parse_title);
             }
 
-            return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
-                 . '<div class="panel-heading">'.$parse_title.'</div>'
-                 . '<div class="panel-body">'.\Parser::parse($content).'</div></div>';
+            $html = '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
+                  . '<div class="panel-heading">'.$parse_title.'</div>'
+                  . '<div class="panel-body">'.\Parser::parse($content).'</div></div>';
+
+            return $wrapper_open . $html . $wrapper_close;
         }
 
-        return '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
-             . '<div class="panel-body">'.\Parser::parse($body).'</div></div>';
+        $html = '<div class="haik-plugin-panel '.$base_class.' '.$prefix.$type.'">'
+              . '<div class="panel-body">'.\Parser::parse($body).'</div></div>';
+
+        return $wrapper_open . $html . $wrapper_close;
+    }
+
+    protected function createColumnClass($data)
+    {
+        $classes = array();
+        if ($data['cols'] > 0)
+        {
+            $classes[] = 'col-sm-' . $data['cols'];
+        }
+        if ($data['offset'] > 0)
+        {
+            $classes[] = 'col-sm-offset-' . $data['offset'];
+        }
+        if ($data['class'] !== '')
+        {
+            $classes[] = $data['class'];
+        }
+        return join(" ", $classes);
     }
 }
