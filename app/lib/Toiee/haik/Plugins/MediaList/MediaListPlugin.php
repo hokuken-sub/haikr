@@ -19,7 +19,7 @@ class MediaListPlugin extends Plugin {
     public function setUp()
     {
         $this->align = 'pull-left';
-        $this->image = '';
+        $this->image = self::DEFAULT_MEDIA_OBJECT;
         $this->heading = $this->content = $this->html = '';
 
         $this->imageSet = false;
@@ -59,11 +59,13 @@ class MediaListPlugin extends Plugin {
         $this->setUp();
 
         $elements = preg_split('{ \n+ }mx', trim($medialist));
-        foreach ($elements as $line => $element)
+        $line_count = count($elements);
+        $max_line = $line_count - 1;
+        
+        // 最初の2行のみ
+        for ($line = 0; $line < 2 && $line < $line_count; $line++)
         {
-            if ($line >= 2) break;
-
-            $html = \Parser::parse($element);
+            $html = \Parser::parse($elements[$line]);
 
             //画像をセット
             if ( ! $this->imageSet && preg_match('{ <img\b.*?> }mx', $html))
@@ -76,40 +78,31 @@ class MediaListPlugin extends Plugin {
                 unset($elements[$line]);
             }
             //見出しをセット
-            else if ( ! $this->headingSet && preg_match('{ <h }mx', $html))
+            else if ( ! $this->headingSet)
             {
-                $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
-                $this->headingSet = true;
-                $this->imageSet = true; // heading, image の順番は認めない
-                unset($elements[$line]);
-            }
-        }
-        $elements = array_values($elements);
+                if (preg_match('{ <h }mx', $html))
+                {
+                    $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
+                    $this->headingSet = true;
+                    unset($elements[$line]);
+                }
 
-        // 最後に Image がある可能性
-        if ($this->imageSet && $this->image === '')
-        {
-            $html = \Parser::parse(end($elements));
-            if (preg_match('{ <img\b.*?> }mx', $html))
-            {
-                $this->image = str_replace(
-                                          '<img', '<img class="media-object"',
-                                          strip_tags($html, '<img>')
-                                          );
-                $this->imageSet = true;
-                unset($elements[count($elements)-1]);
-                $this->align = 'pull-right';
+                if ( ! $this->imageSet)
+                {
+                    //最後の行をチェック
+                    $html = \Parser::parse($elements[$max_line]);
+                    if (preg_match('{ <img\b.*?> }mx', $html))
+                    {
+                        $this->image = str_replace(
+                                                  '<img', '<img class="media-object"',
+                                                  strip_tags($html, '<img>')
+                                                  );
+                        $this->align = 'pull-right';
+                        unset($elements[$max_line]);
+                    }
+                }
+                break;
             }
-            else
-            {
-                $this->image = self::DEFAULT_MEDIA_OBJECT;
-                $this->imageSet = true;
-            }
-        }
-        if ( ! $this->imageSet)
-        {
-            $this->image = self::DEFAULT_MEDIA_OBJECT;
-            $this->imageSet = true;
         }
 
         // 残りをparse
