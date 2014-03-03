@@ -12,16 +12,15 @@ class CreateHaikSitesTable extends Migration {
 	 */
 	public function up()
 	{
-		//
-
         Schema::create('haik_sites', function($table)
         {
-             $table->increments('id')->unsigned();
-             $table->string('domain')->default('*');
-             $table->string('directory')->nullable();
-             $table->string('title')->default('');
-             $table->text('description')->nullable();
-             $table->timestamps();
+            $table->increments('id')->unsigned();
+			$table->string('key')->after('id');
+            $table->string('domain')->default('*');
+            $table->string('directory')->nullable();
+            $table->string('title')->default('');
+            $table->text('description')->nullable();
+            $table->timestamps();
         });
 
 	}
@@ -33,7 +32,6 @@ class CreateHaikSitesTable extends Migration {
 	 */
 	public function down()
 	{
-		//
 		  Schema::drop('haik_sites');
 	}
 

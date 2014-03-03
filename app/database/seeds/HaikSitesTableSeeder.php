@@ -7,6 +7,7 @@ class HaikSitesTableSeeder extends Seeder {
         DB::table('haik_sites')->truncate();
 
         Site::create(array(
+                'key' => 'master',
                 'title' => '',
                 'description' => '',
                 // :
