@@ -34,6 +34,7 @@
   </head>
 
   <body>
+      {{ $body_first or '' }}
 <!--
 #{$body_first}
 #{$sr_link}
@@ -90,6 +91,7 @@
       </div>
     </footer>
 
+    {{ $body_last or '' }}
     <!--
     #{$admin_nav}
     #{$body_last}
