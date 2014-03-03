@@ -57,4 +57,11 @@ interface FileInterface {
      * @return boolean existance
      */
     public function exists();
+
+	/**
+	 * Update the model's update timestamp.
+	 *
+	 * @return bool
+	 */
+    public function touch();
 }
