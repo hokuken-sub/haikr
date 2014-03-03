@@ -64,4 +64,13 @@ interface FileInterface {
 	 * @return bool
 	 */
     public function touch();
+
+	/**
+	 * Save the file
+	 *
+	 * @param  array  $options
+	 * @return bool
+	 */
+	public function save(array $options = array());
+
 }
