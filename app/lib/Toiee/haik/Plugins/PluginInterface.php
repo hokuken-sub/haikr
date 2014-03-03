@@ -4,7 +4,7 @@ namespace Toiee\haik\Plugins;
 interface PluginInterface {
     
     /**
-     * action by http GET or POST /haik--admin/plugin-name/...
+     * action by http GET or POST /haik--plugin-name/
      * @return NULL or View object
      * @throws RuntimeException when unimplement
      */
