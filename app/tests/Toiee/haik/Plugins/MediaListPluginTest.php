@@ -196,7 +196,7 @@ class MediaListPluginTest extends TestCase {
 
         $this->assertEquals($test['assert'], with(new MediaListPlugin)->convert($test['medialist'], $body));
         
-        # This is the test of medialists only body contains heading
+        # This is the test of medialists order by heading heading body
         $test = array(
             'medialist' => array(),
             'assert' => '<div class="media">'
