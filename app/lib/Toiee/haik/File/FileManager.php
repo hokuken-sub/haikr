@@ -79,7 +79,7 @@ class FileManager {
      */
     public function fileSaveContent($file, $content = '')
     {
-        if ($file->exists)
+        if ($file->exists())
         {
             $identifier = $file->getIdentifier();
             $file = $this->fileGet($identifier);
