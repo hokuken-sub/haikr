@@ -9,18 +9,29 @@ module.exports = function(grunt){
         files: [
           {
             src: ['./app/assets/stylesheets/haik.less'],
-            dest: './public/assets/stylesheets/haik.css',
+            dest: './public/assets/stylesheets/haik.css'
           },
           {
             src: [
               './app/assets/stylesheets/haik-admin.less',
               './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/helper.less'
             ],
-            dest: './public/assets/stylesheets/haik-admin.css',
+            dest: './public/assets/stylesheets/haik-admin.css'
           }
         ]
       }
   };
+  
+  var themeDirs = grunt.file.glob.sync('./app/themes/*/');
+  for (var i in themeDirs) {
+    var config = grunt.file.readJSON(themeDirs + 'theme.json');
+    
+    var themeLess = grunt.file.glob.sync(themeDirs[i] + 'assets/stylesheets/*.less');
+    lessConfig.development.files.push({
+        src: themeLess,
+        dest: './public/assets/themes/' + config.name + '/stylesheets/' + config.name + '.css'
+    });
+  }
 
   grunt.initConfig({
     less: lessConfig,
@@ -29,7 +40,7 @@ module.exports = function(grunt){
         separator: ';'
       },
       js_haik: {
-        src: ['./app/assets/javascript/*.js', './app/lib/Toiee/haik/Plugins/**/public/javascript/*.js'],
+        src: ['./app/assets/javascript/*.js', './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js'],
         dest: './public/assets/javascript/haik.js'
       },
       js_haik_admin: {
@@ -56,9 +67,9 @@ module.exports = function(grunt){
       js_haik: {
         files: [
           './app/assets/javascript/*.js',
-          './app/lib/Toiee/haik/Plugins/**/public/javascript/*.js',
+          './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js',
           './app/assets/stylesheets/*',
-          './app/lib/Toiee/haik/Plugins/**/public/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/assets/stylesheets/*'
         ],
         tasks: ['concat:js_haik']
       },
@@ -73,7 +84,8 @@ module.exports = function(grunt){
         files: [
           './app/assets/stylesheets/*.less',
           './app/assets/stylesheets/admin/*',
-          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*',
+          './app/themes/*/assets/stylesheets/*.less'
         ],
         tasks: ['less'],
         options: {

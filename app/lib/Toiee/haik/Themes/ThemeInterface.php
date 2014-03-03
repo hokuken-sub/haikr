@@ -84,11 +84,11 @@ interface ThemeInterface {
     public function textureGet();
 
     /**
-     * Make view
+     * Render view
      *
      * @return View
      */
-    public function make();
+    public function render();
     
     /**
      * Take over other theme's layout|color|texture status

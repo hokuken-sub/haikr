@@ -5,15 +5,23 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
 
     protected $layout_data;
     protected $layout_data_context;
-    protected $theme;
-    protected $layout;
-    protected $color;
-    protected $texture;
 
-    public function __construct()
+    /** ThemeRepositoryInterface */
+    public $themes;
+
+    /** Theme object */
+    protected $theme;
+
+    public $configParser;
+
+    public function __construct(ThemeConfigParserInterface $parser)
     {
         $this->layout_data = array();
         $this->layout_data_context = array();
+
+        $this->themes = null;
+
+        $this->configParser = $parser;
     }
 
     /**
@@ -144,16 +152,23 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
     
     /**
      * set theme if theme is exist
-     * @params string $theme theme name
+     * @params string|ThemeInterface $theme theme name or Theme object
      */
     public function themeSet($theme)
     {
-        $this->theme = $theme;
+        if ($theme instanceof ThemeInterface)
+        {
+            $this->theme = $theme;
+        }
+        else if (is_string($theme))
+        {
+            $this->theme = $this->themes->get($theme);
+        }
     }
 
     /**
      * get theme name
-     * @return string|false theme. if theme is not set then return false
+     * @return ThemeInterface|false theme. if theme is not set then return false
      */
     public function themeGet()
     {
@@ -161,78 +176,25 @@ class ThemeManager implements ThemeDataInterface, ThemeChangerInterface {
         {
             return $this->theme;
         }
-        
-        return false;
-    }
-
-    /**
-     * set layout if layout is exist
-     * @params string $layout layout name
-     */
-    public function layoutSet($layout)
-    {
-        $this->layout = $layout;
-    }
-
-    /**
-     * get layout name
-     * @return string|false layout. if layout is not set then return false
-     */
-    public function layoutGet()
-    {
-        if ($this->layout)
-        {
-            return $this->layout;
-        }
-        
-        return false;
-    }
-
-    /**
-     * set color if color is exist
-     * @params string $color
-     */
-    public function colorSet($color)
-    {
-        $this->color = $color;
-    }
-
-    /**
-     * get color
-     * @return string|false color. if color is not set then return false
-     */
-    public function colorGet()
-    {
-        if ($this->color)
-        {
-            return $this->color;
-        }
-        
-        return false;
-    }
-
-    /**
-     * set texture if texture is exist
-     * @params string $texture
-     */
-    public function textureSet($texture)
-    {
-        $this->texture = $texture;
-    }
-
-    /**
-     * get texture
-     * @return string|false texture. if texture is not set then return false
-     */
-    public function textureGet()
-    {
-        if ($this->texture)
-        {
-            return $this->texture;
-        }
-        
         return false;
     }
     
+    public function setRepositoryDriver($repository)
+    {
+		$method = 'create'.ucfirst($repository).'RepositoryDriver';
 
+		if (method_exists($this, $method))
+		{
+			$this->themes = $this->$method();
+			return;
+		}
+
+		throw new \InvalidArgumentException("Repository Driver [$repository] not supported.");
+    }
+    
+    protected function createLocalRepositoryDriver()
+    {
+        $path = \Config::get('theme.local.path');
+        return new LocalRepository($this, $path);
+    }
 }

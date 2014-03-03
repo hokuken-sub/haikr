@@ -8,12 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
-    {{ HTML::style(asset('addons/themes/kawaz/css/docs.css')) }}
+    {{ HTML::style(asset('assets/themes/kawaz/stylesheets/kawaz.css')) }}
 
     <meta name="author" content="">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<!-- #{$rss_link} -->">
     <meta name="keywords" content="<!-- #{$keywords} -->">
     <meta name="description" content="<!-- #{$description} -->">
+
+ 	{{ $user_head or '' }}
 
 <!--
 
@@ -107,6 +109,8 @@
     {{ HTML::script('//code.jquery.com/jquery.js') }}
     {{ HTML::script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js') }}
     {{ HTML::script(asset('assets/javascript/haik.js')) }}
+    
+    {{ $user_script or '' }}
 
   </body>
 

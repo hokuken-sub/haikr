@@ -2,10 +2,11 @@
 namespace Toiee\haik\Themes;
 
 use App;
+use View;
 
 class Theme implements ThemeInterface {
     
-    protected $theme_data;
+    protected $manager;
 
     protected $config;
 
@@ -13,12 +14,13 @@ class Theme implements ThemeInterface {
     protected $color;
     protected $texture;
     
-    public function __construct(ThemeDataInterface $theme_data, ThemeConfigLoaderInterface $loader, ThemeInterface $theme_taked_over = null)
+    public function __construct(ThemeManager $manager, $config = array(), ThemeInterface $theme_taked_over = null)
     {
-        $this->theme_data = $theme_data;
-        $this->loader = $loader;
-        $this->config = $this->loader->load($this);
+        $this->manager = $manager;
+        $this->config = $config;
         
+        $this->addNamespace($this->get('name'));
+
         $this->initLayouts();
         $this->initColors();
         $this->initTextures();
@@ -229,11 +231,11 @@ class Theme implements ThemeInterface {
     }
     
     /**
-     * Make view
+     * Render view
      *
      * @return View
      */
-    public function make()
+    public function render()
     {
         foreach (array('layout', 'color', 'texture') as $variation)
         {
@@ -244,8 +246,26 @@ class Theme implements ThemeInterface {
             }
         }
 
-        //TODO: make view using ThemeData
-        return App::make('View');
+        $theme_name = $this->get('name');
+        $layout_name = $this->layoutGet();
+        $theme_data = $this->manager->getAll();
+
+        return View::make("{$theme_name}::{$layout_name}")
+                            ->with($theme_data);
+    }
+
+    /**
+     * Add namespace of View by theme name
+     *
+     * @param string $name theme name
+     * @return void
+     */
+    protected function addNamespace()
+    {
+        $name = $this->get('name');
+        $theme_path = $this->manager->themes->getPath($name);
+        View::addLocation($theme_path);
+        View::addNamespace($name, $theme_path);
     }
 
     protected function layoutAfterFilter(){}

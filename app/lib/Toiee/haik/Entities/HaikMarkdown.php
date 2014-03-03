@@ -32,8 +32,12 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
         {
             return with(new HaikMarkdown())->parse($text);
         }
+
         $this->running = true;
-        return $this->transform($text);
+        $html = $this->transform($text);
+        $this->running = false;
+
+        return $html;
     }
 
     protected function doHaikLinks($text)
@@ -248,6 +252,7 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     protected function _doConvertPlugin($plugin_id, $params = '', $body = '')
     {
         $params = ($params !== '') ? str_getcsv($params, ',', '"', '\\') : array();
+        $body = $this->unHash($body);
 
         $result = \Plugin::get($plugin_id)->convert($params, $body);
 		return "\n\n".$this->hashBlock($result)."\n\n";

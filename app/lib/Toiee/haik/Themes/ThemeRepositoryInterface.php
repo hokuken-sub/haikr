@@ -24,4 +24,18 @@ interface ThemeRepositoryInterface {
      */
     public function getAll();
 
+    /**
+     * get Theme's config array
+     * @param string $name theme name
+     * @return assoc config array
+     * @throws InvalidArgumentException when $name was not exist
+     */
+    public function getConfig($name);
+
+    /**
+     * Get path to Theme's directory
+     * @param string $name theme name
+     * @return string path to theme dir
+     */
+    public function getPath($name);
 }

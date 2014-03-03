@@ -13,13 +13,13 @@ class BrPluginTest extends TestCase {
         $this->assertInternalType('string', with(new BrPlugin)->convert());
     }
     
-    public function testIsInlineMethodRetrunRight()
+    public function testIsInlineMethodReturnRight()
     {
-        $normal = array('br' => array(), 'assert' => '<br>\n');
+        $normal = array('br' => array(), 'assert' => "<br>\n");
         $this->assertEquals($normal['assert'], with(new BrPlugin)->inline());
     }
 
-    public function testIsConvertMethodRetrunRight()
+    public function testIsConvertMethodReturnRight()
     {
         $normal = array('br' => array(), 'assert' => '<br>');
         $this->assertEquals($normal['assert'], with(new BrPlugin)->convert());
