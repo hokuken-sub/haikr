@@ -43,4 +43,12 @@ interface FileInterface {
      * @return string storage engine name of the file
      */
     public function getStorage();
+
+	/**
+	 * Delete the file
+	 *
+	 * @return bool|null
+	 */
+    public function delete();
+
 }
