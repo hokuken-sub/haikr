@@ -51,4 +51,10 @@ interface FileInterface {
 	 */
     public function delete();
 
+    /**
+     * Get existance of the file
+     *
+     * @return boolean existance
+     */
+    public function exists();
 }
