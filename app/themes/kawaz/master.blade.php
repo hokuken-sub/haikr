@@ -15,18 +15,19 @@
     <meta name="keywords" content="<!-- #{$keywords} -->">
     <meta name="description" content="<!-- #{$description} -->">
 
- 	{{ $user_head or '' }}
+    {{ $plugin_head or '' }}
+    {{ $user_head or '' }}
 
 <!--
 
-  #{$viewport}
-  #{$bootstrap_css}
+!  #{$viewport}
+!  #{$bootstrap_css}
   #{$meta_content_type}
 
 	#{$head_tag}
-	#{$plugin_head}
-	#{$user_head}
-	
+!	#{$plugin_head}
+!	#{$user_head}
+
 	#{$tracking_script}
 
 -->
@@ -110,6 +111,7 @@
     {{ HTML::script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js') }}
     {{ HTML::script(asset('assets/javascript/haik.js')) }}
     
+    {{ $plugin_script or '' }}
     {{ $user_script or '' }}
 
   </body>
