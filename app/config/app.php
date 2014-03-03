@@ -122,6 +122,7 @@ return array(
         'Toiee\haik\Providers\ParsingServiceProvider',
         'Toiee\haik\Link\LinkServiceProvider',
         'Toiee\haik\Themes\ThemeServiceProvider',
+        'Toiee\haik\File\FileServiceProvider',
 	),
 
 	/*

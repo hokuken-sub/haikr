@@ -6,6 +6,8 @@ class LocalRepositoryTest extends TestCase {
     
     public function setUp()
     {
+        parent::setUp();
+
         App::bind('ThemeRepositoryInterface', function()
         {
             return new LocalRepository(App::make('ThemeManager'), \Config::get('theme.local.path'));
