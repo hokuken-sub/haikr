@@ -49,7 +49,7 @@ class PanelPlugin extends Plugin {
         # check $body has "====".
         if (preg_match('{ \n+====\n+ }mx', $body))
         {
-            $body = preg_split('{ \n+====\n+ }mx', $body);
+            $body = preg_split('{ \n+====\n+ }mx', $body, 2);
             list($title, $content) = $body;
             $parse_title = \Parser::parse($title);
 
