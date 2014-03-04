@@ -232,6 +232,18 @@ class PanelPluginTest extends TestCase {
         $this->assertEquals($html_heading_with_class['assert'],
                             with(new PanelPlugin)->convert($html_heading_with_class['panel'],
                                                            "<h1 data-hoge=\"hoge\" class=\"hogehoge\">test title</h1>\n====\ntest"));
+
+        # test $body has custom data & custom class.
+        $html_heading_with_class = array(
+            'panel' => array(),
+            'assert' => '<div class="haik-plugin-panel panel panel-default">'
+                      . '<div class="panel-heading">'
+                      . \Parser::parse('<h1 class="panel-title">test title</h1>').'</div>'
+                      . '<div class="panel-body">'.\Parser::parse("<h1>test</h1>\n\ntest").'</div></div>',
+        );
+        $this->assertEquals($html_heading_with_class['assert'],
+                            with(new PanelPlugin)->convert($html_heading_with_class['panel'],
+                                                           "# test title\n====\ntest\n====\ntest"));
     }
 
     public function testParseHeadingAndElse()
