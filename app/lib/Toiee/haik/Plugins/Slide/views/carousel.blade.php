@@ -11,23 +11,23 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-        @for ($i = 0; $i < $slides; $i++)
-        <div class="item {{ $i == 0 ? "active" : ''}}">
-            @if (isset($imageSources[$i]))
-            <img src="{{ e($imageSources[$i]) }}" alt="">
+        @foreach ($slideData as $i => $slide)
+        <div class="item{{ $i == 0 ? " active" : ''}}">
+            @if (isset($slide['image']))
+            <img src="{{ e($slide['image']) }}" alt="">
             @endif
-            @if ($isCaptionsSet[$i])
+            @if ($slide['isset_caption'])
             <div class="carousel-caption">
-                @if (isset($titles[$i]) && $titles[$i] != '')
-                {{ \Parser::parse($titles[$i]) }}
+                @if (isset($slide['title']) && $slide['title'] != '')
+                {{ \Parser::parse($slide['title']) }}
                 @endif
-                @if (isset($captions[$i]) && $captions[$i] != '')
-                {{ \Parser::parse($captions[$i]) }}
+                @if (isset($slide['caption']) && $slide['caption'] != '')
+                {{ \Parser::parse($slide['caption']) }}
                 @endif
             </div>
             @endif
         </div>
-        @endfor
+        @endforeach
     </div>
 
     @if ($isControlsSet)

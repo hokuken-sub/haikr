@@ -10,12 +10,9 @@ class SlidePlugin extends Plugin {
     protected static $slideId = 0;
 
     protected $id;
-    protected $images = array();
-    protected $titles = array();
-    protected $captions = array();
+    protected $slideData = array();
     protected $indicatorsSet;
     protected $controlsSet;
-    protected $captionsSet = array();
 
     # This is slide_id getter.
     public function getSlideId()
@@ -43,11 +40,11 @@ class SlidePlugin extends Plugin {
             $slide_elements = str_getcsv($line, ',', '"', '\\');
             if (isset($slide_elements[0]) && $slide_elements[0] != '')
             {
-                $this->images[$i] = trim($slide_elements[0]);
+                $this->slideData[$i]['image'] = trim($slide_elements[0]);
             }
             else
             {
-                $this->images[$i] = self::DEFAULT_IMAGE_URL;
+                $this->slideData[$i]['image'] = self::DEFAULT_IMAGE_URL;
             }
 
             if (isset($slide_elements[1]) && $slide_elements[1] != '')
@@ -59,48 +56,44 @@ class SlidePlugin extends Plugin {
                 {
                     # Trim '#' to set title with '###'.
                     $title = preg_replace('/^#{1,6}/', '', $slide_elements[1]);
-                    $this->titles[$i] = '###'.$title;
+                    $this->slideData[$i]['title'] = '###'.$title;
                 }
 
                 # Check $slide_elements[1] is heading written with row html.
                 else if (preg_match('{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx', $slide_elements[1]))
                 {
                     # Change <h...> elements to <h3>.
-                    $this->titles[$i] = preg_replace(
-                                                  '{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx',
-                                                  '<h3\2\3</h3>',
-                                                  $slide_elements[1]
-                                                  );
+                    $this->slideData[$i]['title'] = preg_replace(
+                                                                        '{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx',
+                                                                        '<h3\2\3</h3>',
+                                                                        $slide_elements[1]
+                                                                        );
                 }
                 else
                 {
                     # Set title with "###" to create <h3> heading.
-                    $this->titles[$i] = '###'.$slide_elements[1];
+                    $this->slideData[$i]['title'] = '###'.$slide_elements[1];
                 }
-                $this->captionsSet[$i] = true;
+                $this->slideData[$i]['isset_caption'] = true;
             }
 
             if (isset($slide_elements[2]) && $slide_elements[2] != '')
             {
-                $this->captions[$i] = trim($slide_elements[2]);
-                $this->captionsSet[$i] = true;
+                $this->slideData[$i]['caption'] = trim($slide_elements[2]);
+                $this->slideData[$i]['isset_caption'] = true;
             }
 
             if ( ! isset($slide_elements[1], $slide_elements[2]) || $slide_elements[1] == '' && $slide_elements[2] == '')
             {
-                $this->captionsSet[$i] = false;                
+                $this->slideData[$i]['isset_caption'] = false;
             }
         }
-
         $data = array(
             'slideId'         => $this->id,
             'slides'          => $line_count,
             'isIndicatorsSet' => $this->indicatorsSet,
             'isControlsSet'   => $this->controlsSet,
-            'isCaptionsSet'   => $this->captionsSet,
-            'imageSources'    => $this->images,
-            'titles'          => $this->titles,
-            'captions'        => $this->captions
+            'slideData'       => $this->slideData
         );
 
         return self::renderView('carousel', $data);
