@@ -1,39 +1,33 @@
 <?php
 
-use Toiee\haik\File\FileTypeResolver;
+use Toiee\haik\File\MimeTypeResolver;
 
-class FileTypeResolverTest extends TestCase {
+class MimeTypeResolverTest extends TestCase {
 
     public function setUp()
     {
-        $this->resolver = new FileTypeResolver;
+        $this->resolver = new MimeTypeResolver;
     }
 
-    public function testGetFileTypeByContent()
+    public function testGetMimeTypeByContent()
     {
-        $this->markTestIncomplete('This interface not difined return type');
-
         $url = 'http://placehold.jp/150x150.png';
         $content = file_get_contents($url);
-        $result = $this->resolver->getTypeByContents($content);
+        $result = $this->resolver->getTypeByContent($content);
         
-        $this->assertEquals('', $result);
+        $this->assertEquals('image/png', $result);
     }
 
-    public function testGetFileTypeByUrl()
+    public function testGetMimeTypeByUrl()
     {
-        $this->markTestIncomplete('This interface not difined return type');
-
         $url = 'http://placehold.jp/150x150.png';
         $result = $this->resolver->getTypeByLocation($url);
 
-        $this->assertEquals('', $result);
+        $this->assertEquals('image/png', $result);
     }
 
-    public function testGetFileTypeByPath()
+    public function testGetMimeTypeByPath()
     {
-        $this->markTestIncomplete('This interface not difined return type');
-
         $url = 'http://placehold.jp/150x150.png';
         $content = file_get_contents($url);
         $file_name = tempnam(sys_get_temp_dir(), 'haikr-test-');
@@ -41,7 +35,7 @@ class FileTypeResolverTest extends TestCase {
         $result = $this->resolver->getTypeByLocation($file_name);
         unlink($file_name);
         
-        $this->assertEquals('application/octet-stream', $result);
+        $this->assertEquals('image/png', $result);
     }
 
     public function testGetFileNonExistance()
