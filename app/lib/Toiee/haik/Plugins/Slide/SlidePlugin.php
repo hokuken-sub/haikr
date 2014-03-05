@@ -64,10 +64,10 @@ class SlidePlugin extends Plugin {
                 {
                     # Change <h...> elements to <h3>.
                     $this->slideData[$i]['title'] = preg_replace(
-                                                                        '{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx',
-                                                                        '<h3\2\3</h3>',
-                                                                        $slide_elements[1]
-                                                                        );
+                                                                '{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx',
+                                                                '<h3\2\3</h3>',
+                                                                $slide_elements[1]
+                                                                );
                 }
                 else
                 {
