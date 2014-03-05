@@ -15,7 +15,7 @@ class MimeTypeResolverTest extends TestCase {
         $content = file_get_contents($url);
         $result = $this->resolver->getTypeByContent($content);
         
-        $this->assertEquals('image/png', $result);
+        $this->assertTrue(starts_with($result, 'image/png'));
     }
 
     public function testGetMimeTypeByUrl()
@@ -23,7 +23,7 @@ class MimeTypeResolverTest extends TestCase {
         $url = 'http://placehold.jp/150x150.png';
         $result = $this->resolver->getTypeByLocation($url);
 
-        $this->assertEquals('image/png', $result);
+        $this->assertTrue(starts_with($result, 'image/png'));
     }
 
     public function testGetMimeTypeByPath()
@@ -35,7 +35,7 @@ class MimeTypeResolverTest extends TestCase {
         $result = $this->resolver->getTypeByLocation($file_name);
         unlink($file_name);
         
-        $this->assertEquals('image/png', $result);
+        $this->assertTrue(starts_with($result, 'image/png'));
     }
 
     public function testGetFileNonExistance()
