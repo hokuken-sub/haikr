@@ -262,7 +262,25 @@ class HaikMarkdownTest extends TestCase {
         $this->assertEquals($assert, trim($parser->transform($markdown)));
 
     }
+
+    public function testCallInlinePluginWithNotExistedName()
+    {
+        App::bind('PluginRepositoryInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
+            $mock->shouldReceive('exists')
+                 ->once()
+                 ->andReturn(false);
+            return $mock;
+        });
     
+        $parser = new HaikMarkdown;
+        
+        $markdown = '&plugin;hr&plugin;';
+        $assert   = '<p>&plugin;hr&plugin;</p>';
+        
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+    }
+
     // ! convert plugin
     
     public function testCallConvertPluginWithAllVariations()
@@ -426,6 +444,23 @@ class HaikMarkdownTest extends TestCase {
 
     }
 
+    public function testCallConvertPluginWithNotExistedName()
+    {
+        App::bind('PluginRepositoryInterface', function(){
+            $mock = Mockery::mock('Toiee\haik\Plugins\PluginRepositoryInterface');
+            $mock->shouldReceive('exists')
+                 ->once()
+                 ->andReturn(false);
+            return $mock;
+        });
+    
+        $parser = new HaikMarkdown;
+        
+        $markdown = "::: {#plugin}\nhoge\n:::";
+        $assert   = "<p>::: {#plugin}\nhoge\n:::</p>";
+        
+        $this->assertEquals($assert, trim($parser->transform($markdown)));
+    }
     // !TODO: 具体クラスでテストする
     public function testCallNestedConvertPlugins()
     {
