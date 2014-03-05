@@ -169,11 +169,17 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
 
     protected function _doInlinePlugins_callback($matches)
     {
+        $whole_match = $matches[0];
         $plugin_id = $matches[2];
         $params = isset($matches[3]) && $matches[3] ? str_getcsv($matches[3], ',', '"', '\\') : array();
         $body = isset($matches[4]) ? $this->unhash($this->runSpanGamut($matches[4])) : '';
 
-        $result = \Plugin::get($plugin_id)->inline($params, $body);
+        try {
+            $result = \Plugin::get($plugin_id)->inline($params, $body);
+        }
+        catch (\InvalidArgumentException $e) {
+            return $whole_match;
+        }
         return $this->hashPart($result);        
     }
     
@@ -236,7 +242,9 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
     {
         return $this->_doConvertPlugin(
             $matches[1],
-            isset($matches[2]) ? $matches[2] : ''
+            isset($matches[2]) ? $matches[2] : '',
+            '',
+            $matches[0]
         );
     }
     
@@ -245,17 +253,24 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
         return $this->_doConvertPlugin(
             $matches[2],
             isset($matches[3]) ? $matches[3] : '',
-            isset($matches[4]) ? $matches[4] : ''
+            isset($matches[4]) ? $matches[4] : '',
+            $matches[0]
         );
     }
     
-    protected function _doConvertPlugin($plugin_id, $params = '', $body = '')
+    protected function _doConvertPlugin($plugin_id, $params = '', $body = '', $whole_match = '')
     {
         $params = ($params !== '') ? str_getcsv($params, ',', '"', '\\') : array();
         $body = $this->unHash($body);
 
-        $result = \Plugin::get($plugin_id)->convert($params, $body);
-		return "\n\n".$this->hashBlock($result)."\n\n";
+        try {
+            $result = \Plugin::get($plugin_id)->convert($params, $body);
+            return "\n\n".$this->hashBlock($result)."\n\n";
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            return $whole_match;
+        }
     }
     
 }
