@@ -1,7 +1,7 @@
 <?php
 namespace Toiee\haik\File;
 
-class FileTypeResolver implements FileTypeResolverInterface {
+class MimeTypeResolver {
 
     const DEFAULT_TYPE = 'application/octet-stream';
 
