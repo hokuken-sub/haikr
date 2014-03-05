@@ -14,6 +14,9 @@ class SlidePlugin extends Plugin {
     protected $indicatorsSet;
     protected $controlsSet;
 
+    protected $params;
+    protected $body;
+
     # This is slide_id getter.
     public function getSlideId()
     {
@@ -29,7 +32,24 @@ class SlidePlugin extends Plugin {
 
     public function convert($params = array(), $body = '')
     {
-        $lines = preg_split('/\n+/', trim($body));
+        $this->params = $params;
+        $this->body = $body;
+
+        $this->createSlideData();
+
+        $data = array(
+            'slideId'         => $this->id,
+            'isIndicatorsSet' => $this->indicatorsSet,
+            'isControlsSet'   => $this->controlsSet,
+            'slideData'       => $this->slideData
+        );
+
+        return self::renderView('carousel', $data);
+    }
+
+    protected function createSlideData()
+    {
+        $lines = preg_split('/\n+/', trim($this->body));
         $line_count = count($lines);
         if ($line_count == 1)
         {
@@ -88,14 +108,5 @@ class SlidePlugin extends Plugin {
                 $this->slideData[$i]['isset_caption'] = false;
             }
         }
-        $data = array(
-            'slideId'         => $this->id,
-            'slides'          => $line_count,
-            'isIndicatorsSet' => $this->indicatorsSet,
-            'isControlsSet'   => $this->controlsSet,
-            'slideData'       => $this->slideData
-        );
-
-        return self::renderView('carousel', $data);
     }
 }

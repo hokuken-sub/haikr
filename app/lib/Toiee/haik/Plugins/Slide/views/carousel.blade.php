@@ -3,7 +3,7 @@
     @if ($isIndicatorsSet)
     <!-- Indicators -->
     <ol class="carousel-indicators">
-        @for ($i = 0; $i < $slides; $i++)
+        @for ($i = 0; $i < count($slideData); $i++)
         <li data-target="#haik_plugin_slide{{ $slideId }}" data-slide-to="{{ $i }}"></li>
         @endfor
     </ol>
