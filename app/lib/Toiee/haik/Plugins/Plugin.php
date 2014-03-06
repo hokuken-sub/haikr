@@ -2,7 +2,29 @@
 namespace Toiee\haik\Plugins;
 
 abstract class Plugin implements PluginInterface {
-    
+
+    private $id;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $plugin_name = get_called_class();
+        PluginCounter::inc($plugin_name);
+        $this->id = PluginCounter::get($plugin_name);
+    }
+
+    /**
+     * Get plugin ID
+     *
+     * @return integer ID
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     /**
      * action by http GET or POST /haik--plugin-name/
      * @return NULL or View object
