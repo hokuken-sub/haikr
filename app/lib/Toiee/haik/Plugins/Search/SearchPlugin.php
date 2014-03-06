@@ -16,7 +16,6 @@ class SearchPlugin extends Plugin {
             'button_type' => 'default',
             'word'        => '',
         );
-
     }
     
 
@@ -89,6 +88,7 @@ class SearchPlugin extends Plugin {
         $data = array(); 
         foreach ($results as $key => $target)
         {
+            $data[$key] = array();
             $data[$key]['label'] = $target['label'];
             $data[$key]['rows'] = array();
             
