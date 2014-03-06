@@ -5,6 +5,20 @@ use Toiee\haik\Plugins\Plugin;
 use Toiee\haik\Plugins\Utility;
 
 class SearchPlugin extends Plugin {
+    
+    protected $formdata;
+    
+    public function __construct()
+    {
+        $this->formdata = array(
+            'class'       => '',
+            'button'      => false,
+            'button_type' => 'default',
+            'word'        => '',
+        );
+
+    }
+    
 
     /**
      * action by http GET or POST /haik--search/...
@@ -19,6 +33,7 @@ class SearchPlugin extends Plugin {
         {
             // ! 1 get post data
             $word = \Input::get('word');
+            $this->formdata['word'] = $word;
 
             // ! 2 search
             $data = \Haik::search($word);
@@ -40,13 +55,6 @@ class SearchPlugin extends Plugin {
      */
     public function convert($params = array(), $body = '')
     {
-        $data = array(
-            'class'       => '',
-            'button'      => false,
-            'button_type' => 'default',
-            'word'        => '',
-        );
-
         foreach ($params as $param)
         {
             switch ($param)
@@ -57,23 +65,23 @@ class SearchPlugin extends Plugin {
                 case 'info':
                 case 'warning':
                 case 'danger':
-                    $data['button'] = true;
-                    $data['button_type'] = $param;
+                    $this->formdata['button'] = true;
+                    $this->formdata['button_type'] = $param;
                     break;
                 case 'btn':
                 case 'button':
-                    $data['button'] = true;
+                    $this->formdata['button'] = true;
                     break;
                 default:
                     $col = Utility::parseColumnData($param);
                     if ($col)
                     {
-                        $data['class'] = $this->getColumnClass($col);
+                        $this->formdata['class'] = $this->getColumnClass($col);
                     }
             }
         }
-        
-        return self::renderView('template', $data);
+
+        return self::renderView('template', $this->formdata);
     }
 
     protected function getHtml($results)
@@ -96,7 +104,8 @@ class SearchPlugin extends Plugin {
             }
         }
 
-        return self::renderView('results', array('data' => $data));
+        $data = array_merge($this->formdata, array('data' => $data));
+        return self::renderView('template', $data);
     }
 
     protected function getColumnClass($col)

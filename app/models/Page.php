@@ -24,26 +24,27 @@ class Page extends Eloquent implements SearchItemInterface {
             return '';
         }
 
-        return $this->name;        
+        return $this->name;    
     }    
 
     public function getUrl()
     {
         return \Haik::pageUrl($this->name);
-    }    
+    }
 
     public function getCaption()
     {
         $body = $this->body;
-
         $body = \Parser::parse($body);
+
         $body = preg_replace('!<style.*?>.*?</style.*?>!is', '', $body);
         $body = preg_replace('!<script.*?>.*?</script.*?>!is', '', $body);
         $body = strip_tags($body);
         $body = str_replace("\n", ' ', $body);
         $body = mb_strimwidth($body, 0, 124, '...');
+
         return $body;
-    }    
+    }
 
     public function getThumbnail()
     {
