@@ -36,6 +36,7 @@ class SlidePlugin extends Plugin {
         $this->body = $body;
 
         $this->createSlideData();
+        $this->checkParams();
 
         $data = array(
             'slideId'         => $this->id,
@@ -106,6 +107,25 @@ class SlidePlugin extends Plugin {
             if ( ! isset($slide_elements[1], $slide_elements[2]) || $slide_elements[1] == '' && $slide_elements[2] == '')
             {
                 $this->slideData[$i]['isset_caption'] = false;
+            }
+        }
+    }
+
+    protected function checkParams()
+    {
+        foreach ($this->params as $i => $param)
+        {
+            switch ($param)
+            {
+                case 'nobutton':
+                    $this->indicatorsSet = $this->controlsSet = false;
+                    break;
+                case 'noindicator':
+                    $this->indicatorsSet = false;
+                    break;
+                case 'noslidebutton':
+                    $this->controlsSet = false;
+                    break;
             }
         }
     }
