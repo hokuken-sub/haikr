@@ -1,23 +1,22 @@
 <div class="row">
   <div class="{{ $class }}">
     <div class="haik-plugin-search">
-      <form action="/haik--search/" method="get" class="form-inline">
+      {{ Form::open(array('url' => '/haik--search/', 'class' => 'form-inline', 'method' => 'get')) }}
         @if ($button)
         <div class="input-group">
-          <input type="text" name="word" value="{{{ $word or '' }}}" class="form-control" placeholder="Search" />
+          {{ Form::text('word', $word, array('class' => 'form-control', 'placeholder' => 'search')) }}
           <i class="glyphicon glyphicon-search"></i>
           <div class="input-group-btn">
-            <input class="btn btn-{{$button_type}}" type="submit" value="検索" />
+            {{ Form::submit('検索', array('class' => 'btn btn-' . $button_type)) }}
           </div>
         </div>
         @else
-        <input type="text" name="word" value="{{{ $word or '' }}}" class="form-control input-search" placeholder="Search" />
+        {{ Form::text('word', $word, array('class' => 'form-control input-search', 'placeholder' => 'Search')) }}
         <i class="glyphicon glyphicon-search"></i>
         @endif
-    
-      </form>
+      {{ Form::close() }}
     </div>
-</div>
+  </div>
 </div>
 
 <style>
