@@ -39,7 +39,7 @@ class SlidePluginTest extends TestCase {
         $this->assertEquals($expect_return, $actual_return);
 
 
-        # This is the test of slide with body has two lines.
+        # This is the test of slide with body has some lines.
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getSlideId();
 
