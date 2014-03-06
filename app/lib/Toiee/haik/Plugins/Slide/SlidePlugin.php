@@ -61,6 +61,8 @@ class SlidePlugin extends Plugin {
             if ('' === trim($line)) continue;
 
             $slide_elements = str_getcsv($line, ',', '"', '\\');
+            $this->slideData[$i] = array();
+
             if (isset($slide_elements[0]) && $slide_elements[0] !== '')
             {
                 $this->slideData[$i]['image'] = trim($slide_elements[0]);
