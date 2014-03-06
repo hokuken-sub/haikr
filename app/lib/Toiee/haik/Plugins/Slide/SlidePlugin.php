@@ -52,7 +52,7 @@ class SlidePlugin extends Plugin {
     {
         $lines = preg_split('/\n+/', trim($this->body));
         $line_count = count($lines);
-        if ($line_count == 1)
+        if ($line_count === 1)
         {
             $this->indicatorsSet = $this->controlsSet = false;
         }
@@ -61,7 +61,7 @@ class SlidePlugin extends Plugin {
             if ('' === trim($line)) continue;
 
             $slide_elements = str_getcsv($line, ',', '"', '\\');
-            if (isset($slide_elements[0]) && $slide_elements[0] != '')
+            if (isset($slide_elements[0]) && $slide_elements[0] !== '')
             {
                 $this->slideData[$i]['image'] = trim($slide_elements[0]);
             }
@@ -70,7 +70,7 @@ class SlidePlugin extends Plugin {
                 $this->slideData[$i]['image'] = self::DEFAULT_IMAGE_URL;
             }
 
-            if (isset($slide_elements[1]) && $slide_elements[1] != '')
+            if (isset($slide_elements[1]) && $slide_elements[1] !== '')
             {
                 $slide_elements[1] = trim($slide_elements[1]);
 
@@ -100,13 +100,13 @@ class SlidePlugin extends Plugin {
                 $this->slideData[$i]['isset_caption'] = true;
             }
 
-            if (isset($slide_elements[2]) && $slide_elements[2] != '')
+            if (isset($slide_elements[2]) && $slide_elements[2] !== '')
             {
                 $this->slideData[$i]['caption'] = trim($slide_elements[2]);
                 $this->slideData[$i]['isset_caption'] = true;
             }
 
-            if ( ! isset($slide_elements[1], $slide_elements[2]) || $slide_elements[1] == '' && $slide_elements[2] == '')
+            if ( ! isset($slide_elements[1], $slide_elements[2]) || $slide_elements[1] === '' && $slide_elements[2] === '')
             {
                 $this->slideData[$i]['isset_caption'] = false;
             }
