@@ -58,6 +58,8 @@ class SlidePlugin extends Plugin {
         }
         foreach ($lines as $i => $line)
         {
+            if ('' === trim($line)) continue;
+
             $slide_elements = str_getcsv($line, ',', '"', '\\');
             if (isset($slide_elements[0]) && $slide_elements[0] != '')
             {
