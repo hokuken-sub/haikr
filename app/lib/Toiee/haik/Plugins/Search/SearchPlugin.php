@@ -13,6 +13,22 @@ class SearchPlugin extends Plugin {
      */
     public function action()
     {
+        $html = '';
+
+        if (\Request::isMethod('get'))
+        {
+            // ! 1 get post data
+            $word = \Input::get('word');
+
+            // ! 2 search
+            $data = \Haik::search($word);
+
+            // ! 3 display
+            $html = $this->getHtml($data);
+        }
+        
+        return $html;
+
     }
     
     /**
@@ -60,6 +76,29 @@ class SearchPlugin extends Plugin {
         return self::renderView('template', $data);
     }
 
+    protected function getHtml($results)
+    {
+        $data = array(); 
+        foreach ($results as $key => $target)
+        {
+            $data[$key]['label'] = $target['label'];
+            $data[$key]['rows'] = array();
+            
+            foreach ($target['rows'] as $row)
+            {
+                $data[$key]['rows'][] = array(
+                    'title'     => $row->getTitle(),
+                    'sub_title' => $row->getSubTitle(),
+                    'url'       => $row->getUrl(),
+                    'caption'   => $row->getCaption(),
+                    'thumbnail' => $row->getThumbnail(),
+                );
+            }
+        }
+
+        return self::renderView('results', array('data' => $data));
+    }
+
     protected function getColumnClass($col)
     {
         if ( ! $col)
@@ -83,5 +122,4 @@ class SearchPlugin extends Plugin {
 
         return join(" ", $classes);
     }
-
 }
