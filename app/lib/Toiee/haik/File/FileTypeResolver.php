@@ -38,7 +38,7 @@ class FileTypeResolver {
         'text/x-hdml'                         => 'doc',
 
         // link
-        'text/haik-link' => 'link',
+        'text/x-haik-link' => 'link',
 
         // archive
         'application/zip'   => 'archive',
@@ -89,7 +89,7 @@ class FileTypeResolver {
         
         if (trim($parsed_mime_type[1]) !== '')
         {
-            $parsed_mime_type[1] = preg_replace('/^\s*charset=/', '', $parsed_mime_type[1]);
+            $parsed_mime_type[1] = preg_match('/^\s*charset=([^ ]+)/', $parsed_mime_type[1], $mts) ? $mts[1] : '';
         }
         
         return $parsed_mime_type;
