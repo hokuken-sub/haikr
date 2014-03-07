@@ -11,7 +11,7 @@ class SearchPlugin extends Plugin {
     public function __construct()
     {
         $this->formdata = array(
-            'class'       => '',
+            'class'       => 'col-sm-12',
             'button'      => false,
             'button_type' => 'default',
             'word'        => '',

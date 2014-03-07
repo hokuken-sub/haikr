@@ -1,5 +1,7 @@
+<hr>
+
 <div class="haik-plugin-search-results">
-    
+
   @foreach ($data as $key => $target)
   <div class="row">
     <div class="haik-plugin-search-type col-sm-2">
