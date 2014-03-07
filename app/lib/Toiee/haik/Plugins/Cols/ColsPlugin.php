@@ -23,6 +23,8 @@ class ColsPlugin extends Plugin {
     
     public function __construct()
     {
+        parent::__construct();
+
         $this->colBase = array (
             'cols'   => self::COL_MAX_NUM,
             'offset' => 0,
