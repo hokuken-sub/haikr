@@ -4,6 +4,7 @@ namespace Toiee\haik\File;
 class MimeTypeResolver {
 
     const DEFAULT_TYPE = 'application/octet-stream';
+    const LINK_TYPE    = 'text/x-haik-link';
     
     protected $mimeTypeConvertTable = array(
         'jpg'   => 'image/jpeg',
@@ -32,6 +33,8 @@ class MimeTypeResolver {
         'mid'   => 'audio/midi',
         'midi'  => 'audio/midi',
         'mmf'   => 'application/x-smaf',
+        'aiff'  => 'audio/aiff',
+        'aiff'  => 'audio/x-aiff',
         'mpg'   => 'video/mpeg',
         'mpeg'  => 'video/mpeg',
         'wmv'   => 'video/x-ms-wmv',
@@ -53,6 +56,11 @@ class MimeTypeResolver {
     public function getTypeByContent($content)
     {
         if (strlen($content) === 0) return self::DEFAULT_TYPE;
+        
+        if ($this->isLink($content))
+        {
+            return self::LINK_TYPE;
+        }
 
         if (extension_loaded('finfo'))
         {
@@ -88,7 +96,7 @@ class MimeTypeResolver {
         }
         else
         {
-            if (file_exists($location) OR preg_match('{\A(:?https?|ftp)://}', $location))
+            if (file_exists($location) OR $this->isLink($location))
             {
                 $info = pathinfo($location);
                 if (isset($info['extension']) && isset($this->mimeTypeConvertTable[$info['extension']]))
@@ -111,4 +119,8 @@ class MimeTypeResolver {
         }
     }
 
+    protected function isLink($content)
+    {
+        return preg_match('{^(?:https?|ftp)://}', $content) && strpos($content, "\n") === FALSE;
+    }
 }
