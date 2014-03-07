@@ -66,6 +66,15 @@ class FormRepositoryTest extends TestCase {
         $this->assertEquals($form, $this->forms->retrieve($idenfier));
     }
 
+    public function testRemove()
+    {
+        $form = SiteForm::site($this->siteId)->orderBy("updated_at", "desc")->first();
+        $idenfier = $form->getIdentifier();
+        $this->forms->remove($idenfier);
+        $this->assertFalse($this->forms->exists($idenfier));
+    }
+
+
     public function testFactory()
     {
         $identifier = 'foobar';
