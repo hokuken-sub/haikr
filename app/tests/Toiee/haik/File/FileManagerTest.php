@@ -55,7 +55,7 @@ class FileManagerTest extends TestCase {
         $file->haik_site_id = \Haik::getID();
         $file->type    = 'file';
         $file->size    = '1024';
-        $file->ext     = '';
+        $file->original_name     = '';
         $file->storage = 'local';
         $file->save();
 

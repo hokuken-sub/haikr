@@ -25,8 +25,8 @@ class CreatePagesTable extends Migration {
                $table->text('head')->nullable();
                $table->text('script')->nullable();
                $table->string('layout')->nullable();
-               $table->string('listing')->default('list');
-               $table->string('public')->default('public');
+               $table->string('listing')->default('list');  // list:公開, limited:非公開（noindex）, not：非公開
+               $table->string('public')->default('public'); // public, close[:password], forward[:301]
                $table->integer('body_version')->unsigined()->default(0);
                $table->timestamps();
           });

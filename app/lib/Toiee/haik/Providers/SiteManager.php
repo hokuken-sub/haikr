@@ -7,15 +7,23 @@ class SiteManager implements SiteManagerInterface{
     
     protected $id;
     
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->id = 1;
     }
     
+    /**
+     * get site ID
+     * @return integer site id
+     */
     public function getID()
     {
         return $this->id;
     }
+
     /**
      * get site config value by name
      * @params string $name site config name
@@ -150,6 +158,55 @@ class SiteManager implements SiteManagerInterface{
     public function path()
     {
        
+    }
+    
+    /**
+     * search word from pages, files and froms
+     * @param  string $word search words
+     * @param  string $targets search target (all, page, file, form)
+     * @return array results
+     */
+    public function search($word, $targets = 'all')
+    {
+        $public = 'all';
+        if (! \Auth::check())
+        {
+            $targets = array('page');
+            $public = 'public';
+        }
+        else if ($targets == 'all')
+        {
+            $targets = array('page', 'file', 'form');
+        }
+        else
+        {
+            $targets = explode(',', $targets);
+        }
+        
+        $results = array();
+        foreach ($targets as $target)
+        {
+            $results[$target] = array();
+            switch(trim($target))
+            {
+                case 'page':
+                    $results[$target]['label'] = 'ページ';
+                    $results[$target]['rows'] = \Page::site($this->getID())->publicity($public)->search($word)->paginate(15)->getItems();
+                    break;
+                case 'file':
+                    // ! notyet
+                    $results[$target]['label'] = 'ファイル';
+                    $results[$target]['rows'] = array();
+                    break;
+                case 'form':
+                    // ! notyet
+                    $results[$target]['label'] = 'フォーム';
+                    $results[$target]['rows'] = array();
+                    break;
+            }
+        }
+
+        return $results;
     }
 
 }
