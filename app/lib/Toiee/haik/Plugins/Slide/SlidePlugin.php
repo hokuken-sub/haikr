@@ -9,6 +9,7 @@ class SlidePlugin extends Plugin {
 
     protected $items = array();
     protected $options = array();
+    protected $view;
 
     protected $params;
     protected $body;
@@ -21,9 +22,12 @@ class SlidePlugin extends Plugin {
 
     protected function initialize()
     {
+        $this->view = 'carousel';
         $this->options = array(
             'indicatorsSet' => true,
             'controlsSet'   => true,
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
         );
     }
 
@@ -45,10 +49,11 @@ class SlidePlugin extends Plugin {
 
         $this->checkParams();
 
-        return $this->renderView('carousel', array(
+        $class_name = get_called_class();
+        return $this->renderView($this->view, array(
             'id'              => $this->getId(),
             'options'         => $this->options,
-            'defaultImage'    => self::DEFAULT_IMAGE,
+            'defaultImage'    => $class_name::DEFAULT_IMAGE,
             'items'           => $this->items,
         ));
     }
@@ -66,7 +71,6 @@ class SlidePlugin extends Plugin {
 
         $imageSet = $headingSet = false;
         
-        $data['body_data'] = compact('element', 'line_count', 'max_line');
         
         
         // 最初の2行のみ
@@ -94,14 +98,17 @@ class SlidePlugin extends Plugin {
             }
         }
 
+        $data['body_data'] = compact('elements', 'line_count', 'max_line');
         $data = $this->adjustData($data);
+        extract($data['body_data']);
 
         // 残りをparse
         $data['body'] = \Parser::parse(join("\n", $elements));
         
         foreach ($data as $key => $value)
         {
-            $data[$key] = trim($value);
+            if (is_string($value))
+                $data[$key] = trim($value);
         }
 
         return $data;
@@ -144,6 +151,14 @@ class SlidePlugin extends Plugin {
                 case 'noslidebutton':
                     $this->options['controlsSet'] = false;
                     break;
+                default:
+                    $data = Utility::parseColumnData($param);
+                    if ($data)
+                    {
+                        $col_classes = $this->createColumnClass($data);
+                        $this->options['wrapperOpen'] = '<div class="row"><div class="'.$col_classes.'">';
+                        $this->options['wrapperClose'] = '</div></div>';
+                    }
             }
         }
     }
