@@ -22,7 +22,7 @@ class FileRepositoryTest extends TestCase {
         $file1->key     = 'HgHg';
         $file1->type    = 'file';
         $file1->size    = '1024';
-        $file1->ext     = 'ext';
+        $file1->original_name     = '';
         $file1->storage = 'local';
         $file1->save();
         
@@ -31,7 +31,7 @@ class FileRepositoryTest extends TestCase {
         $file2->key     = 'FgFg';
         $file2->type    = 'file';
         $file2->size    = '2048';
-        $file2->ext     = 'ext';
+        $file2->original_name     = '';
         $file2->storage = 'local';
         $file2->save();
     }
