@@ -5,114 +5,128 @@ use Toiee\haik\Plugins\Plugin;
 
 class SlidePlugin extends Plugin {
 
-    const DEFAULT_IMAGE_URL = "http://placehold.jp/900x500.png";
+    const DEFAULT_IMAGE = '<img src="http://placehold.jp/900x500.png" alt="">';
 
-    protected static $slideId = 0;
-
-    protected $id;
-    protected $slideData = array();
-    protected $indicatorsSet;
-    protected $controlsSet;
+    protected $items = array();
+    protected $options = array();
 
     protected $params;
     protected $body;
 
-    # This is slide_id getter.
-    public function getSlideId()
-    {
-        return $this->id;
-    }
-
     public function __construct()
     {
-        self::$slideId++;
-        $this->id = self::$slideId;
-        $this->indicatorsSet = $this->controlsSet = true;
+        parent::__construct();
+        $this->initialize();
+    }
+
+    protected function initialize()
+    {
+        $this->options = array(
+            'indicatorsSet' => true,
+            'controlsSet'   => true,
+        );
     }
 
     public function convert($params = array(), $body = '')
     {
         $this->params = $params;
-        $this->body = $body;
+        $this->body   = $body;
 
-        $this->createSlideData();
+        $item_bodies = preg_split('/^={4}$/m', $body);
+
+        foreach ($item_bodies as $i => $item_body)
+        {
+            $item = $this->createItemData($item_body);
+            if ($item !== FALSE)
+            {
+                $this->items[] = $item;
+            }
+        }
+
         $this->checkParams();
 
-        $data = array(
-            'slideId'         => $this->id,
-            'isIndicatorsSet' => $this->indicatorsSet,
-            'isControlsSet'   => $this->controlsSet,
-            'slideData'       => $this->slideData
-        );
+        return $this->renderView('carousel', array(
+            'id'              => $this->getId(),
+            'options'         => $this->options,
+            'defaultImage'    => self::DEFAULT_IMAGE,
+            'items'           => $this->items,
+        ));
+    }
+    
+    protected function createItemData($body)
+    {
+        $body = trim($body);
+        if ($body === '') return FALSE;
+        
+        $data = array();
 
-        return self::renderView('carousel', $data);
+        $elements = preg_split('{ \n+ }mx', $body);
+        $line_count = count($elements);
+        $max_line = $line_count - 1;
+
+        $imageSet = $headingSet = false;
+        
+        $data['body_data'] = compact('element', 'line_count', 'max_line');
+        
+        
+        // 最初の2行のみ
+        for ($line = 0; $line < 2 && $line < $line_count; $line++)
+        {
+            $html = \Parser::parse($elements[$line]);
+
+            //画像をセット
+            if ( ! $imageSet && preg_match('{ <img\b.*?> }mx', $html))
+            {
+                $data['image'] = $this->adjustImage($html);;
+                $imageSet = true;
+                unset($elements[$line]);
+            }
+            //見出しをセット
+            else if ( ! $headingSet)
+            {
+                if (preg_match('{ <h }mx', $html))
+                {
+                    $data['heading'] = $this->adjustHeading($html);
+                    $headingSet = true;
+                    unset($elements[$line]);
+                }
+                break;
+            }
+        }
+
+        $data = $this->adjustData($data);
+
+        // 残りをparse
+        $data['body'] = \Parser::parse(join("\n", $elements));
+        
+        foreach ($data as $key => $value)
+        {
+            $data[$key] = trim($value);
+        }
+
+        return $data;
     }
 
-    protected function createSlideData()
+    protected function adjustImage($html)
     {
-        $lines = preg_split('/\n+/', trim($this->body));
-        $line_count = count($lines);
-        if ($line_count === 1)
-        {
-            $this->indicatorsSet = $this->controlsSet = false;
-        }
-        foreach ($lines as $i => $line)
-        {
-            if ('' === trim($line)) continue;
+        return strip_tags($html, '<img>');
+    }
 
-            $slide_elements = str_getcsv($line, ',', '"', '\\');
-            $this->slideData[$i] = array();
+    protected function adjustHeading($html)
+    {
+        return preg_replace('{ <h([1-6])(.*?>) }mx', '<h3\2', $html);
+    }
 
-            if (isset($slide_elements[0]) && $slide_elements[0] !== '')
-            {
-                $this->slideData[$i]['image'] = trim($slide_elements[0]);
-            }
-            else
-            {
-                $this->slideData[$i]['image'] = self::DEFAULT_IMAGE_URL;
-            }
-
-            if (isset($slide_elements[1]) && $slide_elements[1] !== '')
-            {
-                $slide_elements[1] = trim($slide_elements[1]);
-
-                # Check $slide_elements[1] is heading written with markdown.
-                if (preg_match('/^#{1,6}/', $slide_elements[1]))
-                {
-                    # Trim '#' to set title with '###'.
-                    $title = preg_replace('/^#{1,6}/', '', $slide_elements[1]);
-                    $this->slideData[$i]['title'] = '###'.$title;
-                }
-
-                # Check $slide_elements[1] is heading written with row html.
-                else if (preg_match('{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx', $slide_elements[1]))
-                {
-                    # Change <h...> elements to <h3>.
-                    $this->slideData[$i]['title'] = preg_replace(
-                                                                '{ ^<(h[1-6])(.*?>)(.*?)</\1> }mx',
-                                                                '<h3\2\3</h3>',
-                                                                $slide_elements[1]
-                                                                );
-                }
-                else
-                {
-                    # Set title with "###" to create <h3> heading.
-                    $this->slideData[$i]['title'] = '###'.$slide_elements[1];
-                }
-                $this->slideData[$i]['isset_caption'] = true;
-            }
-
-            if (isset($slide_elements[2]) && $slide_elements[2] !== '')
-            {
-                $this->slideData[$i]['caption'] = trim($slide_elements[2]);
-                $this->slideData[$i]['isset_caption'] = true;
-            }
-
-            if ( ! isset($slide_elements[1], $slide_elements[2]) || $slide_elements[1] === '' && $slide_elements[2] === '')
-            {
-                $this->slideData[$i]['isset_caption'] = false;
-            }
-        }
+    /**
+     * Adjust item data
+     *
+     * @param mixed $itemData data of item
+     * @return mixed adjusted item data
+     */
+    protected function adjustData($itemData)
+    {
+        unset($itemData['body_data']);
+        return $itemData;
     }
 
     protected function checkParams()
@@ -122,13 +136,13 @@ class SlidePlugin extends Plugin {
             switch ($param)
             {
                 case 'nobutton':
-                    $this->indicatorsSet = $this->controlsSet = false;
+                    $this->options['indicatorsSet'] = $this->options['controlsSet'] = false;
                     break;
                 case 'noindicator':
-                    $this->indicatorsSet = false;
+                    $this->options['indicatorsSet'] = false;
                     break;
                 case 'noslidebutton':
-                    $this->controlsSet = false;
+                    $this->options['controlsSet'] = false;
                     break;
             }
         }
