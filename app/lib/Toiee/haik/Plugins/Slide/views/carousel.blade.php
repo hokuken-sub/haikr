@@ -1,3 +1,4 @@
+{{ $options['wrapperOpen'] }}
 <div id="haik_plugin_slide_{{ $id }}" class="haik-plugin-slide carousel slide" data-ride="carousel">
 
     @if ($options['indicatorsSet'])
@@ -35,3 +36,4 @@
     @endif
 
 </div>
+{{ $options['wrapperClose'] }}
