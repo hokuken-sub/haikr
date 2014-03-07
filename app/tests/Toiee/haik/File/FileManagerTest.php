@@ -89,4 +89,21 @@ class FileManagerTest extends TestCase {
         );
     }
 
+    public function testSaveUploaded()
+    {
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
+    }
+
+    public function testUrlSaveAsFile()
+    {
+        
+    }
+
+    public function testSaveByUrl()
+    {
+        
+    }
+
 }

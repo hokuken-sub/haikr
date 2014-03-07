@@ -41,4 +41,16 @@ class FileServiceProvider extends ServiceProvider {
             );
         });
     }
+
+    public function registerTypeResolvers()
+    {
+        $this->app->singleton('MimeTypeResolver', function($app)
+        {
+            return new MimeTypeResolver;
+        });
+        $this->app->singleton('FileTypeResolver', function($app)
+        {
+            return new FileTypeResolver;
+        });
+    }
 }

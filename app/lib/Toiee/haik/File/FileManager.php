@@ -108,6 +108,21 @@ class FileManager {
         return false;
     }
 
+    public function fileSaveUploaded()
+    {
+        // !TODO: $_FILES から FileInterface object を作成して保存する
+    }
+
+    public function urlSaveAsFile($url)
+    {
+        // !TODO: URLを haik-link として保存する
+    }
+
+    public function fileSaveByUrl($url)
+    {
+        // !TODO: Get file by URL and save FileInterface objeect
+    }
+
     /**
      * Create empty file for save
      *
