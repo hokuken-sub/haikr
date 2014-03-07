@@ -32,7 +32,11 @@
 .haik-plugin-search .haik-plugin-search-item .title a {
     color: inherit;
 }
-.haik-plugin-search .haik-plugin-search-item .title small {
+.haik-plugin-search .haik-plugin-search-item .sub_title {
+    color: #aaa;
+    margin-left: 10px;
+}
+.haik-plugin-search .haik-plugin-search-item .updated {
     color: #babbbf;
 }
 .haik-plugin-search .haik-plugin-search-item .caption {

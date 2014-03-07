@@ -39,7 +39,6 @@ class SearchPlugin extends Plugin {
             $this->formdata['word'] = $word;
 
             $data = \Haik::search($word);
-
             $html = $this->render($data);
         }
         
