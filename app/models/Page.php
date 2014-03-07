@@ -83,7 +83,7 @@ class Page extends Eloquent implements SearchItemInterface {
      * search word (i.e Page::search)
      * @param  Builder $query
      * @param  string  $word search word
-     * @return \Illuminate\Pagination\Paginator
+     * @return Builder $query
      */
     public function scopeSearch($query, $word)
     {
