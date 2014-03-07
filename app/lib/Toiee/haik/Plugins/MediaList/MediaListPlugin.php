@@ -2,122 +2,71 @@
 namespace Toiee\haik\Plugins\MediaList;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Slide\SlidePlugin;
 use Toiee\haik\Plugins\Utility;
 
-class MediaListPlugin extends Plugin {
+class MediaListPlugin extends SlidePlugin {
 
-    const DEFAULT_MEDIA_OBJECT = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
+    const DEFAULT_IMAGE = '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">';
 
-    protected $align;
-    protected $image;
-    protected $imageSet;
-    protected $heading;
-    protected $headingSet;
-    protected $content;
-    protected $mediaList = array();
-
-    public function setUp()
+    protected function initialize()
     {
-        $this->align = 'pull-left';
-        $this->image = self::DEFAULT_MEDIA_OBJECT;
-        $this->heading = $this->content = $this->html = '';
+        $this->view = 'medialist';
+        $this->options = array(
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
+        );
+    }
 
-        $this->imageSet = false;
-        $this->headingSet = false;
+    protected function adjustImage($html)
+    {
+        return str_replace(
+                          '<img', '<img class="media-object"',
+                          strip_tags($html, '<img>')
+                          );
+    }
+
+    protected function adjustHeading($html)
+    {
+        return preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
     }
 
     /**
-     * convert call via HaikMarkdown :::{#plugin-name}\n...\n:::;
-     * @params array $params
-     * @params string $body when \n...\n was set
-     * @return string converted HTML string
-     * @throws RuntimeException when unimplement
+     * Adjust item data
+     *
+     * @param mixed $itemData data of item
+     * @return mixed adjusted item data
      */
-    public function convert($params = array(), $body = '')
+    protected function adjustData($itemData)
     {
-        $medialists = explode("\n====\n", $body);
+        extract($itemData['body_data']);
 
-        foreach ($medialists as $i => $medialist)
+        $html = \Parser::parse($elements[$max_line]);
+        if (preg_match('{ <img\b.*?> }mx', $html))
         {
-            $this->mediaList[] = $this->createMediaList($medialist);
-        }
-        $html = join("\n", $this->mediaList);
+            $itemData['image'] = str_replace(
+                                      '<img', '<img class="media-object"',
+                                      strip_tags($html, '<img>')
+                                      );
+            $itemData['align'] = 'pull-right';
 
-        if (count($params) > 0)
-        {
-            $data = Utility::parseColumnData($params[0]);
-            $col_classes = $data ? $this->createColumnClass($data) : '';
-            $wrapper_open = '<div class="row"><div class="'.$col_classes.'">';
-            $wrapper_close = '</div></div>';
-            $html = $wrapper_open . $html . $wrapper_close;
+            unset($itemData['body_data']['elements'][$max_line]);
         }
-        return $html;
+        return $itemData;
     }
 
-    protected function createMediaList($medialist)
+    protected function checkParams()
     {
-        $this->setUp();
-
-        $elements = preg_split('{ \n+ }mx', trim($medialist));
-        $line_count = count($elements);
-        $max_line = $line_count - 1;
-        
-        // 最初の2行のみ
-        for ($line = 0; $line < 2 && $line < $line_count; $line++)
+        foreach ($this->params as $i => $param)
         {
-            $html = \Parser::parse($elements[$line]);
-
-            //画像をセット
-            if ( ! $this->imageSet && preg_match('{ <img\b.*?> }mx', $html))
+            $data = Utility::parseColumnData($param);
+            if ($data)
             {
-                $this->image = str_replace(
-                                          '<img', '<img class="media-object"',
-                                          strip_tags($html, '<img>')
-                                          );
-                $this->imageSet = true;
-                unset($elements[$line]);
-            }
-            //見出しをセット
-            else if ( ! $this->headingSet)
-            {
-                if (preg_match('{ <h }mx', $html))
-                {
-                    $this->heading = preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
-                    $this->headingSet = true;
-                    unset($elements[$line]);
-                }
-
-                if ( ! $this->imageSet)
-                {
-                    //最後の行をチェック
-                    $html = \Parser::parse($elements[$max_line]);
-                    if (preg_match('{ <img\b.*?> }mx', $html))
-                    {
-                        $this->image = str_replace(
-                                                  '<img', '<img class="media-object"',
-                                                  strip_tags($html, '<img>')
-                                                  );
-                        $this->align = 'pull-right';
-                        unset($elements[$max_line]);
-                    }
-                }
-                break;
+                $col_classes = $this->createColumnClass($data);
+                $this->options['wrapperOpen'] = '<div class="row"><div class="'.$col_classes.'">';
+                $this->options['wrapperClose'] = '</div></div>';
             }
         }
-
-        // 残りをparse
-        $this->content = \Parser::parse(join("\n", $elements));
-
-        # all parameter trimed.
-        $this->image = trim($this->image);
-        $this->heading = trim($this->heading);
-        $this->content = trim($this->content);
-
-        $result = '<div class="media">'
-              . '<span class="'.$this->align.'">'.$this->image.'</span>'
-              . '<div class="media-body">'.$this->heading.$this->content.'</div></div>';
-
-        return $result;
     }
 
     protected function createColumnClass($data)
