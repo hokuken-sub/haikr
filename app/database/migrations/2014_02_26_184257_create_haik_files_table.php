@@ -23,9 +23,10 @@ class CreateHaikFilesTable extends Migration {
             $table->string('dimensions')->nullable();
             $table->boolean('starred')->default(false);
             $table->binary('value')->nullable();
-            $table->string('ext')->nullable();
+            $table->string('original_name')->nullable();
             $table->string('storage');
             $table->boolean('publicity')->default(true);
+            $table->text('note')->nullable();
             $table->timestamps();
         });
 
