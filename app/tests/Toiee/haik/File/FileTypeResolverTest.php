@@ -19,6 +19,16 @@ class FileTypeResolverTest extends TestCase {
         
         $result = $this->resolver->parseMimeType($mime_type);
         $this->assertEquals($expected, $result);
+
+        $mime_type = 'video/ogg; codecs="theora, vorbis"';
+        $expected = array(
+            'video/ogg',
+            ''
+        );
+        
+        $result = $this->resolver->parseMimeType($mime_type);
+        $this->assertEquals($expected, $result);
+
     }
     
     /**
