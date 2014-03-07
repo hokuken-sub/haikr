@@ -45,13 +45,21 @@ class FormRepository implements FormRepositoryInterface {
     public function exists($identifier)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where($this->identifierColumn, $identifier)->first()->exists;
+        
+        try
+        {
+            return $query->where($this->identifierColumn, $identifier)->first()->exists;
+        }
+        catch (\Exception $e)
+        {
+            return false;
+        }
     }
 
     /**
      * Get form by key
      * @param string $identifier
-     * @return FormInterface
+     * @return SiteForm
      */
     public function retrieve($identifier)
     {
@@ -60,10 +68,26 @@ class FormRepository implements FormRepositoryInterface {
     }
 
     /**
+     * Delete form by key
+     * @param string $identifier
+     * @return boolean when success return true
+     */
+    public function remove($identifier)
+    {
+        if ($this->exists($identifier))
+        {
+            $query = $this->retrieve($identifier);
+            return $query->delete();
+        }
+        
+        return false;
+    }
+
+    /**
      * Get new form object
      *
      * @return string $identifier
-     * @return FileInterface
+     * @return SiteForm
      */
     public function factory($identifier = null)
     {

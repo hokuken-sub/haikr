@@ -26,6 +26,13 @@ interface FormRepositoryInterface {
     public function retrieve($identifier);
 
     /**
+     * Delete form by key
+     * @param string $identifier
+     * @return boolean when success return true
+     */
+    public function remove($identifier);
+
+    /**
      * Get new form object
      *
      * @return string $identifier

@@ -18,7 +18,7 @@ class FormManager {
 
     public function listGet()
     {
-        return $this->files->listGet();
+        return $this->forms->listGet();
     }
 
     public function formGet($identifier)
@@ -32,19 +32,35 @@ class FormManager {
         return $html;
     }
 
-    public function add()
+    /**
+     * Delete form
+     *
+     * @param string $identifier
+     * @return boolean return true when return success
+     */
+    public function formDelete($identifier)
     {
-        return $this->forms->add();
+        return $this->forms->remove($identifier);
     }
 
-    public function remove()
+    /**
+     * Copy form
+     *
+     * @param string $identifier source form
+     * @param string $dest_id the destination form
+     * @return boolean when success return true
+     */
+    public function formCopy($identifier, $dest_id)
     {
-        return $this->forms->delete();
-    }
-
-    public function copy()
-    {
-        
+        if ($this->forms->exists($identifier))
+        {
+            // create new object
+            $this->formGet($identifier)->replicate();
+            $newform->key = $dest_id;
+    
+            // make any required changes to object
+            $newform->save();
+        }
     }
 
 }
