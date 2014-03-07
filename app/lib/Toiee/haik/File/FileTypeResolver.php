@@ -40,6 +40,13 @@ class FileTypeResolver {
         // link
         'text/haik-link' => 'link',
 
+        // archive
+        'application/zip'   => 'archive',
+        'application/x-lzh' => 'archive',
+        'application/x-lzh' => 'archive',
+        'application/x-tar' => 'archive',
+        'application/x-tar' => 'archive',
+        
         // other files
         'application/postscript'        => 'file',
         'text/plain'                    => 'file',
@@ -47,11 +54,6 @@ class FileTypeResolver {
         'text/tab-separated-values'     => 'file',
         'text/css'                      => 'file',
         'text/javascript'               => 'file',
-        'application/zip'               => 'file',
-        'application/x-lzh'             => 'file',
-        'application/x-lzh'             => 'file',
-        'application/x-tar'             => 'file',
-        'application/x-tar'             => 'file',
         'application/x-shockwave-flash' => 'file',
     );
 
