@@ -18,6 +18,14 @@ class MimeTypeResolverTest extends TestCase {
         $this->assertTrue(starts_with($result, 'image/png'));
     }
 
+    public function testGetHaikLink()
+    {
+        $content = 'http://www.google.com/';
+        $expected = 'text/x-haik-link';
+        $result = $this->resolver->getTypeByContent($content);
+        $this->assertEquals($expected, $result);
+    }
+
     public function testGetMimeTypeByUrl()
     {
         $url = 'http://placehold.jp/150x150.png';
