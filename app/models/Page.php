@@ -6,8 +6,8 @@ class Page extends Eloquent implements SearchItemInterface {
     protected $table = 'haik_pages';
     
     /**
-     * get page title
-     * @return string page title
+     * get title
+     * @return string title
      */
     public function getTitle()
     {
@@ -21,8 +21,8 @@ class Page extends Eloquent implements SearchItemInterface {
     }
 
     /**
-     * get page sub title
-     * @return string page sub title
+     * get sub title
+     * @return string sub title
      */
     public function getSubTitle()
     {
@@ -35,8 +35,8 @@ class Page extends Eloquent implements SearchItemInterface {
     }
 
     /**
-     * get page url
-     * @return string page sub title
+     * get url
+     * @return string url
      */
     public function getUrl()
     {
@@ -44,8 +44,8 @@ class Page extends Eloquent implements SearchItemInterface {
     }
 
     /**
-     * get page caption
-     * @return string page caption
+     * get caption
+     * @return string caption
      */
     public function getCaption()
     {
@@ -62,8 +62,8 @@ class Page extends Eloquent implements SearchItemInterface {
     }
 
     /**
-     * get page thumbnail
-     * @return string page thumbnail
+     * get thumbnail
+     * @return string thumbnail
      */
     public function getThumbnail()
     {
@@ -71,7 +71,7 @@ class Page extends Eloquent implements SearchItemInterface {
     }    
 
     /**
-     * get page update date
+     * get update date
      * @return Carbon/Carbon update date
      */
     public function getUpdatedAt()

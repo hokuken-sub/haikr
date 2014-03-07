@@ -34,8 +34,8 @@ interface SearchItemInterface {
     public function getThumbnail();
 
     /**
-     * get update date
-     * @return string update date
+     * get page update date
+     * @return Carbon/Carbon update date
      */
     public function getUpdatedAt();
 
