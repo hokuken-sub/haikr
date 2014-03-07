@@ -123,6 +123,7 @@ return array(
         'Toiee\haik\Link\LinkServiceProvider',
         'Toiee\haik\Themes\ThemeServiceProvider',
         'Toiee\haik\File\FileServiceProvider',
+        'Toiee\haik\Form\FormServiceProvider',
 	),
 
 	/*
