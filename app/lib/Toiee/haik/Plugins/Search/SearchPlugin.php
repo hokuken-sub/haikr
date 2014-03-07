@@ -8,8 +8,13 @@ class SearchPlugin extends Plugin {
     
     protected $formdata;
     
+    /**
+     * Constructor
+     */
     public function __construct()
     {
+        parent::__construct();
+
         $this->formdata = array(
             'class'       => 'col-sm-12',
             'button'      => false,
@@ -17,7 +22,6 @@ class SearchPlugin extends Plugin {
             'word'        => '',
         );
     }
-    
 
     /**
      * action by http GET or POST /haik--search/...
@@ -30,19 +34,16 @@ class SearchPlugin extends Plugin {
 
         if (\Request::isMethod('get'))
         {
-            // ! 1 get post data
+            // get post data
             $word = \Input::get('word');
             $this->formdata['word'] = $word;
 
-            // ! 2 search
             $data = \Haik::search($word);
 
-            // ! 3 display
-            $html = $this->getHtml($data);
+            $html = $this->render($data);
         }
         
         return $html;
-
     }
     
     /**
@@ -83,7 +84,12 @@ class SearchPlugin extends Plugin {
         return self::renderView('template', $this->formdata);
     }
 
-    protected function getHtml($results)
+    /**
+     * get html (form and results)
+     * @params array $results
+     * @return string converted HTML string
+     */
+    protected function render($results)
     {
         $data = array(); 
         foreach ($results as $key => $target)
@@ -95,11 +101,12 @@ class SearchPlugin extends Plugin {
             foreach ($target['rows'] as $row)
             {
                 $data[$key]['rows'][] = array(
-                    'title'     => $row->getTitle(),
-                    'sub_title' => $row->getSubTitle(),
-                    'url'       => $row->getUrl(),
-                    'caption'   => $row->getCaption(),
-                    'thumbnail' => $row->getThumbnail(),
+                    'title'      => $row->getTitle(),
+                    'sub_title'  => $row->getSubTitle(),
+                    'url'        => $row->getUrl(),
+                    'caption'    => $row->getCaption(),
+                    'thumbnail'  => $row->getThumbnail(),
+                    'updated'    => $row->getUpdatedAt()->diffForHumans(),
                 );
             }
         }
@@ -108,6 +115,11 @@ class SearchPlugin extends Plugin {
         return self::renderView('template', $data);
     }
 
+    /**
+     * get column class
+     * @params array $col
+     * @return string converted col class
+     */
     protected function getColumnClass($col)
     {
         if ( ! $col)

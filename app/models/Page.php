@@ -5,7 +5,10 @@ class Page extends Eloquent implements SearchItemInterface {
 
     protected $table = 'haik_pages';
     
-
+    /**
+     * get page title
+     * @return string page title
+     */
     public function getTitle()
     {
         $title = $this->title;
@@ -17,6 +20,10 @@ class Page extends Eloquent implements SearchItemInterface {
         return $title;
     }
 
+    /**
+     * get page sub title
+     * @return string page sub title
+     */
     public function getSubTitle()
     {
         if ($this->getTitle() == $this->name)
@@ -25,13 +32,21 @@ class Page extends Eloquent implements SearchItemInterface {
         }
 
         return $this->name;    
-    }    
+    }
 
+    /**
+     * get page url
+     * @return string page sub title
+     */
     public function getUrl()
     {
         return \Haik::pageUrl($this->name);
     }
 
+    /**
+     * get page caption
+     * @return string page caption
+     */
     public function getCaption()
     {
         $body = $this->body;
@@ -46,20 +61,28 @@ class Page extends Eloquent implements SearchItemInterface {
         return $body;
     }
 
+    /**
+     * get page thumbnail
+     * @return string page thumbnail
+     */
     public function getThumbnail()
     {
         return '';
     }    
 
+    /**
+     * get page update date
+     * @return Carbon/Carbon update date
+     */
     public function getUpdatedAt()
     {
         return $this->updated_at;
     }
 
     /**
-     * Set haik site id
+     * search word (i.e Page::search)
      * @param  Builder $query
-     * @param  integer $value site id
+     * @param  string  $word search word
      * @return \Illuminate\Pagination\Paginator
      */
     public function scopeSearch($query, $word)

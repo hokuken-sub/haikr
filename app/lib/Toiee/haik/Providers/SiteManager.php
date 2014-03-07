@@ -7,15 +7,23 @@ class SiteManager implements SiteManagerInterface{
     
     protected $id;
     
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->id = 1;
     }
     
+    /**
+     * get site ID
+     * @return integer site id
+     */
     public function getID()
     {
         return $this->id;
     }
+
     /**
      * get site config value by name
      * @params string $name site config name
@@ -152,6 +160,12 @@ class SiteManager implements SiteManagerInterface{
        
     }
     
+    /**
+     * search word from pages, files and froms
+     * @param  string $word search words
+     * @param  string $targets search target (all, page, file, form)
+     * @return array results
+     */
     public function search($word, $targets = 'all')
     {
         $public = 'all';
@@ -172,6 +186,7 @@ class SiteManager implements SiteManagerInterface{
         $results = array();
         foreach ($targets as $target)
         {
+            $results[$target] = array();
             switch(trim($target))
             {
                 case 'page':
@@ -190,9 +205,8 @@ class SiteManager implements SiteManagerInterface{
                     break;
             }
         }
-        
+
         return $results;
-        
     }
 
 }
