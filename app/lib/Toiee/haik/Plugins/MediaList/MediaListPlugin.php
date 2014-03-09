@@ -41,8 +41,10 @@ class MediaListPlugin extends SlidePlugin {
     {
         extract($itemData['body_data']);
 
+        if ( ! isset($elements[$max_line])) return $itemData;
+
         $html = \Parser::parse($elements[$max_line]);
-        if (preg_match('{ <img\b.*?> }mx', $html))
+        if ( ! $imageSet && preg_match('{ <img\b.*?> }mx', $html))
         {
             $itemData['image'] = str_replace(
                                       '<img', '<img class="media-object"',
