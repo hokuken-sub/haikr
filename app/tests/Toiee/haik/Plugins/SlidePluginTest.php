@@ -300,6 +300,8 @@ class SlidePluginTest extends TestCase {
         $expected = array(
             'indicatorsSet' => false,
             'controlsSet'   => false,
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
         
@@ -317,6 +319,8 @@ class SlidePluginTest extends TestCase {
         $expected = array(
             'indicatorsSet' => false,
             'controlsSet'   => true,
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
         
@@ -334,6 +338,8 @@ class SlidePluginTest extends TestCase {
         $expected = array(
             'indicatorsSet' => true,
             'controlsSet'   => false,
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
         
