@@ -98,9 +98,13 @@ class SlidePlugin extends Plugin {
             }
         }
 
-        $data['body_data'] = compact('elements', 'line_count', 'max_line');
+        $data['body_data'] = compact('elements', 'line_count', 'max_line', 'imageSet', 'headingSet');
         $data = $this->adjustData($data);
-        extract($data['body_data']);
+        if (isset($data['body_data']))
+        {
+            extract($data['body_data']);
+            unset($data['body_data']);
+        }
 
         // 残りをparse
         $data['body'] = \Parser::parse(join("\n", $elements));
