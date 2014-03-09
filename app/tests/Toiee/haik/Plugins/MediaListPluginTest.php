@@ -8,6 +8,156 @@ class MediaListPluginTest extends TestCase {
         $this->assertInternalType('string', with(new MediaListPlugin)->convert());
     }
 
+    /**
+     * @dataProvider itemDataProvider
+     */
+    public function testStructureOfItemData($body, $expected)
+    {
+        $plugin = new MedialistPlugin();
+        $result = $plugin->convert(array(), $body);
+
+        $this->assertAttributeEquals($expected, 'items', $plugin);
+    }
+
+    public function itemDataProvider()
+    {
+        $test = array(
+            'empty' => array(
+                'body' => '',
+                'expected' => array()
+            ),
+            'empty_with_delimiter' => array(
+                'body' => "====\n====\n",
+                'expected' => array()
+            ),
+            'image_heading_body' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . '### Heading'."\n"
+                        . 'Body',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '<p>Body</p>',
+                ))
+            ),
+            'only_image' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'body' => '',
+                ))
+            ),
+            'only_heading' => array(
+                'body' => '### Heading',
+                'expected' => array(array(
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '',
+                ))
+            ),
+            'only_body' => array(
+                'body' => 'Body',
+                'expected' => array(array(
+                    'body' => '<p>Body</p>',
+                ))
+            ),
+            'image_heading' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . '### Heading',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '',
+                ))
+            ),
+            'image_body' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . 'Body',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'body' => '<p>Body</p>',
+                ))
+            ),
+            'heading_body' => array(
+                'body' => '### Heading'."\n"
+                        . 'Body',
+                'expected' => array(array(
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '<p>Body</p>',
+                ))
+            ),
+            'heading_body_image' => array(
+                'body' => '### Heading'."\n"
+                        . 'Body'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '<p>Body</p>',
+                    'align' => 'pull-right',
+                ))
+            ),
+            'heading_image' => array(
+                'body' => '### Heading'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '',
+                    'align' => 'pull-right',
+                ))
+            ),
+            'body_image' => array(
+                'body' => 'Body'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'body' => '<p>Body</p>',
+                    'align' => 'pull-right',
+                ))
+            ),
+            'image_heading_body_image' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . '### Heading'."\n"
+                        . 'Body'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '<p>Body'."\n".'<img src="http://placehold.jp/60x60.png" alt="alt"></p>',
+                ))
+            ),
+            'image_heading_image' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . '### Heading'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'heading' => '<h3 class="media-heading">Heading</h3>',
+                    'body' => '<p><img src="http://placehold.jp/60x60.png" alt="alt"></p>',
+                ))
+            ),
+            'image_body_image' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . 'Body'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'body' => '<p>Body'."\n".'<img src="http://placehold.jp/60x60.png" alt="alt"></p>',
+                ))
+            ),
+            'image_image' => array(
+                'body' => '![alt](http://placehold.jp/60x60.png)'."\n"
+                        . '![alt](http://placehold.jp/60x60.png)',
+                'expected' => array(array(
+                    'image' => '<img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">',
+                    'body' => '<p><img src="http://placehold.jp/60x60.png" alt="alt"></p>',
+                ))
+            ),
+        );
+
+        return $test;
+    }
+
     public function testOneMediaListWithMarkdownImage()
     {
         $this->markTestIncomplete();
