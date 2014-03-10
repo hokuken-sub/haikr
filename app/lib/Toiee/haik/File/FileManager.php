@@ -18,6 +18,11 @@ class FileManager {
      */
     protected $storageDrivers = array();
 
+    /**
+     * Instance of last saved
+     */
+    protected $lastSaved = null;
+
 
     public function __construct(FileRepositoryInterface $repository)
     {
@@ -198,6 +203,16 @@ class FileManager {
     protected function validateIdentifier($identifier)
     {
         return preg_match(self::IDENTIFIER_REGEX, $identifier);
+    }
+
+    public function setLastSaved($file)
+    {
+        $this->lastSaved = $file;
+    }
+
+    public function getLastSaved()
+    {
+        return $this->lastSaved;
     }
 
     protected function getStorageDriver($storage = '')
