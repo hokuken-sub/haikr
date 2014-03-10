@@ -28,7 +28,14 @@ class MediaListPlugin extends SlidePlugin {
 
     protected function adjustHeading($html)
     {
-        return preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
+        if ( ! preg_match('{ <h[1-6][^>]*?class=".*?" }mx', $html))
+        {
+            return preg_replace('{ <h([1-6])(.*?>) }mx', '<h\1 class="media-heading"\2', $html);
+        }
+        else
+        {
+            return $html;
+        }
     }
 
     /**
