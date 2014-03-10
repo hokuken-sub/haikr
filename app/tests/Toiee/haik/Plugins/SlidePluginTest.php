@@ -8,33 +8,28 @@ class SlidePluginTest extends TestCase {
         $this->assertInternalType('string', with(new SlidePlugin)->convert());
     }
 
-    public function testSlideWithNoParams()
+    public function testDefaultImage()
     {
-        // !TODO: use for combined test
-        $this->markTestIncomplete();
-
-        # This is the test of slide with body has just one line.
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
         $one_line = array(
             'slide'  => array(),
-            'assert' => '<div id="haik_plugin_slide'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
                       . '  <div class="carousel-inner">'."\n"
                       . '    <div class="item active">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
+                      . '      <img src="http://placehold.jp/900x500.png" alt="">'."\n"
                       . '      <div class="carousel-caption">'."\n"
-                      . '        <h3>First Slide</h3>'."\n"
-                      . '        <p>This is first slide.</p>'."\n"
+                      . '        <h3>test title</h3>'."\n"
+                      . '        <p>test</p>'."\n"
                       . '      </div>'."\n"
                       . '    </div>'."\n"
                       . '  </div>'."\n"
                       . '</div>',
         );
 
-        $body = "![alt](http://placehold.jp/1000x400.png)\n"
-              . "#### test title\n"
+        $body = "#### test title\n"
               . "test\n";
 
         $expect_return = preg_replace('/\n| {2,}/', '', trim($one_line['assert']));
@@ -42,64 +37,30 @@ class SlidePluginTest extends TestCase {
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
+    }
 
-
-        # This is the test of slide with body has some lines.
+    public function testSetImage()
+    {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
         $some_lines = array(
             'slide'  => array(),
-            'assert' => '<div id="haik_plugin_slide'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
-                      . '  <!-- Indicators -->'."\n"
-                      . '  <ol class="carousel-indicators">'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="0"></li>'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="1"></li>'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="2"></li>'."\n"
-                      . '  </ol>'."\n"
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
                       . '  <div class="carousel-inner">'."\n"
                       . '    <div class="item active">'."\n"
                       . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
                       . '      <div class="carousel-caption">'."\n"
-                      . '        <h3>First Slide</h3>'."\n"
-                      . '        <p>This is first slide.</p>'."\n"
-                      . '      </div>'."\n"
-                      . '    </div>'."\n"
-                      . '    <div class="item">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
-                      . '      <div class="carousel-caption">'."\n"
-                      . '        <h3>Second Slide</h3>'."\n"
-                      . '        <p>This is second slide.</p>'."\n"
-                      . '      </div>'."\n"
-                      . '    </div>'."\n"
-                      . '    <div class="item">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
-                      . '      <div class="carousel-caption">'."\n"
-                      . '        <h3>Third Slide</h3>'."\n"
-                      . '        <p>This is third slide.</p>'."\n"
+                      . '        <h3>test title</h3>'."\n"
+                      . '        <p>test</p>'."\n"
                       . '      </div>'."\n"
                       . '    </div>'."\n"
                       . '  </div>'."\n"
-                      . '  <!-- Controls -->'."\n"
-                      . '  <a class="left carousel-control" href="#haik_plugin_slide'.$id.'" data-slide="prev">'."\n"
-                      . '    <span class="glyphicon glyphicon-chevron-left"></span>'."\n"
-                      . '  </a>'."\n"
-                      . '  <a class="right carousel-control" href="#haik_plugin_slide'.$id.'" data-slide="next">'."\n"
-                      . '    <span class="glyphicon glyphicon-chevron-right"></span>'."\n"
-                      . '  </a>'."\n"
                       . '</div>',
         );
 
         $body = "![alt](http://placehold.jp/1000x400.png)\n"
-              . "#### test title\n"
-              . "test\n"
-              . "====\n"
-              . "![alt](http://placehold.jp/1000x400.png)\n"
-              . "#### test title\n"
-              . "test\n"
-              . "====\n"
-              . "![alt](http://placehold.jp/1000x400.png)\n"
               . "#### test title\n"
               . "test\n";
 
@@ -108,54 +69,26 @@ class SlidePluginTest extends TestCase {
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
+    }
 
-
-
-
-        # This is the test of slide with body that one is no title, anoter is no caption, another is both none.
+    public function testNoHeadingAndBody()
+    {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
         $with_blank = array(
             'slide'  => array(),
-            'assert' => '<div id="haik_plugin_slide'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
-                      . '  <!-- Indicators -->'."\n"
-                      . '  <ol class="carousel-indicators">'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="0"></li>'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="1"></li>'."\n"
-                      . '    <li data-target="#haik_plugin_slide'.$id.'" data-slide-to="2"></li>'."\n"
-                      . '  </ol>'."\n"
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
                       . '  <div class="carousel-inner">'."\n"
                       . '    <div class="item active">'."\n"
                       . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
-                      . '      <div class="carousel-caption">'."\n"
-                      . '        <p>This is first slide.</p>'."\n"
-                      . '      </div>'."\n"
-                      . '    </div>'."\n"
-                      . '    <div class="item">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
-                      . '      <div class="carousel-caption">'."\n"
-                      . '        <h3>Second Slide</h3>'."\n"
-                      . '      </div>'."\n"
-                      . '    </div>'."\n"
-                      . '    <div class="item">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
                       . '    </div>'."\n"
                       . '  </div>'."\n"
-                      . '  <!-- Controls -->'."\n"
-                      . '  <a class="left carousel-control" href="#haik_plugin_slide'.$id.'" data-slide="prev">'."\n"
-                      . '    <span class="glyphicon glyphicon-chevron-left"></span>'."\n"
-                      . '  </a>'."\n"
-                      . '  <a class="right carousel-control" href="#haik_plugin_slide'.$id.'" data-slide="next">'."\n"
-                      . '    <span class="glyphicon glyphicon-chevron-right"></span>'."\n"
-                      . '  </a>'."\n"
                       . '</div>',
         );
 
-        $body = 'http://placehold.jp/1000x400.png,'.','.'This is first slide.'."\n"
-              . 'http://placehold.jp/1000x400.png,'.'Second Slide,'."\n"
-              . 'http://placehold.jp/1000x400.png';
+        $body = "![alt](http://placehold.jp/1000x400.png)";
 
         $expect_return = preg_replace('/\n| {2,}/', '', trim($with_blank['assert']));
         $actual_return = $slide_obj->convert($with_blank['slide'], $body);
@@ -164,6 +97,94 @@ class SlidePluginTest extends TestCase {
         $this->assertEquals($expect_return, $actual_return);
     }
 
+    public function testSetOnlyHeading()
+    {
+        $slide_obj = new SlidePlugin();
+        $id = $slide_obj->getId();
+
+        $some_lines = array(
+            'slide'  => array(),
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
+                      . '  <!-- Wrapper for slides -->'."\n"
+                      . '  <div class="carousel-inner">'."\n"
+                      . '    <div class="item active">'."\n"
+                      . '      <img src="http://placehold.jp/900x500.png" alt="">'."\n"
+                      . '      <div class="carousel-caption">'."\n"
+                      . '        <h3>test title</h3>'."\n"
+                      . '      </div>'."\n"
+                      . '    </div>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = "#### test title";
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
+        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testSetOnlyBody()
+    {
+        $slide_obj = new SlidePlugin();
+        $id = $slide_obj->getId();
+
+        $some_lines = array(
+            'slide'  => array(),
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
+                      . '  <!-- Wrapper for slides -->'."\n"
+                      . '  <div class="carousel-inner">'."\n"
+                      . '    <div class="item active">'."\n"
+                      . '      <img src="http://placehold.jp/900x500.png" alt="">'."\n"
+                      . '      <div class="carousel-caption">'."\n"
+                      . '        <p>test</p>'."\n"
+                      . '      </div>'."\n"
+                      . '    </div>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = "test";
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
+        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testSetHeadingAndBody()
+    {
+        $slide_obj = new SlidePlugin();
+        $id = $slide_obj->getId();
+
+        $some_lines = array(
+            'slide'  => array(),
+            'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
+                      . '  <!-- Wrapper for slides -->'."\n"
+                      . '  <div class="carousel-inner">'."\n"
+                      . '    <div class="item active">'."\n"
+                      . '      <img src="http://placehold.jp/900x500.png" alt="">'."\n"
+                      . '      <div class="carousel-caption">'."\n"
+                      . '        <h3>test title</h3>'."\n"
+                      . '        <p>test</p>'."\n"
+                      . '      </div>'."\n"
+                      . '    </div>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = "#### test title\n"
+              . "test\n";
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
+        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
 
     public function testEmptyItem()
     {
