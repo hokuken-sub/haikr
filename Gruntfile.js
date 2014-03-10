@@ -8,7 +8,10 @@ module.exports = function(grunt){
         },
         files: [
           {
-            src: ['./app/assets/stylesheets/haik.less'],
+            src: [
+              './app/assets/stylesheets/haik.less',
+              './app/lib/Toiee/haik/Plugins/**/assets/stylesheets/*.less'
+            ],
             dest: './public/assets/stylesheets/haik.css'
           },
           {
@@ -67,9 +70,7 @@ module.exports = function(grunt){
       js_haik: {
         files: [
           './app/assets/javascript/*.js',
-          './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js',
-          './app/assets/stylesheets/*',
-          './app/lib/Toiee/haik/Plugins/**/assets/stylesheets/*'
+          './app/lib/Toiee/haik/Plugins/**/assets/javascript/*.js'
         ],
         tasks: ['concat:js_haik']
       },
@@ -85,7 +86,8 @@ module.exports = function(grunt){
           './app/assets/stylesheets/*.less',
           './app/assets/stylesheets/admin/*',
           './app/lib/Toiee/haik/Plugins/**/helper/assets/stylesheets/*',
-          './app/themes/*/assets/stylesheets/*.less'
+          './app/themes/*/assets/stylesheets/*.less',
+          './app/lib/Toiee/haik/Plugins/**/assets/stylesheets/*.less'
         ],
         tasks: ['less'],
         options: {
