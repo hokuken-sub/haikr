@@ -181,7 +181,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
 
@@ -198,7 +198,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
 
@@ -212,7 +212,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
 
@@ -225,7 +225,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
 
@@ -239,7 +239,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
 
@@ -254,7 +254,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);        
     }
     
@@ -269,7 +269,7 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);
     }
     
@@ -285,15 +285,38 @@ class SlidePluginTest extends TestCase {
 
         $slide_obj = new SlidePlugin();
         $result = $slide_obj->convert(array(), $body);
-        
+
         $this->assertAttributeEquals($expected, 'items', $slide_obj);        
+    }
+
+    public function testOneSlideWithNoButton()
+    {
+        $slide_obj = new SlidePlugin();
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body';
+
+        $params = array();
+        $expected = array(
+            'indicatorsSet' => false,
+            'controlsSet'   => false,
+            'wrapperOpen'   => '',
+            'wrapperClose'  => '',
+        );
+        $slide_obj->convert($params, $body);
+
+        $this->assertAttributeEquals($expected, 'options', $slide_obj);
     }
 
     public function testWithNoButton()
     {
         $slide_obj = new SlidePlugin();
-        $body = '![alt](http://placehold.jp/1000x400.png)'
-              . '### Heading'
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
               . 'Body';
 
         $params = array('nobutton');
@@ -304,15 +327,19 @@ class SlidePluginTest extends TestCase {
             'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
-        
+
         $this->assertAttributeEquals($expected, 'options', $slide_obj);
     }
 
     public function testWithNoIndicator()
     {
         $slide_obj = new SlidePlugin();
-        $body = '![alt](http://placehold.jp/1000x400.png)'
-              . '### Heading'
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
               . 'Body';
 
         $params = array('noindicator');
@@ -323,15 +350,19 @@ class SlidePluginTest extends TestCase {
             'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
-        
+
         $this->assertAttributeEquals($expected, 'options', $slide_obj);
     }
 
     public function testWithNoControls()
     {
         $slide_obj = new SlidePlugin();
-        $body = '![alt](http://placehold.jp/1000x400.png)'
-              . '### Heading'
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
               . 'Body';
 
         $params = array('noslidebutton');
@@ -342,7 +373,7 @@ class SlidePluginTest extends TestCase {
             'wrapperClose'  => '',
         );
         $slide_obj->convert($params, $body);
-        
+
         $this->assertAttributeEquals($expected, 'options', $slide_obj);
     }
 
