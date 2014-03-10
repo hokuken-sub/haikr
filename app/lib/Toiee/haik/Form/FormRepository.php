@@ -91,7 +91,7 @@ class FormRepository implements FormRepositoryInterface {
     public function save($data)
     {
         $identifier = $data[$this->identifierColumn];
-        if ($identifier !== '')
+        if ($identifier === '')
         {
             return false;
         }
@@ -103,6 +103,11 @@ class FormRepository implements FormRepositoryInterface {
         else
         {
             $form = $this->factory($identifier);
+        }
+
+        if (isset($data['note']))
+        {
+            $form->note = $data['note'];
         }
 
         if (isset($data['body']))
@@ -126,7 +131,9 @@ class FormRepository implements FormRepositoryInterface {
      */
     public function factory($identifier = null)
     {
-        return $this->createModel()->setIdentifier($identifier);
+        $form = $this->createModel()->setIdentifier($identifier);
+        $form->haik_site_id = \Haik::getID();
+        return $form;
     }
 
     /**
