@@ -54,8 +54,9 @@ class FormManager {
     {
         if ($this->forms->exists($identifier))
         {
+
             // create new object
-            $this->formGet($identifier)->replicate();
+            $newform = $this->formGet($identifier)->replicate();
             $newform->key = $dest_id;
     
             // make any required changes to object
