@@ -55,6 +55,28 @@ class FileManager {
     }
 
     /**
+     * Copy file
+     *
+     * @param string $identifier file identifier
+     * @return FileInterface|false copied file when copy failed return false
+     */
+    public function fileCopy($identifier)
+    {
+        $target_file = $this->fileGet($identifier);
+        $copied_file = $target_file->replicate();
+        $new_identifier = $this->createIdentifier();
+        if ($this->getStorageDriver($target_file->getStorage())->copy($target_file, $new_identifier))
+        {
+            if ($copied_file->setIdentifier($new_identifier)->save())
+            {
+                \Event::fire('file.save', array($copied_file));
+                return $copied_file;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get file content.
      * When file not found then system delete the file record and return false.
      *
