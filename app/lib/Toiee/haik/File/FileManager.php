@@ -147,21 +147,65 @@ class FileManager {
             if ($this->getStorageDriver()->save($identifier, $content))
             {
                 $file->setIdentifier($identifier);
-                $file->save();
-                return true;
+                return $this->fileSave($file);
             }
         }
         return false;
     }
 
+    /**
+     * Save a file uploaded with auto identifier
+     *
+     * @param $name input name of uploaded file
+     * @return boolean succession
+     */
     public function fileSaveUploaded()
     {
-        // !TODO: $_FILES から FileInterface object を作成して保存する
+        $name = \Config::get('file.upload.name', 'file');
+        $uploaded_file = Input::file($name);
+
+        $mime_type = $uploaded_file->getMimeType();
+        $file_type = App::make('FileTypeResolver')->getType($mime_type);
+        // !TODO: when image type then get image size as `000x000`
+        $dimensions = null;
+
+        $file_data = array(
+            'original_name' => $uploaded_file->getClientOriginalName(),
+            'mime_type'     => $mime_type,
+            'file_type'     => $file_type,
+            'size'          => $uploaded_file->getSize(),
+            'dimensions'    => $dimensions,
+        );
+
+        $file = $this->fileCreate('', $file_data);
+
+        return $this->fileSave($file);
     }
 
+    /**
+     * Save URL as a file
+     *
+     * @param string $url for save
+     * @return boolean succession
+     */
     public function urlSaveAsFile($url)
     {
-        // !TODO: URLを haik-link として保存する
+        $mime_type = App::make('MimeTypeResolver')->getTypeByContent($url);
+        $file_type = App::make('FileTypeResolver')->getType($mime_type);
+        $size = strlen($url);
+
+        $file_data = array(
+            'original_name' => '',
+            'mime_type'     => $mime_type,
+            'file_type'     => $file_type,
+            'size'          => $size,
+            'storage'       => 'db',
+            'value'         => $url,
+        );
+
+        $file = $this->fileCreate('', $file_data);
+
+        return $this->fileSave($file);
     }
 
     public function fileSaveByUrl($url)
@@ -179,7 +223,10 @@ class FileManager {
     {
         $file = $this->files->factory($identifier);
         $file->setIdentify($this->createIdentifier($file));
-        $file->init($options);
+        foreach ($options as $key => $value)
+        {
+            $file->$key = $value;
+        }
         return $file;
     }
 
@@ -188,7 +235,10 @@ class FileManager {
         if ($this->fileExists($identifier))
         {
             $file = $this->fileGet($identifier);
-            $this->getStorageDriver($file->getStorage())->delete($file);
+            if ($this->getStorageDriver($file->getStorage())->delete($file))
+            {
+                return $file->delete();
+            }
         }
         return false;
     }
