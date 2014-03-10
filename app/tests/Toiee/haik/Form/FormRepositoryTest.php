@@ -74,6 +74,32 @@ class FormRepositoryTest extends TestCase {
         $this->assertFalse($this->forms->exists($idenfier));
     }
 
+    public function testSave()
+    {
+        $data = array(
+            'key'  => 'order',
+            'note' => 'order form',
+        );
+
+        $this->forms->save($data);
+        $form = $this->forms->retrieve('order');
+
+        $this->assertEquals('order form', $form->note);
+    }
+
+    public function testUpdate()
+    {
+        $data = array(
+            'key'  => 'contact',
+            'note' => 'order form',
+        );
+    
+        $this->forms->save($data);
+
+        $form = $this->forms->retrieve('contact');
+        $this->assertEquals('order form', $form->note);
+    }
+
     public function testFactory()
     {
         $identifier = 'foobar';
