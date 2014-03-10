@@ -16,20 +16,47 @@ class FormManager {
         $this->forms = $repository;
     }
 
+    /**
+     * Get list
+     *
+     * @return array of forms
+     */
     public function listGet()
     {
         return $this->forms->listGet();
     }
 
+    /**
+     * Get form
+     *
+     * @param  string $identifier form key
+     * @return SiteForm
+     */
     public function formGet($identifier)
     {
         return $this->forms->retrieve($identifier);
     }
 
+    /**
+     * render form
+     *
+     * @return string html
+     */
     public function render()
     {
         $html = '';
         return $html;
+    }
+
+    /**
+     * Delete form
+     *
+     * @param  array $data form data
+     * @return boolean return true when return success
+     */
+    public function formSave($data)
+    {
+        return $this->forms->save($data);
     }
 
     /**

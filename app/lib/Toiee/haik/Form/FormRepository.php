@@ -48,7 +48,7 @@ class FormRepository implements FormRepositoryInterface {
         
         try
         {
-            return $query->where($this->identifierColumn, $identifier)->first()->exists;
+            return $this->retrieve($identifier)->exists;
         }
         catch (\Exception $e)
         {
@@ -64,7 +64,7 @@ class FormRepository implements FormRepositoryInterface {
     public function retrieve($identifier)
     {
         $query = $this->createModel()->newQuery();
-        return $query->where($this->identifierColumn, $identifier)->first();
+        return $query->site(\Haik::getID())->where($this->identifierColumn, $identifier)->first();
     }
 
     /**
@@ -76,11 +76,46 @@ class FormRepository implements FormRepositoryInterface {
     {
         if ($this->exists($identifier))
         {
-            $query = $this->retrieve($identifier);
-            return $query->delete();
+            $form = $this->retrieve($identifier);
+            return $form->delete();
         }
         
         return false;
+    }
+
+    /**
+     * Save form
+     * @param array $data form data
+     * @return boolean when success return true
+     */
+    public function save($data)
+    {
+        $identifier = $data[$this->identifierColumn];
+        if ($identifier !== '')
+        {
+            return false;
+        }
+        
+        if ($this->exists($identifier))
+        {
+            $form = $this->retrieve($identifier);
+        }
+        else
+        {
+            $form = $this->factory($identifier);
+        }
+
+        if (isset($data['body']))
+        {
+            $form->body = $data['body'];
+        }
+
+        if (isset($data['transaction']))
+        {
+            $form->transaction = $data['transaction'];
+        }
+
+        return $form->save();
     }
 
     /**

@@ -33,6 +33,13 @@ interface FormRepositoryInterface {
     public function remove($identifier);
 
     /**
+     * Save form
+     * @param array $data form data
+     * @return boolean when success return true
+     */
+    public function save($data);
+
+    /**
      * Get new form object
      *
      * @return string $identifier
