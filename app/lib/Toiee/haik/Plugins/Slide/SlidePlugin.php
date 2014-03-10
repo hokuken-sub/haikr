@@ -2,6 +2,7 @@
 namespace Toiee\haik\Plugins\Slide;
 
 use Toiee\haik\Plugins\Plugin;
+use Toiee\haik\Plugins\Utility;
 
 class SlidePlugin extends Plugin {
 
@@ -160,7 +161,7 @@ var_dump($this->cols);
                     $this->options['controlsSet'] = false;
                     break;
                 default:
-                    if ( ! Utility::parseColumnData($param))
+                    if (Utility::parseColumnData($param) !== false)
                     {
                         $this->cols = Utility::parseColumnData($param);
                     }
