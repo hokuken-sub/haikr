@@ -155,12 +155,8 @@ class ColsPlugin extends Plugin {
 
         foreach ($this->cols as $col)
         {
-            $span   = 'col-sm-'.$col['cols'];
-            $offset = $col['offset'] ? (' col-sm-offset-' . $col['offset']) : '';
-            $class  = $col['class']  ? (' ' . $col['class']) : '';
-
             $coldata = array();
-            $coldata['class'] = $span . $offset . $class;
+            $coldata['class'] = Utility::createColumnClass($col);
             $coldata['style'] = $col['style']  ? $col['style'] : '';
             $coldata['body'] = $col['body'];
 
