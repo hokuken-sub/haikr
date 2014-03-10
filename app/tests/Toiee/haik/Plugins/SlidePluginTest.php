@@ -50,7 +50,7 @@ class SlidePluginTest extends TestCase {
                       . '  <!-- Wrapper for slides -->'."\n"
                       . '  <div class="carousel-inner">'."\n"
                       . '    <div class="item active">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
+                      . '      <img src="http://placehold.jp/1000x400.png" alt="alt">'."\n"
                       . '      <div class="carousel-caption">'."\n"
                       . '        <h3>test title</h3>'."\n"
                       . '        <p>test</p>'."\n"
@@ -82,7 +82,7 @@ class SlidePluginTest extends TestCase {
                       . '  <!-- Wrapper for slides -->'."\n"
                       . '  <div class="carousel-inner">'."\n"
                       . '    <div class="item active">'."\n"
-                      . '      <img src="http://placehold.jp/1000x400.png" alt="">'."\n"
+                      . '      <img src="http://placehold.jp/1000x400.png" alt="alt">'."\n"
                       . '    </div>'."\n"
                       . '  </div>'."\n"
                       . '</div>',
