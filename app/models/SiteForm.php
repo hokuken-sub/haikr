@@ -5,6 +5,10 @@ class SiteForm extends Eloquent implements SearchItemInterface {
 
     protected $table = 'haik_forms';
     
+    protected $parts = array();
+    protected $type;
+    protected $button;
+    
     /**
      * get identifier
      *
@@ -24,6 +28,43 @@ class SiteForm extends Eloquent implements SearchItemInterface {
     {
         $this->key = $identifier;
         return $this;
+    }
+
+    /**
+     * parse form data 
+     *
+     */
+    public function parseBody()
+    {
+        $data = json_decode($this->body);
+        
+        if (isset($data['parts']))
+        {
+            foreach ($data['parts'] as $part)
+            {
+                $this->parts[] = new FormPartInterface($part);
+            }
+        }
+        
+        if (isset($data['type']))
+        {
+            $this->type = $data['type'];
+        }
+
+        if (isset($data['button']))
+        {
+            $this->button = $data['button'];
+        }
+    }
+
+    /**
+     * parse transaction data 
+     *
+     */
+    public function parseTransaction()
+    {
+        $data = json_decode($this->transaction);
+        $this->transaction = $data;
     }
 
     /**
