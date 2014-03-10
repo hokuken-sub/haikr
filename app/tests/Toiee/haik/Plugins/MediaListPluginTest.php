@@ -364,7 +364,6 @@ class MediaListPluginTest extends TestCase {
 
     public function testOneMediaListWithMarkdownImage()
     {
-        $this->markTestIncomplete();
         # This is the test of left image, heading, body set.
         $test = array(
             'medialist' => array(),
@@ -752,7 +751,6 @@ class MediaListPluginTest extends TestCase {
 
     public function testMoreThanTwoMediaListWithMarkdownImage()
     {
-        $this->markTestIncomplete();
 
         $assert = '<div class="haik-plugin-medialist media">'."\n"
                 . '<span class="pull-left">'."\n"
@@ -811,7 +809,6 @@ class MediaListPluginTest extends TestCase {
 
     public function testMediaListWithColumn()
     {
-        $this->markTestIncomplete();
 
         $main = '<div class="haik-plugin-medialist media">'."\n"
                 . '<span class="pull-left">'."\n"
@@ -942,7 +939,6 @@ class MediaListPluginTest extends TestCase {
 
     public function testEscapeParameter()
     {
-        $this->markTestIncomplete();
 
         $main = '<div class="haik-plugin-medialist media">'."\n"
                 . '<span class="pull-left">'."\n"
