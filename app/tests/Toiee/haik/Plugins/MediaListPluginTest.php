@@ -953,35 +953,4 @@ class MediaListPluginTest extends TestCase {
 
         $this->assertEquals($expect_return, $actual_return);
     }
-
-    public function testEscapeParameter()
-    {
-
-        $main = '<div class="haik-plugin-medialist media">'."\n"
-                . '<span class="pull-left">'."\n"
-                . '<img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'."\n"
-                . '</span>'."\n"
-                . '<div class="media-body">'."\n"
-                . '<h4 class="media-heading">test title</h4>'."\n"
-                . '<p>test</p>'."\n"
-                . '</div></div>';
-
-        # This is the test of medialists with param cols & offset & double class.
-        $start_tag = '<div class="row"><div class="">';
-        $close_tag = '</div></div>';
-        $test = array(
-            'medialist' => array('6.<hogehoge>'),
-            'assert' => $start_tag.$main.$close_tag,
-        );
-
-        $body = "![alt](http://placehold.jp/80x80.png)\n"
-              . "#### test title\n"
-              . "test\n";
-
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
-        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
-        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
-
-        $this->assertEquals($expect_return, $actual_return);
-    }
 }
