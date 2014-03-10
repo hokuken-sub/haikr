@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
+    {{ HTML::style(asset('assets/stylesheets/haik.css')) }}
     {{ HTML::style(asset('assets/themes/kawaz/stylesheets/kawaz.css')) }}
 
     <meta name="author" content="">
