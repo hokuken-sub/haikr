@@ -56,7 +56,6 @@ class SlidePlugin extends Plugin {
             'defaultImage'    => $class_name::DEFAULT_IMAGE,
             'items'           => $this->items,
         ));
-var_dump($this->cols);
         return Utility::wrapColumn($this->cols, $html);
     }
     
