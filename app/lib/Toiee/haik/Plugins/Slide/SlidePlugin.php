@@ -13,6 +13,7 @@ class SlidePlugin extends Plugin {
 
     protected $params;
     protected $body;
+    protected $cols;
 
     public function __construct()
     {
@@ -26,8 +27,6 @@ class SlidePlugin extends Plugin {
         $this->options = array(
             'indicatorsSet' => true,
             'controlsSet'   => true,
-            'wrapperOpen'   => '',
-            'wrapperClose'  => '',
         );
     }
 
@@ -50,12 +49,14 @@ class SlidePlugin extends Plugin {
         $this->checkParams();
 
         $class_name = get_called_class();
-        return $this->renderView($this->view, array(
+        $html = $this->renderView($this->view, array(
             'id'              => $this->getId(),
             'options'         => $this->options,
             'defaultImage'    => $class_name::DEFAULT_IMAGE,
             'items'           => $this->items,
         ));
+
+        return Utility::wrapColumn($this->cols, $html);
     }
     
     protected function createItemData($body)
@@ -159,13 +160,7 @@ class SlidePlugin extends Plugin {
                     $this->options['controlsSet'] = false;
                     break;
                 default:
-                    $data = Utility::parseColumnData($param);
-                    if ($data)
-                    {
-                        $col_classes = $this->createColumnClass($data);
-                        $this->options['wrapperOpen'] = '<div class="row"><div class="'.$col_classes.'">';
-                        $this->options['wrapperClose'] = '</div></div>';
-                    }
+                    $this->cols = Utility::parseColumnData($param);
             }
         }
     }
