@@ -160,7 +160,10 @@ class SlidePlugin extends Plugin {
                     $this->options['controlsSet'] = false;
                     break;
                 default:
-                    $this->cols = Utility::parseColumnData($param);
+                    if ( ! Utility::parseColumnData($param))
+                    {
+                        $this->cols = Utility::parseColumnData($param);
+                    }
             }
         }
     }
