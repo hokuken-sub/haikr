@@ -1,4 +1,5 @@
 {{ $options['wrapperOpen'] }}
+{{  ( ! $items) ? '<div class="haik-plugin-medialist media">' : '' }}
 @foreach ($items as $i => $item)
 <div class="haik-plugin-medialist media">
     <span class="{{ $item['align'] or "pull-left" }}">
@@ -12,4 +13,5 @@
     @endif
 </div>
 @endforeach
+{{  ( ! $items) ? '</div>' : '' }}
 {{ $options['wrapperClose'] }}
