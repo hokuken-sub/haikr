@@ -142,6 +142,9 @@ class SlidePlugin extends Plugin {
 
     protected function checkParams()
     {
+        if (count($this->items) === 1)
+            $this->options['indicatorsSet'] = $this->options['controlsSet'] = false;
+
         foreach ($this->params as $i => $param)
         {
             switch ($param)
