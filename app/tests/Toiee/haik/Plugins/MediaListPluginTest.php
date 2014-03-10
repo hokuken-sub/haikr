@@ -153,6 +153,13 @@ class MediaListPluginTest extends TestCase {
                     'body' => '<p><img src="http://placehold.jp/60x60.png" alt="alt"></p>',
                 ))
             ),
+            'heading_has_class' => array(
+                'body' => '#### Heading {.custom-class}',
+                'expected' => array(array(
+                    'heading' => '<h4 class="custom-class">Heading</h4>',
+                    'body' => '',
+                ))
+            ),
         );
 
         return $test;
