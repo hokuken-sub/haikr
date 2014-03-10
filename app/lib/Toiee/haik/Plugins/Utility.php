@@ -20,7 +20,7 @@ class Utility {
         }
         return false;
     }
-    
+
     /**
      * makes class for column
      * @param  array $columnData column data
@@ -64,7 +64,7 @@ class Utility {
         
         return '';
     }
-    
+
     /**
      * makes wrapped html with column class
      * @param  mixed  $columnData if array then columndata, if string then need parse
