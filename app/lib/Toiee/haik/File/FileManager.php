@@ -98,6 +98,25 @@ class FileManager {
     }
 
     /**
+     * Save the file to repository
+     *
+     * @param FileInterface $file
+     * @return boolean succession
+     */
+    public function fileSave($file)
+    {
+        if ($file->save())
+        {
+            \Event::fire('file.save', array($file));
+            return true;
+        }
+        else
+        {
+            false;
+        }
+    }
+
+    /**
      * Save file content.
      *
      * @param FileInterface $file Prepared FileInterface object
