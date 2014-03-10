@@ -125,7 +125,7 @@ class SlidePlugin extends Plugin {
 
     protected function adjustHeading($html)
     {
-        return preg_replace('{ <h([1-6])(.*?>) }mx', '<h3\2', $html);
+        return preg_replace('{ <h([1-6])(.*?>)(.*?)(</h\1>) }mx', '<h3\2\3</h3>', $html);
     }
 
     /**
