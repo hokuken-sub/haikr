@@ -13,7 +13,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $one_line = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -32,8 +32,8 @@ class SlidePluginTest extends TestCase {
         $body = "#### test title\n"
               . "test\n";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($one_line['assert']));
-        $actual_return = $slide_obj->convert($one_line['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -44,7 +44,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -64,8 +64,8 @@ class SlidePluginTest extends TestCase {
               . "#### test title\n"
               . "test\n";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -76,7 +76,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $with_blank = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -90,8 +90,8 @@ class SlidePluginTest extends TestCase {
 
         $body = "![alt](http://placehold.jp/1000x400.png)";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($with_blank['assert']));
-        $actual_return = $slide_obj->convert($with_blank['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -102,7 +102,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -119,8 +119,8 @@ class SlidePluginTest extends TestCase {
 
         $body = "#### test title";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -131,7 +131,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -148,8 +148,8 @@ class SlidePluginTest extends TestCase {
 
         $body = "test";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -160,7 +160,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -179,8 +179,8 @@ class SlidePluginTest extends TestCase {
         $body = "#### test title\n"
               . "test\n";
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -443,7 +443,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array('nobutton'),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -474,8 +474,8 @@ class SlidePluginTest extends TestCase {
               . '### Heading' . "\n"
               . 'Body';
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -486,7 +486,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array('noindicator'),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Wrapper for slides -->'."\n"
@@ -524,8 +524,8 @@ class SlidePluginTest extends TestCase {
               . '### Heading' . "\n"
               . 'Body';
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -536,7 +536,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array('noslidebutton'),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Indicators -->'."\n"
@@ -572,8 +572,8 @@ class SlidePluginTest extends TestCase {
               . '### Heading' . "\n"
               . 'Body';
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
@@ -584,7 +584,7 @@ class SlidePluginTest extends TestCase {
         $slide_obj = new SlidePlugin();
         $id = $slide_obj->getId();
 
-        $some_lines = array(
+        $test = array(
             'slide'  => array(),
             'assert' => '<div id="haik_plugin_slide_'.$id.'" class="haik-plugin-slide carousel slide" data-ride="carousel">'."\n"
                       . '  <!-- Indicators -->'."\n"
@@ -627,8 +627,8 @@ class SlidePluginTest extends TestCase {
               . '### Heading' . "\n"
               . 'Body';
 
-        $expect_return = preg_replace('/\n| {2,}/', '', trim($some_lines['assert']));
-        $actual_return = $slide_obj->convert($some_lines['slide'], $body);
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = $slide_obj->convert($test['slide'], $body);
         $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
 
         $this->assertEquals($expect_return, $actual_return);
