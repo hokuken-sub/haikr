@@ -190,6 +190,23 @@ class MediaListPluginTest extends TestCase {
         $this->assertEquals($expect_return, $actual_return);
     }
 
+    public function testNoInput()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '</div>',
+        );
+
+        $body = '';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
     public function testSetImage()
     {
         $test = array(
