@@ -74,7 +74,6 @@ class FormRepositoryTest extends TestCase {
         $this->assertFalse($this->forms->exists($idenfier));
     }
 
-
     public function testFactory()
     {
         $identifier = 'foobar';
