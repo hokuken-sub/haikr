@@ -1,6 +1,6 @@
 {{ $options['wrapperOpen'] }}
+@foreach ($items as $i => $item)
 <div class="haik-plugin-medialist media">
-    @foreach ($items as $i => $item)
     <span class="{{ $item['align'] or "pull-left" }}">
         {{ $item['image'] or $defaultImage }}
     </span>
@@ -10,6 +10,6 @@
         {{ $item['body'] }}
     </div>
     @endif
-    @endforeach
 </div>
+@endforeach
 {{ $options['wrapperClose'] }}
