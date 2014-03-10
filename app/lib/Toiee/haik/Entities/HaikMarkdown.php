@@ -10,7 +10,7 @@ class HaikMarkdown extends MarkdownExtra implements ParserInterface {
 
     public function __construct()
     {
-        $running = false;
+        $this->running = false;
 
         $this->empty_element_suffix = '>';
         
