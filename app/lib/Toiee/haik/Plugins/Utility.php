@@ -86,7 +86,7 @@ class Utility {
             return $content;
         }
 
-        $html = '<div class="row"><div class="'.$col_classes.'">'.$content.'</div></div>';
+        $html = '<div class="row"><div class="'.e($col_classes).'">'.$content.'</div></div>';
 
         return $html;
     }    
