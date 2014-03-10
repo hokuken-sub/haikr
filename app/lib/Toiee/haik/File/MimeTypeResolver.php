@@ -2,47 +2,10 @@
 namespace Toiee\haik\File;
 
 class MimeTypeResolver {
+    use ConvertTable;
 
-    const DEFAULT_TYPE = 'application/octet-stream';
-    
-    protected $mimeTypeConvertTable = array(
-        'jpg'   => 'image/jpeg',
-        'jpeg'  => 'image/jpeg',
-        'jp2'   => 'image/jp2',
-        'png'   => 'image/png',
-        'gif'   => 'image/gif',
-        'bmp'   => 'image/bmp',
-        'ai'    => 'application/postscript',
-        'txt'   => 'text/plain',
-        'csv'   => 'text/csv',
-        'tsv'   => 'text/tab-separated-values',
-        'doc'   => 'application/msword',
-        'xls'   => 'application/vnd.ms-excel',
-        'ppt'   => 'application/vnd.ms-powerpoint',
-        'pdf'   => 'application/pdf',
-        'xdw'   => 'application/vnd.fujixerox.docuworks',
-        'htm'   => 'text/html',
-        'html'  => 'text/html',
-        'css'   => 'text/css',
-        'js'    => 'text/javascript',
-        'hdml'  => 'text/x-hdml',
-        'mp3'   => 'audio/mpeg',
-        'mp4'   => 'audio/mp4',
-        'wav'   => 'audio/x-wav',
-        'mid'   => 'audio/midi',
-        'midi'  => 'audio/midi',
-        'mmf'   => 'application/x-smaf',
-        'mpg'   => 'video/mpeg',
-        'mpeg'  => 'video/mpeg',
-        'wmv'   => 'video/x-ms-wmv',
-        'swf'   => 'application/x-shockwave-flash',
-        '3g2'   => 'video/3gpp2',
-        'zip'   => 'application/zip',
-        'lha'   => 'application/x-lzh',
-        'lzh'   => 'application/x-lzh',
-        'tar'   => 'application/x-tar',
-        'tgz'   => 'application/x-tar',
-    );
+    const DEFAULT_MIME_TYPE   = 'application/octet-stream';
+    const HAIK_LINK_MIME_TYPE = 'text/x-haik-link';
 
     /**
      * Get File Type By Content
@@ -52,7 +15,12 @@ class MimeTypeResolver {
      */
     public function getTypeByContent($content)
     {
-        if (strlen($content) === 0) return self::DEFAULT_TYPE;
+        if (strlen($content) === 0) return self::DEFAULT_MIME_TYPE;
+        
+        if ($this->isLink($content))
+        {
+            return self::HAIK_LINK_MIME_TYPE;
+        }
 
         if (extension_loaded('finfo'))
         {
@@ -88,12 +56,12 @@ class MimeTypeResolver {
         }
         else
         {
-            if (file_exists($location) OR preg_match('{\A(:?https?|ftp)://}', $location))
+            if (file_exists($location) OR $this->isLink($location))
             {
                 $info = pathinfo($location);
-                if (isset($info['extension']) && isset($this->mimeTypeConvertTable[$info['extension']]))
+                if (isset($info['extension']) && isset($this->extToMimeType[$info['extension']]))
                 {
-                    return $this->mimeTypeConvertTable[$info['extension']];
+                    return $this->extToMimeType[$info['extension']];
                 }
                 else if ( ! file_exists('mime_content_type'))
                 {
@@ -106,9 +74,13 @@ class MimeTypeResolver {
             }
             else
             {
-                return self::DEFAULT_TYPE;
+                return self::DEFAULT_MIME_TYPE;
             }
         }
     }
 
+    protected function isLink($content)
+    {
+        return preg_match('{^(?:https?|ftp)://}', $content) && strpos($content, "\n") === FALSE;
+    }
 }
