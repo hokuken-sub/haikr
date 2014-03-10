@@ -165,6 +165,203 @@ class MediaListPluginTest extends TestCase {
         return $test;
     }
 
+    public function testDefaultImage()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . '    <p>Body</p>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '#### Heading'."\n"
+              . 'Body';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testSetImage()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . '    <p>Body</p>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '![alt](http://placehold.jp/60x60.png)'."\n"
+              . '#### Heading'."\n"
+              . 'Body';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testNoHeadingAndBody()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '</div>',
+        );
+
+        $body = '![alt](http://placehold.jp/60x60.png)';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testOnlyHeading()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '![alt](http://placehold.jp/60x60.png)'."\n"
+              . '#### Heading';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testOnlyBody()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <p>Body</p>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '![alt](http://placehold.jp/60x60.png)'."\n"
+              . 'Body';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testSetHeadingAndBody()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/80x80.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . '    <p>Body</p>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '#### Heading'."\n"
+              . 'Body';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testArignIsLeft()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-left">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . "    <p>Body\n<img src=\"http://placehold.jp/60x60.png\" alt=\"alt\"></p>"."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '![alt](http://placehold.jp/60x60.png)'."\n"
+              . '#### Heading'."\n"
+              . 'Body'."\n"
+              . '![alt](http://placehold.jp/60x60.png)';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
+    public function testAlignIsRight()
+    {
+        $test = array(
+            'medialist' => array(),
+            'assert' => '<div class="haik-plugin-medialist media">'."\n"
+                      . '  <span class="pull-right">'."\n"
+                      . '    <img class="media-object" src="http://placehold.jp/60x60.png" alt="alt">'."\n"
+                      . '  </span>'."\n"
+                      . '  <div class="media-body">'."\n"
+                      . '    <h4 class="media-heading">Heading</h4>'."\n"
+                      . '    <p>Body</p>'."\n"
+                      . '  </div>'."\n"
+                      . '</div>',
+        );
+
+        $body = '#### Heading'."\n"
+              . 'Body'."\n"
+              . '![alt](http://placehold.jp/60x60.png)';
+
+        $expect_return = preg_replace('/\n| {2,}/', '', trim($test['assert']));
+        $actual_return = with(new MediaListPlugin)->convert($test['medialist'], $body);
+        $actual_return = preg_replace('/\n| {2,}/', '', trim($actual_return));
+
+        $this->assertEquals($expect_return, $actual_return);
+    }
+
     public function testOneMediaListWithMarkdownImage()
     {
         $this->markTestIncomplete();
