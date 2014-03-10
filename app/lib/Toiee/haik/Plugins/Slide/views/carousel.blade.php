@@ -15,7 +15,7 @@
         @foreach ($items as $i => $item)
         <div class="item{{ $i == 0 ? " active" : ''}}">
             {{ $item['image'] or $defaultImage }}
-            @if (isset($item['heading'])  && isset($item['body']))
+            @if ((isset($item['heading']) && $item['heading'] !== '') or $item['body'] !== '')
             <div class="carousel-caption">
                 {{ $item['heading'] or '' }}
                 {{ $item['body'] }}
