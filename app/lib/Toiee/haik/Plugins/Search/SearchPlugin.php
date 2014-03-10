@@ -75,7 +75,7 @@ class SearchPlugin extends Plugin {
                     $col = Utility::parseColumnData($param);
                     if ($col)
                     {
-                        $this->formdata['class'] = $this->getColumnClass($col);
+                        $this->formdata['class'] = Utility::createColumnClass($col);
                     }
             }
         }
@@ -114,32 +114,4 @@ class SearchPlugin extends Plugin {
         return self::renderView('template', $data);
     }
 
-    /**
-     * get column class
-     * @params array $col
-     * @return string converted col class
-     */
-    protected function getColumnClass($col)
-    {
-        if ( ! $col)
-        {
-            return false;
-        }
-
-        $classes = array();
-        if ($col['cols'] > 0)
-        {
-            $classes[] = 'col-sm-' . $col['cols'];
-        }
-        if ($col['offset'] > 0)
-        {
-            $classes[] = 'col-sm-offset-' . $col['offset'];
-        }
-        if ($col['class'] !== '')
-        {
-            $classes[] = $col['class'];
-        }
-
-        return join(" ", $classes);
-    }
 }
