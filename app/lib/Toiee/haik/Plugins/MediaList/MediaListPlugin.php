@@ -12,10 +12,6 @@ class MediaListPlugin extends SlidePlugin {
     protected function initialize()
     {
         $this->view = 'medialist';
-        $this->options = array(
-            'wrapperOpen'   => '',
-            'wrapperClose'  => '',
-        );
     }
 
     protected function adjustImage($html)
@@ -68,12 +64,9 @@ class MediaListPlugin extends SlidePlugin {
     {
         foreach ($this->params as $i => $param)
         {
-            $data = Utility::parseColumnData($param);
-            if ($data)
+            if (Utility::parseColumnData($param) !== false)
             {
-                $col_classes = $this->createColumnClass($data);
-                $this->options['wrapperOpen'] = '<div class="row"><div class="'.$col_classes.'">';
-                $this->options['wrapperClose'] = '</div></div>';
+                $this->cols = Utility::parseColumnData($param);
             }
         }
     }

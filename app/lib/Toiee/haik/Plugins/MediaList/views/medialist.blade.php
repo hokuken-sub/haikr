@@ -1,4 +1,3 @@
-{{ $options['wrapperOpen'] }}
 {{  ( ! $items) ? '<div class="haik-plugin-medialist media">' : '' }}
 @foreach ($items as $i => $item)
 <div class="haik-plugin-medialist media">
@@ -14,4 +13,3 @@
 </div>
 @endforeach
 {{  ( ! $items) ? '</div>' : '' }}
-{{ $options['wrapperClose'] }}
