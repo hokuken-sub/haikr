@@ -3,7 +3,7 @@ namespace Toiee\haik\File;
 
 class FileManager {
 
-    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z][0-9a-zA-Z_.-]*[0-9a-zA-Z]\z/';
+    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z][0-9a-zA-Z_-]*[0-9a-zA-Z]\z/';
     const AUTO_IDENTIFIER_SEED = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const AUTO_IDENTIFIER_MIN_LENGTH = 4;
     const AUTO_IDENTIFIER_TRY_LIMIT = 10000;
