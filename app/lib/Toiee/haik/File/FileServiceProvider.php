@@ -10,6 +10,7 @@ class FileServiceProvider extends ServiceProvider {
         $this->registerLocalStorage();
         $this->registerFileRepositoryInterface();
         $this->registerFileManager();
+        $this->listenFileSave();
     }
 
     public function register()
@@ -39,6 +40,26 @@ class FileServiceProvider extends ServiceProvider {
             return new FileManager(
                 $app->make('FileRepositoryInterface')
             );
+        });
+    }
+
+    public function registerTypeResolvers()
+    {
+        $this->app->singleton('MimeTypeResolver', function($app)
+        {
+            return new MimeTypeResolver;
+        });
+        $this->app->singleton('FileTypeResolver', function($app)
+        {
+            return new FileTypeResolver;
+        });
+    }
+
+    public function listenFileSave()
+    {
+        \Event::listen('file.save', function($file)
+        {
+            $this->app->make('FileManager')->setLastSaved($file);
         });
     }
 }

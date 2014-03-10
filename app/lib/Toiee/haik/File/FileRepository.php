@@ -103,7 +103,9 @@ class FileRepository implements FileRepositoryInterface {
      */
     public function factory($identifier = null)
     {
-        return $this->createModel()->setIdentifier($identifier);
+        $file = $this->createModel()->setIdentifier($identifier);
+        $file->haik_site_id = \Haik::getID();
+        return $file;
     }
 
     /**

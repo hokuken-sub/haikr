@@ -3,7 +3,7 @@ namespace Toiee\haik\File;
 
 class FileManager {
 
-    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z][0-9a-zA-Z_.-]*[0-9a-zA-Z]\z/';
+    const IDENTIFIER_REGEX = '/\A[0-9a-zA-Z][0-9a-zA-Z_-]*[0-9a-zA-Z]\z/';
     const AUTO_IDENTIFIER_SEED = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const AUTO_IDENTIFIER_MIN_LENGTH = 4;
     const AUTO_IDENTIFIER_TRY_LIMIT = 10000;
@@ -17,6 +17,11 @@ class FileManager {
      * Available storage drivers
      */
     protected $storageDrivers = array();
+
+    /**
+     * Instance of last saved
+     */
+    protected $lastSaved = null;
 
 
     public function __construct(FileRepositoryInterface $repository)
@@ -50,6 +55,28 @@ class FileManager {
     }
 
     /**
+     * Copy file
+     *
+     * @param string $identifier file identifier
+     * @return FileInterface|false copied file when copy failed return false
+     */
+    public function fileCopy($identifier)
+    {
+        $target_file = $this->fileGet($identifier);
+        $copied_file = $target_file->replicate();
+        $new_identifier = $this->createIdentifier();
+        if ($this->getStorageDriver($target_file->getStorage())->copy($target_file, $new_identifier))
+        {
+            if ($copied_file->setIdentifier($new_identifier)->save())
+            {
+                \Event::fire('file.save', array($copied_file));
+                return $copied_file;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get file content.
      * When file not found then system delete the file record and return false.
      *
@@ -67,6 +94,25 @@ class FileManager {
         {
             $file->delete();
             return false;
+        }
+    }
+
+    /**
+     * Save the file to repository
+     *
+     * @param FileInterface $file
+     * @return boolean succession
+     */
+    public function fileSave($file)
+    {
+        if ($file->save())
+        {
+            \Event::fire('file.save', array($file));
+            return true;
+        }
+        else
+        {
+            false;
         }
     }
 
@@ -101,11 +147,70 @@ class FileManager {
             if ($this->getStorageDriver()->save($identifier, $content))
             {
                 $file->setIdentifier($identifier);
-                $file->save();
-                return true;
+                return $this->fileSave($file);
             }
         }
         return false;
+    }
+
+    /**
+     * Save a file uploaded with auto identifier
+     *
+     * @param $name input name of uploaded file
+     * @return boolean succession
+     */
+    public function fileSaveUploaded()
+    {
+        $name = \Config::get('file.upload.name', 'file');
+        $uploaded_file = Input::file($name);
+
+        $mime_type = $uploaded_file->getMimeType();
+        $file_type = App::make('FileTypeResolver')->getType($mime_type);
+        // !TODO: when image type then get image size as `000x000`
+        $dimensions = null;
+
+        $file_data = array(
+            'original_name' => $uploaded_file->getClientOriginalName(),
+            'mime_type'     => $mime_type,
+            'file_type'     => $file_type,
+            'size'          => $uploaded_file->getSize(),
+            'dimensions'    => $dimensions,
+        );
+
+        $file = $this->fileCreate('', $file_data);
+
+        return $this->fileSave($file);
+    }
+
+    /**
+     * Save URL as a file
+     *
+     * @param string $url for save
+     * @return boolean succession
+     */
+    public function urlSaveAsFile($url)
+    {
+        $mime_type = App::make('MimeTypeResolver')->getTypeByContent($url);
+        $file_type = App::make('FileTypeResolver')->getType($mime_type);
+        $size = strlen($url);
+
+        $file_data = array(
+            'original_name' => '',
+            'mime_type'     => $mime_type,
+            'file_type'     => $file_type,
+            'size'          => $size,
+            'storage'       => 'db',
+            'value'         => $url,
+        );
+
+        $file = $this->fileCreate('', $file_data);
+
+        return $this->fileSave($file);
+    }
+
+    public function fileSaveByUrl($url)
+    {
+        // !TODO: Get file by URL and save FileInterface objeect
     }
 
     /**
@@ -118,7 +223,10 @@ class FileManager {
     {
         $file = $this->files->factory($identifier);
         $file->setIdentify($this->createIdentifier($file));
-        $file->init($options);
+        foreach ($options as $key => $value)
+        {
+            $file->$key = $value;
+        }
         return $file;
     }
 
@@ -127,7 +235,10 @@ class FileManager {
         if ($this->fileExists($identifier))
         {
             $file = $this->fileGet($identifier);
-            $this->getStorageDriver($file->getStorage())->delete($file);
+            if ($this->getStorageDriver($file->getStorage())->delete($file))
+            {
+                return $file->delete();
+            }
         }
         return false;
     }
@@ -183,6 +294,16 @@ class FileManager {
     protected function validateIdentifier($identifier)
     {
         return preg_match(self::IDENTIFIER_REGEX, $identifier);
+    }
+
+    public function setLastSaved($file)
+    {
+        $this->lastSaved = $file;
+    }
+
+    public function getLastSaved()
+    {
+        return $this->lastSaved;
     }
 
     protected function getStorageDriver($storage = '')
