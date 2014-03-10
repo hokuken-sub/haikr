@@ -289,6 +289,46 @@ class SlidePluginTest extends TestCase {
         $this->assertAttributeEquals($expected, 'items', $slide_obj);        
     }
 
+    public function testMultiSlides()
+    {
+        # This is the test of array of items are 2.
+        $slide_obj = new SlidePlugin();
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body';
+
+        $params = array();
+        $expected = 2;
+        $slide_obj->convert($params, $body);
+
+        $this->assertAttributeCount($expected, 'items', $slide_obj);
+
+
+        # This is the test of array of items are 3.
+        $slide_obj = new SlidePlugin();
+        $body = '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body' . "\n"
+              . '====' . "\n"
+              . '![alt](http://placehold.jp/1000x400.png)' . "\n"
+              . '### Heading' . "\n"
+              . 'Body';
+
+        $params = array();
+        $expected = 3;
+        $slide_obj->convert($params, $body);
+
+        $this->assertAttributeCount($expected, 'items', $slide_obj);
+    }
+
     public function testOneSlideWithNoButton()
     {
         $slide_obj = new SlidePlugin();
