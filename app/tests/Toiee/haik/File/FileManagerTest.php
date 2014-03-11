@@ -34,6 +34,7 @@ class FileManagerTest extends TestCase {
             $mock->shouldReceive('retrieve')->andReturn($file);
             $mock->shouldReceive('exists')->andReturn(true);
             $mock->shouldReceive('copy')->andReturn($file2);
+            $mock->shouldReceive('listGet')->andReturn(array());
             return $mock;
         });
 
@@ -49,6 +50,12 @@ class FileManagerTest extends TestCase {
         }
 
         File::deleteDirectory(\Config::get("file.local.path") . \Haik::getID());
+    }
+
+    public function testFacade()
+    {
+        $result = \Filr::listGet();
+        $this->assertInternalType('array', $result);
     }
 
     public function testSetLastSaved()
