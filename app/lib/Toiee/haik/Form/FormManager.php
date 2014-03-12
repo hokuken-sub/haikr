@@ -42,10 +42,9 @@ class FormManager {
      *
      * @return string html
      */
-    public function render()
+    public function render($identifier)
     {
-        $html = '';
-        return $html;
+        return $this->formGet($identifier)->render();
     }
 
     /**

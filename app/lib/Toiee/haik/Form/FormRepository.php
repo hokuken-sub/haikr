@@ -64,7 +64,8 @@ class FormRepository implements FormRepositoryInterface {
     public function retrieve($identifier)
     {
         $query = $this->createModel()->newQuery();
-        return $query->site(\Haik::getID())->where($this->identifierColumn, $identifier)->first();
+        $form = $query->site(\Haik::getID())->where($this->identifierColumn, $identifier)->first();
+        return $form;
     }
 
     /**

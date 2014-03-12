@@ -66,5 +66,77 @@ class FormManagerTest extends TestCase {
         $form2 = $this->manager->formGet($dest_id);
         $this->assertEquals($cmpnote, $form2->note);
     }
+    
+
+    /**
+     * @dataProvider partProvider
+     */
+    public function testRender($parts, $assert)
+    {
+        $form = SiteForm::site($this->siteId)->orderBy("updated_at", "desc")->first();
+        
+        $body = array(
+            'parts' => $parts,
+            'button' => array(),
+            'type' => 'horizontal',
+        );
+        
+        $form->body = json_encode($body);
+        $form->save();
+
+        $viewdata = $this->manager->render($form->key);
+        $viewdata = preg_replace('/\n| {2,}/', '', trim($viewdata));
+
+        $this->assertEquals($assert, $viewdata);
+    }
+    
+    /**
+     * @dataProvider partProvider
+     */
+    public function partProvider()
+    {
+        $param = array(
+            'id' => 1,
+            'type' => 'text',
+            'name' => 'ginger',
+            'label' => 'organic',
+            'class' => '',
+            'size'  => 'col-sm-8',
+            'before' => '¥',
+            'after' => '円',
+            'value' => 1000,
+            'placeholder' => '果汁',
+            'required' => 1,
+            'help' => 'おいしいジュースです',
+        );
+
+        $test = array(
+            'text' => array(
+                'parts'   => array($param),
+                'assert' => ''
+                    .'<div class="form-group">'
+                    .  '<label for="haik_form_' . $param['id'] .'_' . $param['name'] . '" class="control-label">'
+                    .    $param['label']
+                    .  '</label>'
+                    .  '<div class="form-control' . $param['class'] . '">'
+                    .    '<div class="row">'
+                    .      '<div class="' . $param['size'] . '">'
+                    .		'<div class="input-group">'
+                    .          '<span class="input-group-addon">' . e($param['before']) . '</span>'
+                    .          '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
+                    .          '<span class="input-group-addon">' . e($param['after']) . '</span>'
+                    .        '</div>'
+                    .      '</div>'
+                    .    '</div>'
+                    .    '<span class="help-block">'
+                    .      $param['help']
+                    .    '</span>'
+                    .  '</div>'
+                    .'</div>',
+            ),
+        );
+        
+        return $test;
+    }
 
 }
