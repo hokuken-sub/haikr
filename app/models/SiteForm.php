@@ -5,9 +5,21 @@ class SiteForm extends Eloquent implements SearchItemInterface {
 
     protected $table = 'haik_forms';
     
-    protected $parts = array();
-    protected $type;
-    protected $button;
+    /**
+     * get body attribute
+     *
+     * @param  string $value json string
+     * @return string form identifier
+     */
+    public function getBodyAttribute($value)
+    {
+        $body = json_decode($value, true);
+        if ( ! $body)
+        {
+            $body = array();
+        }
+        return $body;
+    }    
     
     /**
      * get identifier
@@ -31,30 +43,32 @@ class SiteForm extends Eloquent implements SearchItemInterface {
     }
 
     /**
-     * parse form data 
+     * Make form html
      *
+     * @return string form html
      */
-    public function parseBody()
+    public function render()
     {
-        $data = json_decode($this->body);
+        $html = '';
         
-        if (isset($data['parts']))
-        {
-            foreach ($data['parts'] as $part)
-            {
-                $this->parts[] = new FormPartInterface($part);
-            }
-        }
+        $namespace = class_basename(get_called_class());
+        $dirname = app_path().'/lib/Toiee/haik/Form/views';
         
-        if (isset($data['type']))
-        {
-            $this->type = $data['type'];
-        }
+        \View::addLocation($dirname);
+        \View::addNamespace($namespace, $dirname);
 
-        if (isset($data['button']))
+        // join parts
+        $parts = array();
+        foreach ($this->body['parts'] as $part)
         {
-            $this->button = $data['button'];
+            $viewfile = $namespace . '::' . $part['type'];
+            $parts[] = \View::make($viewfile, $part)->render();
         }
+        $parts = join('', $parts);
+        
+        $html = $parts;
+
+        return $html;
     }
 
     /**
@@ -65,6 +79,7 @@ class SiteForm extends Eloquent implements SearchItemInterface {
     {
         $data = json_decode($this->transaction);
         $this->transaction = $data;
+        return $this;
     }
 
     /**
