@@ -65,7 +65,7 @@ class SiteForm extends Eloquent implements SearchItemInterface {
             $parts[] = \View::make($viewfile, $part)->render();
         }
         $parts = join('', $parts);
-        
+
         $html = $parts;
 
         return $html;
