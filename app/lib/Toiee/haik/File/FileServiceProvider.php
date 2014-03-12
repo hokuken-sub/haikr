@@ -15,6 +15,11 @@ class FileServiceProvider extends ServiceProvider {
 
     public function register()
     {
+        $this->app['filr'] = $this->app->share(function(){
+            return new FileManager(
+                $this->app->make('FileRepositoryInterface')
+            );
+        });
     }
 
     public function registerLocalStorage()
