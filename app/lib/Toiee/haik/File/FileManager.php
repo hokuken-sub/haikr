@@ -55,6 +55,18 @@ class FileManager {
     }
 
     /**
+     * Get the image file
+     *
+     * @param string $identifier file identifier
+     * @return FileInterface|null the file or NULL, when cannot retrieve image
+     */
+    public function imageGet($identifier)
+    {
+        $file = $this->files->retrieve($identifier);
+        if ($file->getType() === 'image') return $file;
+    }
+
+    /**
      * Copy file
      *
      * @param string $identifier file identifier

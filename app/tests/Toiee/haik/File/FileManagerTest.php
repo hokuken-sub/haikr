@@ -34,6 +34,7 @@ class FileManagerTest extends TestCase {
             $mock->shouldReceive('retrieve')->andReturn($file);
             $mock->shouldReceive('exists')->andReturn(true);
             $mock->shouldReceive('copy')->andReturn($file2);
+            $mock->shouldReceive('listGet')->andReturn(array());
             return $mock;
         });
 
@@ -47,8 +48,15 @@ class FileManagerTest extends TestCase {
         {
             unlink($this->fpath);
         }
+        \SiteFile::truncate();
 
         File::deleteDirectory(\Config::get("file.local.path") . \Haik::getID());
+    }
+
+    public function testFacade()
+    {
+        $result = \Filr::listGet();
+        $this->assertInternalType('array', $result);
     }
 
     public function testSetLastSaved()
@@ -77,6 +85,30 @@ class FileManagerTest extends TestCase {
         \File::put($this->fpath, $this->fileContent);
         $content = $this->manager->fileGetContent($this->file->getIdentifier());
         $this->assertEquals($this->fileContent, $content);
+    }
+
+    public function testImageGet()
+    {
+        $file = with(new SiteFile())->setIdentifier($this->fname);
+        $file->haik_site_id = \Haik::getID();
+        $file->type = 'image';
+        $file->storage = 'local';
+        
+        App::bind('FileRepositoryInterface', function() use ($file)
+        {
+            return Mockery::mock(
+                                'Toiee\haik\File\FileRepositoryInterface',
+                                function($mock) use ($file)
+                                {
+                                    $mock->shouldReceive('exists')->andReturn(true);
+                                    $mock->shouldReceive('retrieve')->andReturn($file);
+                                    return $mock;
+                                });
+        });
+        $manager = new FileManager(App::make('FileRepositoryInterface'));
+
+        $result = $manager->imageGet($this->fname);
+        $this->assertInstanceOf('Toiee\haik\File\FileInterface', $result);
     }
 
     public function testFileSaveContent()

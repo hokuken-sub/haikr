@@ -44,6 +44,13 @@ interface FileInterface {
      */
     public function getStorage();
 
+    /**
+     * Get type of the file
+     *
+     * @return string type of the file
+     */
+    public function getType();
+
 	/**
 	 * Delete the file
 	 *

@@ -194,6 +194,7 @@ return array(
         'Parser'          => 'Toiee\haik\Providers\ParserFacade',
         'Link'            => 'Toiee\haik\Link\LinkFacade',
         'Theme'           => 'Toiee\haik\Themes\ThemeFacade',
+        'Filr'            => 'Toiee\haik\File\FileFacade',
         'Formr'           => 'Toiee\haik\Form\FormrFacade',
 	),
 
