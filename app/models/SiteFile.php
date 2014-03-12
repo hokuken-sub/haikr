@@ -72,6 +72,16 @@ class SiteFile extends Eloquent implements FileInterface {
     }
 
     /**
+     * Get type of the file
+     *
+     * @return string type of the file
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Get existance of the file
      *
      * @return boolean existance
