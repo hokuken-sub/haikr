@@ -1,1 +1,0 @@
-@yield($form_type)
