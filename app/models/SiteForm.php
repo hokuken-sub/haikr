@@ -20,6 +20,17 @@ class SiteForm extends Eloquent implements SearchItemInterface {
         }
         return $body;
     }    
+
+    /**
+     * set body attribute
+     *
+     * @param  string $value form body data
+     * @return string form identifier
+     */
+    public function setBodyAttribute($value)
+    {
+        $this->attributes['body'] = json_encode($value, true);
+    }
     
     /**
      * get identifier
@@ -50,25 +61,33 @@ class SiteForm extends Eloquent implements SearchItemInterface {
     public function render()
     {
         $html = '';
-        
-        $namespace = class_basename(get_called_class());
-        $dirname = app_path().'/lib/Toiee/haik/Form/views';
-        
-        \View::addLocation($dirname);
-        \View::addNamespace($namespace, $dirname);
 
-        // join parts
-        $parts = array();
+        $form_type = $this->body['type'];
+        $class = '\Toiee\haik\Form\\' . camel_case($form_type) . 'FormFactory';
+
         foreach ($this->body['parts'] as $part)
         {
-            $viewfile = $namespace . '::' . $part['type'];
-            $parts[] = \View::make($viewfile, $part)->render();
+            $form = new $class($form_type);
+            $parts[] = $form->factory($part['type'], $part)->render();
         }
         $parts = join('', $parts);
 
-        $html = $parts;
 
-        return $html;
+        $namespace = $form_type;
+        $viewfile = $namespace . '::' . 'form';
+
+        if ( ! \View::exists($viewfile))
+        {
+            $dirname = app_path().'/lib/Toiee/haik/Form/views/' . $form_type;
+            \View::addLocation($dirname);
+            \View::addNamespace($namespace, $dirname);
+        }
+        
+        $button = '';
+        return \View::make($viewfile, array(
+                        'parts' => $parts,
+                        'button' => $button
+                ))->render();
     }
 
     /**

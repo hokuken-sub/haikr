@@ -66,5 +66,35 @@ class FormManagerTest extends TestCase {
         $form2 = $this->manager->formGet($dest_id);
         $this->assertEquals($cmpnote, $form2->note);
     }
+    
+    public function testRender()
+    {
+        $form = SiteForm::site($this->siteId)->orderBy("updated_at", "desc")->first();
+        $form->body = array(
+            'type'   => 'horizontal',
+            'parts'  => array(
+                            array(
+                                'id'    => 1,
+                                'type'  => 'text',
+                                'name'  => 'coffee',
+                                'label' => 'coffee',
+                                'placehoder' => 'cafe mist',
+                            ),
+                            array(
+                                'id' => 2,
+                                'type'  => 'text',
+                                'name'  => 'cake',
+                                'label' => 'cake',
+                                'placehoder' => 'orange cake',
+                            ),
+                        ),
+            'button' => '',
+        );
+        
+        var_dump($form->render());
+
+        $this->assertEquals('', $form->render());
+
+    }
 
 }
