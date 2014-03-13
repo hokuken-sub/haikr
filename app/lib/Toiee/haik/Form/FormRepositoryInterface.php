@@ -21,7 +21,7 @@ interface FormRepositoryInterface {
     /**
      * Get form by key
      * @param string $identifier
-     * @return FormInterface
+     * @return SiteForm
      */
     public function retrieve($identifier);
 
@@ -43,7 +43,7 @@ interface FormRepositoryInterface {
      * Get new form object
      *
      * @return string $identifier
-     * @return FileInterface
+     * @return SiteForm
      */
     public function factory($identifier = null);
 
