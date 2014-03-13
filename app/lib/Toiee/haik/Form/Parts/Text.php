@@ -5,6 +5,11 @@ use Toiee\haik\Form\FormPartInterface;
 
 class Text implements FormPartInterface {
 
+	/**
+	 * The form type
+	 *
+	 * @var string
+	 */
     protected $form_type;
     
 	/**
@@ -70,13 +75,12 @@ class Text implements FormPartInterface {
 
         if ( ! \View::exists($viewfile))
         {
-            $dirname = app_path().'/lib/Toiee/haik/Form/views';
-        
+            $dirname = dirname(__DIR__) . '/views/' . $this->form_type . '/parts';
             \View::addLocation($dirname);
             \View::addNamespace($namespace, $dirname);
         }
 
-        return \View::make($viewfile, array_merge($this->attributes, array('form_type' => $this->form_type)))->render();
+        return \View::make($viewfile, $this->attributes)->render();
     }
 
 }
