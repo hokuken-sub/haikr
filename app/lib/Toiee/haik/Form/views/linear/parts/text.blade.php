@@ -3,23 +3,21 @@
     {{{ $label }}}
   </label>
   <div class="{{ $size or 'col-sm-6'}}">
-    <div class="row">
-      @if (isset($before) OR isset($after))
-      <div class="input-group">
+    @if (isset($before) OR isset($after))
+    <div class="input-group">
+    @endif
+      @if (isset($before))
+      <span class="input-group-addon">{{{ $before }}}</span>
       @endif
-        @if (isset($before))
-        <span class="input-group-addon">{{{ $before }}}</span>
-        @endif
-        @if (isset($icon))
-        <span class="glyphicon glyphicon-{{{ $icon }}} form-control-feedback"></span>
-        @endif
-        <input type="text" name="data[{{{ $name }}}]" value="{{{ $value }}}" id="haik_form_{{ $id }}_{{{ $name }}}" class="form-control" placeholder="{{{ $placeholder or '' }}}"{{ $required ? ' required': ''}}>
-        @if (isset($after))
-        <span class="input-group-addon">{{{ $after }}}</span>
-        @endif
-      @if (isset($before) OR isset($after))
-      </div>
+      @if (isset($icon))
+      <span class="glyphicon glyphicon-{{{ $icon }}} form-control-feedback"></span>
       @endif
+      <input type="text" name="data[{{{ $name }}}]" value="{{{ $value }}}" id="haik_form_{{ $id }}_{{{ $name }}}" class="form-control" placeholder="{{{ $placeholder or '' }}}"{{ $required ? ' required': ''}}>
+      @if (isset($after))
+      <span class="input-group-addon">{{{ $after }}}</span>
+      @endif
+    @if (isset($before) OR isset($after))
     </div>
+    @endif
   </div>
 </div>
