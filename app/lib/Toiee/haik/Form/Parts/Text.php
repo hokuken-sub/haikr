@@ -1,23 +1,7 @@
 <?php
 namespace Toiee\haik\Form\Parts;
 
-use Toiee\haik\Form\FormPartInterface;
-
-class Text implements FormPartInterface {
-
-	/**
-	 * The form type
-	 *
-	 * @var string
-	 */
-    protected $form_type;
-    
-	/**
-	 * An array of form attributes
-	 *
-	 * @var array
-	 */
-    protected $attributes = array();
+class Text extends Base {
 
 	/**
 	 * The reserved form attributes.
@@ -43,7 +27,7 @@ class Text implements FormPartInterface {
             'name'    => 'text',
             'label'   => '',
             'value'   => '',
-            'size'    => '',
+            'size'    => 'col-sm-6',
             'required' => 0,
         );
 
@@ -51,36 +35,6 @@ class Text implements FormPartInterface {
         {
             $this->attributes = array_merge($this->attributes, array_intersect_key($options, array_flip($this->reserved)));
         }
-    }
-
-    /**
-     * Return parts array
-     *
-     * return array parts detail
-     */
-    public function toArray()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Make part html 
-     *
-     * return string part html
-     */
-    public function render()
-    {
-        $namespace = class_basename(get_called_class());
-        $viewfile = $namespace . '::' . 'text';
-
-        if ( ! \View::exists($viewfile))
-        {
-            $dirname = dirname(__DIR__) . '/views/' . $this->form_type . '/parts';
-            \View::addLocation($dirname);
-            \View::addNamespace($namespace, $dirname);
-        }
-
-        return \View::make($viewfile, $this->attributes)->render();
     }
 
 }
