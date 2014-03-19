@@ -10,12 +10,21 @@ interface FormFactoryInterface {
      * @param  array  $options form data
      * @return FormPart form parts
      */
-    public function factory($type, $options = array());
+    public function partsFactory($type, $options = array());
+
+    /**
+     * Return form button 
+     *
+     * @param  string $type form parts type
+     * @param  array  $options button data
+     * @return Button
+     */
+    public function buttonFactory($options = array());
 
     /**
      * Return parts array
      *
-     * @return array parts able to use form
+     * @return array parts data for use form
      */
     public function parts();
 
