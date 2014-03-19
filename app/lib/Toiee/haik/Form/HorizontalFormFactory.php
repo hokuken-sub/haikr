@@ -7,7 +7,7 @@ class HorizontalFormFactory implements FormFactoryInterface {
 
     protected $type;
 
-    protected $reserved = array('text', 'email', 'textarea', 'checkbox', 'radio', 'select', 'hidden', 'file', 'agree');
+    protected $parts_reserved = array('text', 'email', 'textarea', 'checkbox', 'radio', 'select', 'hidden', 'file', 'agree');
 
     /**
     * Create a new form factory.
@@ -27,10 +27,23 @@ class HorizontalFormFactory implements FormFactoryInterface {
      * @param  array  $options form data
      * @return FormPart form parts
      */
-    public function factory($type, $options = array())
+    public function partsFactory($type, $options = array())
     {
         $class = '\Toiee\haik\Form\Parts\\'.camel_case($type);
         return new $class($this->type, $options);
+    }
+
+    /**
+     * Return form button 
+     *
+     * @param  string $type form parts type
+     * @param  array  $options button data
+     * @return Button
+     */
+    public function buttonFactory($options = array(), $status = 'confirm')
+    {
+        $class = '\Toiee\haik\Form\Button';
+        return new $class($this->type, $options, $status);
     }
 
     /**
@@ -40,7 +53,7 @@ class HorizontalFormFactory implements FormFactoryInterface {
      */
     public function parts()
     {
-        return $this->reserved;
+        return $this->parts_reserved;
     }
 
 }
