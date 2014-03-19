@@ -64,14 +64,18 @@ class SiteForm extends Eloquent implements SearchItemInterface {
 
         $form_type = $this->body['type'];
         $class = '\Toiee\haik\Form\\' . camel_case($form_type) . 'FormFactory';
+        $form = new $class($form_type);
 
         foreach ($this->body['parts'] as $part)
         {
-            $form = new $class($form_type);
-            $parts[] = $form->factory($part['type'], $part)->render();
+            if (in_array($part['type'], $form->parts()))
+            {
+                $parts[] = $form->partsFactory($part['type'], $part)->render();
+            }
         }
         $parts = join('', $parts);
 
+        $button = $form->buttonFactory($this->body['button'])->render();
 
         $namespace = $form_type;
         $viewfile = $namespace . '::' . 'form';
@@ -83,7 +87,6 @@ class SiteForm extends Eloquent implements SearchItemInterface {
             \View::addNamespace($namespace, $dirname);
         }
         
-        $button = '';
         return \View::make($viewfile, array(
                         'parts' => $parts,
                         'button' => $button
