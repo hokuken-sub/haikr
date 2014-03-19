@@ -71,30 +71,98 @@ class FormManagerTest extends TestCase {
     {
         $form = SiteForm::site($this->siteId)->orderBy("updated_at", "desc")->first();
         $form->body = array(
-            'type'   => 'horizontal',
+            'type'   => 'linear',
             'parts'  => array(
                             array(
                                 'id'    => 1,
                                 'type'  => 'text',
                                 'name'  => 'coffee',
                                 'label' => 'coffee',
-                                'placehoder' => 'cafe mist',
+                                'placeholder' => 'cafe mist',
                             ),
                             array(
                                 'id' => 2,
-                                'type'  => 'text',
-                                'name'  => 'cake',
-                                'label' => 'cake',
-                                'placehoder' => 'orange cake',
+                                'type'  => 'email',
+                                'name'  => 'email',
+                                'label' => 'email',
+                                'placeholder' => 'put you ara hands up!',
+                                'required' => 1,
                             ),
-                        ),
-            'button' => '',
+                            array(
+                                'id' => 3,
+                                'type'  => 'textarea',
+                                'name'  => 'note',
+                                'label' => 'memo',
+                                'placeholder' => 'Leave me alone!',
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 4,
+                                'type'  => 'checkbox',
+                                'name'  => 'seasons',
+                                'label' => 'seasons',
+                                'valign' => 'horizontal',
+                                'value' => '',
+                                'options' => array('salt','pepper','honey'),
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 5,
+                                'type'  => 'radio',
+                                'name'  => 'vegitable',
+                                'label' => 'vegitable',
+                                'value' => 'onion',
+                                'valign' => 'vertical',
+                                'options' => array('lemon','carrot','onion'),
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 5,
+                                'type'  => 'select',
+                                'name'  => 'tea',
+                                'label' => 'tea',
+                                'value' => 'woolong',
+                                'empty' => 'choose!!',
+                                'options' => array('woolong', 'earl gray', 'dargiling', 'green tea'),
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 6,
+                                'type'  => 'select',
+                                'name'  => 'tea',
+                                'label' => 'tea',
+                                'value' => '',
+                                'empty' => 'choose tea !!',
+                                'options' => array('woolong', 'earl gray', 'dargiling', 'green tea'),
+                                'multiple' => 1,
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 7,
+                                'type'  => 'file',
+                                'name'  => 'image',
+                                'label' => 'imagefile',
+                                'value' => '',
+                                'required' => 0,
+                            ),
+                            array(
+                                'id' => 8,
+                                'type'  => 'agree',
+                                'name'  => 'agreement',
+                                'label' => 'agreement',
+                                'terms_text' => 'Are you sure?',
+                                'value' => '',
+                                'required' => 1,
+                            ),
+            ),
+            'button' => array(
+                'color'   => 'success',
+                'confirm' => 'Confirm',
+                'send'    => 'Send',
+            ),
         );
-        
-        var_dump($form->render());
 
         $this->assertEquals('', $form->render());
-
     }
 
 }
