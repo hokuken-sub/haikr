@@ -46,8 +46,10 @@ class TextTest extends TestCase {
                     .  '<label for="haik_form__text" class="control-label">'
                     .    ''
                     .  '</label>'
-                    .  '<div class="">'
-                    .    '<input type="text" name="data[text]" value="" id="haik_form__text" class="form-control" placeholder="">'
+                    .  '<div class="row">'
+                    .    '<div class="col-sm-6">'
+                    .      '<input type="text" name="data[text]" value="" id="haik_form__text" class="form-control" placeholder="">'
+                    .    '</div>'
                     .  '</div>'
                     .'</div>',
             ),
@@ -57,17 +59,19 @@ class TextTest extends TestCase {
                 'assert' => ''
                     .'<div class="form-group has-feedback">'
                     .  '<label for="haik_form_' . $param['id'] .'_' . $param['name'] . '" class="control-label">'
-                    .    $param['label']
+                    .    $param['label'] . '<span class="haik-form-required">*</span>'
                     .  '</label>'
-                    .  '<div class="' . $param['size'] . '">'
-                    .    '<div class="input-group">'
-                    .      '<span class="input-group-addon">' . e($param['before']) . '</span>'
-                    .      '<span class="glyphicon glyphicon-'.$param['icon']. ' form-control-feedback"></span>'
-                    .      '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
-                    .      '<span class="input-group-addon">' . e($param['after']) . '</span>'
+                    .  '<div class="row">'
+                    .    '<div class="' . $param['size'] . '">'
+                    .      '<div class="input-group">'
+                    .        '<span class="input-group-addon">' . e($param['before']) . '</span>'
+                    .        '<span class="glyphicon glyphicon-'.$param['icon']. ' form-control-feedback"></span>'
+                    .        '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
+                    .        '<span class="input-group-addon">' . e($param['after']) . '</span>'
+                    .      '</div>'
                     .    '</div>'
                     .    '<span class="help-block">'
-                    .    $param['help']
+                    .      $param['help']
                     .    '</span>'
                     .  '</div>'
                     .'</div>',
@@ -77,7 +81,7 @@ class TextTest extends TestCase {
                 'assert' => ''
                     .'<div class="form-group has-feedback">'
                     .  '<label for="haik_form_' . $param['id'] .'_' . $param['name'] . '" class="control-label col-sm-3">'
-                    .    $param['label']
+                    .    $param['label'] . '<span class="haik-form-required">*</span>'
                     .  '</label>'
                     .  '<div class="col-sm-9">'
                     .    '<div class="row">'
@@ -88,10 +92,10 @@ class TextTest extends TestCase {
                     .          '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
                     .          '<span class="input-group-addon">' . e($param['after']) . '</span>'
                     .        '</div>'
-                    .        '<span class="help-block">'
-                    .        $param['help']
-                    .        '</span>'
                     .      '</div>'
+                    .      '<span class="help-block">'
+                    .        $param['help']
+                    .      '</span>'
                     .    '</div>'
                     .  '</div>'
                     .'</div>',
@@ -105,13 +109,11 @@ class TextTest extends TestCase {
                     .    $param['label']
                     .  '</label>'
                     .  '<div class="'.$param['size'].'">'
-                    .    '<div class="row">'
-                    .      '<div class="input-group">'
-                    .        '<span class="input-group-addon">' . e($param['before']) . '</span>'
-                    .        '<span class="glyphicon glyphicon-'.$param['icon']. ' form-control-feedback"></span>'
-                    .        '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
-                    .        '<span class="input-group-addon">' . e($param['after']) . '</span>'
-                    .      '</div>'
+                    .    '<div class="input-group">'
+                    .      '<span class="input-group-addon">' . e($param['before']) . '</span>'
+                    .      '<span class="glyphicon glyphicon-'.$param['icon']. ' form-control-feedback"></span>'
+                    .      '<input type="text" name="data[' . $param['name'] . ']" value="' . e($param['value']) . '" id="haik_form_' . $param['id'] . '_' . $param['name'] . '" class="form-control" placeholder="' . e($param['placeholder']) . '" required>'
+                    .      '<span class="input-group-addon">' . e($param['after']) . '</span>'
                     .    '</div>'
                     .  '</div>'
                     .'</div>',
