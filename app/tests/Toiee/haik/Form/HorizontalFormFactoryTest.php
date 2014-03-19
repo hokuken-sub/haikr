@@ -10,7 +10,7 @@ class HorizontalFormFactoryTest extends TestCase {
         $part_type = 'text';
 
         $form = new HorizontalFormFactory($form_type);
-        $part = $form->factory($part_type);
+        $part = $form->partsFactory($part_type);
 
         $this->assertInstanceOf('\Toiee\haik\Form\Parts\Text', $part);
     }
