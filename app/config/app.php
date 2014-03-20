@@ -123,6 +123,7 @@ return array(
         'Toiee\haik\Link\LinkServiceProvider',
         'Toiee\haik\Themes\ThemeServiceProvider',
         'Toiee\haik\File\FileServiceProvider',
+        'Toiee\haik\Form\FormServiceProvider',
 	),
 
 	/*
@@ -194,6 +195,7 @@ return array(
         'Link'            => 'Toiee\haik\Link\LinkFacade',
         'Theme'           => 'Toiee\haik\Themes\ThemeFacade',
         'Filr'            => 'Toiee\haik\File\FileFacade',
+        'Formr'           => 'Toiee\haik\Form\FormrFacade',
 	),
 
 );
