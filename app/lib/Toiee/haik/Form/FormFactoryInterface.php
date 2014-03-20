@@ -19,7 +19,7 @@ interface FormFactoryInterface {
      * @param  array  $options button data
      * @return Button
      */
-    public function buttonFactory($options = array());
+    public function buttonFactory($options = array(), $action = 'confirm');
 
     /**
      * Return parts array
