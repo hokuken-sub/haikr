@@ -99,5 +99,6 @@ module.exports = function(grunt){
   require('matchdep').filter('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('publish', ['less', 'concat']);
   grunt.registerTask('prod', ['less', 'concat', 'uglify']);
 };
