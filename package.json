@@ -4,7 +4,8 @@
   "description": "host haik sites",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "preinstall": "npm i -g grunt-cli",
+    "install": "grunt publish"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,7 @@
     "url": "https://github.com/toiee/haikr/issues"
   },
   "homepage": "https://github.com/toiee/haikr",
-  "devDependencies": {
+  "dependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-cssmin": "~0.7.0",
     "grunt-contrib-watch": "~0.5.3",
